@@ -1,0 +1,37 @@
+{
+    "WELCOME": "Hoşgeldiniz",
+    "DASHBOARD": {
+        "TITLE": "Kontrol Paneli",
+        "TOTAL_USERS": "Toplam Kullanıcı",
+        "ACTIVE_SESSIONS": "Aktif Oturumlar",
+        "PENDING_ORDERS": "Bekleyen Siparişler",
+        "REVENUE": "Gelir",
+        "USER_ACTIVITY": "Kullanıcı Aktivitesi",
+        "RECENT_ACTIVITY": "Son Aktiviteler"
+    },
+    "USER_APP": {
+        "TITLE": "Kullanıcı Modülü",
+        "SAVE": "Kaydet",
+        "SUCCESS": "Kullanıcı başarıyla kaydedildi",
+        "ERROR_INVALID": "Lütfen tüm gerekli alanları doldurun",
+        "LIST_TITLE": "Kayıtlı Kullanıcılar",
+        "FORM": {
+            "NAME": "İsim",
+            "ROLE": "Rol",
+            "SELECT_ROLE": "Bir rol seçin",
+            "ACTIVE": "Aktif"
+        }
+    },
+    "SAP_APP": {
+        "TITLE": "SAP Modülü",
+        "SUCCESS": "SAP uygulaması başarıyla yüklendi"
+    },
+    "MENU": {
+        "HOME": "Anasayfa",
+        "USER": "Kullanıcı Uygulaması",
+        "SAP": "SAP Uygulaması"
+    },
+    "USER":{
+        "TITLE":"KULLANICI LİSTESİ"
+    }
+}

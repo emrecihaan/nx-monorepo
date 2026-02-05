@@ -1,0 +1,17 @@
+{
+    "WELCOME": "Hoşgeldiniz",
+    "USER_APP": {
+        "TITLE": "Kullanıcı Modülü",
+        "SAVE": "Kaydet",
+        "SUCCESS": "Kullanıcı başarıyla kaydedildi"
+    },
+    "SAP_APP": {
+        "TITLE": "SAP Modülü",
+        "SUCCESS": "SAP uygulaması başarıyla yüklendi"
+    },
+    "MENU": {
+        "HOME": "Anasayfa",
+        "USER": "Kullanıcı Uygulaması",
+        "SAP": "SAP Uygulaması"
+    }
+}

@@ -1,0 +1,126 @@
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0 0.75rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    color: #64748b;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    text-decoration: none;
+
+    .active-indicator {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        background: #3b82f6;
+        border-radius: 0 4px 4px 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 2px 0 10px rgba(59, 130, 246, 0.4);
+    }
+
+    .nav-icon-wrapper {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+
+        i {
+            font-size: 1.1rem;
+            transition: transform 0.3s, color 0.3s;
+        }
+    }
+
+    .nav-label {
+        font-size: 0.95rem;
+        font-weight: 500;
+        white-space: nowrap;
+        transition: color 0.3s;
+    }
+
+    &:hover {
+        background: #f1f5f9;
+        color: #1e293b;
+
+        .nav-icon-wrapper i {
+            color: #3b82f6;
+            transform: scale(1.1);
+        }
+    }
+
+    &.active {
+        background: #eff6ff;
+        color: #3b82f6;
+
+        .active-indicator {
+            width: 4px;
+            height: 60%;
+        }
+
+        .nav-icon-wrapper i {
+            color: #3b82f6;
+        }
+
+        .nav-label {
+            font-weight: 600;
+        }
+    }
+}
+
+/* Collapsed State Styles */
+:host-context(.sidebar-collapsed) {
+    .sidebar-nav {
+        padding: 0 0.5rem;
+    }
+
+    .nav-item {
+        padding: 0.8rem 0;
+        justify-content: center;
+
+        .nav-icon-wrapper {
+            margin-right: 0;
+        }
+
+        .active-indicator {
+            left: 0;
+        }
+    }
+}
+
+/* Dark Mode Support */
+:host-context(.dark-theme) {
+    .nav-item {
+        color: #94a3b8;
+
+        &:hover {
+            background: #334155;
+            color: #f8fafc;
+        }
+
+        &.active {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+
+            .nav-icon-wrapper i {
+                color: #60a5fa;
+            }
+
+            .active-indicator {
+                background: #60a5fa;
+                box-shadow: 2px 0 10px rgba(96, 165, 250, 0.4);
+            }
+        }
+    }
+}

@@ -1,0 +1,77 @@
+<div *ngIf="groupedCount > 0" class="selected-data">
+    <span class="caption">{{ 'selectedGroupsCount' | translate }}: </span>
+    <span>{{ groupedCount }}</span>
+</div>
+
+<dx-data-grid id="gridContainer" [dataSource]="Data" [showBorders]="true" [allowColumnReordering]="true" [stateStoring]="{
+        enabled: true,
+        type: 'custom',
+        customLoad: loadGridState,
+        customSave: saveGridState
+    }" (onOptionChanged)="handlePropertyChange($event)"
+    [customizeColumns]="customizeOptions ? customizeOptions : customizeColumns" [hoverStateEnabled]="true"
+    [(selectedRowKeys)]="selectedRows" (onRowClick)="onClickRow($event)" [allowColumnResizing]="true"
+    columnResizingMode="widget" [rowAlternationEnabled]="true" [columnMinWidth]="79" [columnAutoWidth]="true"
+    (onCellPrepared)="subscriber ? subscriberCell($event) : onCellPrepared($event)"
+    (onRowPrepared)="onRowPrepared($event)" (onExporting)="onExporting($event)"
+    [groupPanel]="{ visible: showGroupPanel, emptyPanelText: ( 'Gruplamak için buraya sürükleyiniz' | translate ) }"
+    (onRowUpdating)="onRowUpdating($event)" (onRowValidating)="onRowValidating($event)"
+    (onRowRemoved)="onRowRemoved($event)" #dataGrid (onToolbarPreparing)="onToolbarPreparing($event)">
+
+    <dxo-search-panel [visible]="false"></dxo-search-panel>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-header-filter [visible]="true"></dxo-header-filter>
+    <dxo-group-panel [visible]="showGroupPanel"></dxo-group-panel>
+    <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
+    <dxo-column-chooser [enabled]="columnChooser" [title]="'Sütun Seçici' | translate" mode="select">
+    </dxo-column-chooser>
+    <dxo-paging [pageSize]="25"></dxo-paging>
+
+    <dxo-editing mode="popup" [allowUpdating]="rowUpdate" [allowDeleting]="rowDelete" [allowAdding]="rowAdd"
+        [useIcons]="true">
+    </dxo-editing>
+
+    <dxo-pager [visible]="pager" [showPageSizeSelector]="true" [allowedPageSizes]="allowedPageSize" [showInfo]="true">
+    </dxo-pager>
+
+    <dxi-column *ngIf="customButton" type="buttons">
+        <dxi-button [icon]="customButtonIcon ? customButtonIcon : 'search'" [text]="customButtonName"
+            [hint]="customButtonName" [onClick]="onClickCustomButton">
+        </dxi-button>
+        <dxi-button *ngIf="customButtonName2" [icon]="customButtonIcon2 ? customButtonIcon2 : 'save'"
+            [text]="customButtonName2" [hint]="customButtonName2" [onClick]="onClickCustomButton2">
+        </dxi-button>
+        <dxi-button *ngIf="customButtonName3" icon="tel" [text]="customButtonName3" [hint]="customButtonName3"
+            [onClick]="onClickCustomButton3">
+        </dxi-button>
+        <dxi-button *ngIf="customDelete" icon="trash" [text]="'Sil'" [hint]="'Sil'" [onClick]="onClickDelete">
+        </dxi-button>
+        <dxi-button *ngIf="customButtonNameIndex" [icon]="customButtonIconIndex ? customButtonIconIndex : 'search'"
+            [text]="customButtonNameIndex" [hint]="customButtonNameIndex" [onClick]="onClickCustomButtonIndex">
+        </dxi-button>
+    </dxi-column>
+
+    <dxi-column [allowEditing]="rowUpdate" *ngFor="let colm of columns" [dataField]="colm.dataField"
+        [format]="colm.format" [dataType]="dataTypeFunc(colm)" [width]="colm.width ? colm.width : undefined"
+        [calculateFilterExpression]="calculateFilterExpression">
+        <dxo-lookup *ngIf="colm.lookup" [dataSource]="colm.lookup.dataSource" [displayExpr]="colm.lookup.displayExpr"
+            [valueExpr]="colm.lookup.valueExpr">
+        </dxo-lookup>
+    </dxi-column>
+
+    <dxo-summary>
+    </dxo-summary>
+
+    <dxo-selection *ngIf="selectionMode === 'single'" mode="single"></dxo-selection>
+    <dxo-selection *ngIf="selectionMode === 'multiple' || selectionMode === 'multipleButOneColumn'"
+        mode="multiple"></dxo-selection>
+
+    <dxo-export [enabled]="export" [allowExportSelectedData]="false">
+        <dxo-texts [exportTo]="'Dışa Aktar' | translate" [exportAll]="'Tüm Verileri Excele Aktar' | translate"
+            [exportSelectedRows]="'Seçili verileri Excele Aktar' | translate">
+        </dxo-texts>
+    </dxo-export>
+
+    <dxo-scrolling columnRenderingMode="standard"></dxo-scrolling>
+
+</dx-data-grid>

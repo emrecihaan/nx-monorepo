@@ -1,0 +1,13 @@
+<nav class="sidebar-nav">
+    <div *ngFor="let item of menuItems" class="nav-item" [routerLink]="item.routerLink" routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: item.routerLink[0] === '/'}" [title]="collapsed ? item.label : ''">
+        <!-- Active Indicator -->
+        <div class="active-indicator"></div>
+
+        <div class="nav-icon-wrapper">
+            <i [class]="item.icon"></i>
+        </div>
+
+        <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
+    </div>
+</nav>

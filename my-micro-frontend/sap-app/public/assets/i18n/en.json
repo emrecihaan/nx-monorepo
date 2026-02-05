@@ -1,0 +1,17 @@
+{
+    "WELCOME": "Welcome",
+    "USER_APP": {
+        "TITLE": "User Module",
+        "SAVE": "Save",
+        "SUCCESS": "User saved successfully"
+    },
+    "SAP_APP": {
+        "TITLE": "SAP Module",
+        "SUCCESS": "SAP app successfully loaded"
+    },
+    "MENU": {
+        "HOME": "Home",
+        "USER": "User App",
+        "SAP": "SAP App"
+    }
+}

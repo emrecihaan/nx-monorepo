@@ -1,0 +1,87 @@
+::ng-deep .dx-data-row.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused) {
+    background-color: rgba(255, 166, 0, 0.493) !important;
+    cursor: pointer;
+    color: black;
+    //font-size: 17px;
+}
+
+::ng-deep .dx-header-row>td[role="columnheader"]>div.dx-datagrid-text-content {
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+}
+
+::ng-deep .dx-datagrid-content .dx-datagrid-table .dx-row>td,
+.dx-datagrid-content .dx-datagrid-table .dx-row>tr>td {
+    vertical-align: top;
+    color: black;
+    font-size: small;
+}
+
+::ng-deep .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused)>td,
+.dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused)>tr>td,
+.dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused):hover>td,
+.dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused):hover>tr>td {
+    background-color: #becdf5;
+    color: #333;
+}
+
+::ng-deep .dx-data-row.dx-state-hover.dx-selection:not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row)>td:not(.dx-focused) {
+    background-color: #becdf5;
+    cursor: pointer;
+    color: black;
+    //font-size: 17px;
+}
+
+::ng-deep .dx-datagrid .dx-header-filter {
+    color: red;
+}
+
+::ng-deep .dx-datagrid .dx-header-filter-empty {
+    color: rgba(97, 94, 94, 0.5) !important;
+}
+
+::ng-deep .dx-scrollable-scroll {
+    height: 18px !important;
+}
+
+::ng-deep .dx-scrollable-scrollbar {
+    height: 18px !important;
+}
+
+
+::ng-deep .dx-data-row {
+    white-space: pre;
+}
+
+::ng-deep .last-row {
+    height: 5rem !important;
+}
+
+:host ::ng-deep {
+    .dx-gridbase-a11y-status-container {
+        display: none;
+    }
+
+    .dx-toolbar-items-container {
+        margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .dx-group-panel-message {
+            display: none;
+        }
+    }
+}
+
+::ng-deep .dx-icon-trash {
+    color: red !important;
+}
+
+// ::ng-deep .dx-gridbase-container > * {
+//     -webkit-box-flex: 0;
+//     -ms-flex: 0 0 auto;
+//     flex: 0 0 auto;
+//     display: none;
+// }

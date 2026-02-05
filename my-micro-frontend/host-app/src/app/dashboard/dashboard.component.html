@@ -1,0 +1,98 @@
+<div class="dashboard-container">
+    <h1 class="dashboard-title">{{ 'DASHBOARD.TITLE' | translate }}</h1>
+
+    <!-- Statistics Cards -->
+    <div class="grid">
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-card styleClass="stat-card stat-card-primary">
+                <div class="stat-content">
+                    <div class="stat-icon">
+                        <i class="pi pi-users"></i>
+                    </div>
+                    <div class="stat-details">
+                        <span class="stat-value">1,234</span>
+                        <span class="stat-label">{{ 'DASHBOARD.TOTAL_USERS' | translate }}</span>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-card styleClass="stat-card stat-card-success">
+                <div class="stat-content">
+                    <div class="stat-icon">
+                        <i class="pi pi-chart-line"></i>
+                    </div>
+                    <div class="stat-details">
+                        <span class="stat-value">567</span>
+                        <span class="stat-label">{{ 'DASHBOARD.ACTIVE_SESSIONS' | translate }}</span>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-card styleClass="stat-card stat-card-warning">
+                <div class="stat-content">
+                    <div class="stat-icon">
+                        <i class="pi pi-shopping-cart"></i>
+                    </div>
+                    <div class="stat-details">
+                        <span class="stat-value">89</span>
+                        <span class="stat-label">{{ 'DASHBOARD.PENDING_ORDERS' | translate }}</span>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-card styleClass="stat-card stat-card-danger">
+                <div class="stat-content">
+                    <div class="stat-icon">
+                        <i class="pi pi-dollar"></i>
+                    </div>
+                    <div class="stat-details">
+                        <span class="stat-value">$45.2K</span>
+                        <span class="stat-label">{{ 'DASHBOARD.REVENUE' | translate }}</span>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="grid mt-4">
+        <div class="col-12 lg:col-8">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <div class="card-header">
+                        <h3>{{ 'DASHBOARD.USER_ACTIVITY' | translate }}</h3>
+                    </div>
+                </ng-template>
+                <p-chart type="line" [data]="chartData" [options]="chartOptions" height="300px"></p-chart>
+            </p-card>
+        </div>
+
+        <div class="col-12 lg:col-4">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <div class="card-header">
+                        <h3>{{ 'DASHBOARD.RECENT_ACTIVITY' | translate }}</h3>
+                    </div>
+                </ng-template>
+                <div class="activity-list">
+                    <div class="activity-item" *ngFor="let activity of recentActivities">
+                        <div class="activity-icon" [style.background-color]="activity.color">
+                            <i class="pi" [ngClass]="activity.icon"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-user">{{ activity.user }}</div>
+                            <div class="activity-action">{{ activity.action }}</div>
+                            <div class="activity-time">{{ activity.time }}</div>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+    </div>
+</div>

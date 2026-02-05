@@ -1,0 +1,72 @@
+<div class="layout-wrapper" [class.sidebar-collapsed]="sidebarCollapsed" [class.dark-theme]="isDarkTheme">
+  <lib-toast></lib-toast>
+
+  <!-- Sidebar -->
+  <aside class="layout-sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <i class="pi pi-bolt brand-icon"></i>
+        <span class="brand-text" *ngIf="!sidebarCollapsed">ADMIN PANEL</span>
+      </div>
+    </div>
+
+    <div class="sidebar-content">
+      <lib-menu [collapsed]="sidebarCollapsed"></lib-menu>
+    </div>
+
+    <div class="sidebar-footer" *ngIf="!sidebarCollapsed">
+      <div class="user-card">
+        <p-avatar label="AD" shape="circle" size="large" class="user-avatar"></p-avatar>
+        <div class="user-info">
+          <span class="user-name">Admin User</span>
+          <span class="user-role">Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="layout-main">
+    <!-- Topbar -->
+    <header class="layout-topbar">
+      <div class="topbar-left">
+        <button pButton pRipple type="button" icon="pi pi-bars" class="p-button-text p-button-rounded toggle-btn"
+          (click)="toggleSidebar()"></button>
+        <div class="breadcrumb" *ngIf="!sidebarCollapsed">
+          <span class="breadcrumb-item">Dashboard</span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Theme Toggle -->
+        <button pButton pRipple type="button" [icon]="isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'"
+          class="p-button-text p-button-rounded action-btn" (click)="toggleTheme()"></button>
+
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+          <button pButton pRipple type="button" label="TR" [class.active]="currentLang === 'tr'"
+            class="p-button-text lang-btn" (click)="switchLanguage('tr')"></button>
+          <button pButton pRipple type="button" label="EN" [class.active]="currentLang === 'en'"
+            class="p-button-text lang-btn" (click)="switchLanguage('en')"></button>
+        </div>
+
+        <!-- Notifications -->
+        <button pButton pRipple type="button" icon="pi pi-bell" class="p-button-text p-button-rounded action-btn" pBadge
+          value="3" severity="danger"></button>
+
+        <!-- Profile -->
+        <div class="profile-item">
+          <p-avatar label="U" shape="circle" class="profile-avatar"></p-avatar>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="layout-content">
+      <router-outlet></router-outlet>
+    </main>
+
+    <footer class="layout-footer">
+      <span>&copy; 2026 Admin Panel. All rights reserved.</span>
+    </footer>
+  </div>
+</div>
