@@ -11,14 +11,15 @@ export default withModuleFederation(
     ...config,
     /*
      * Remote overrides for production.
-     * Each entry is a pair of a unique name and the URL where it is deployed.
-     *
-     * e.g.
-     * remotes: [
-     *   ['app1', 'https://app1.example.com'],
-     *   ['app2', 'https://app2.example.com'],
-     * ]
+     * Host app is on 4210, User app is on 4212.
+     * Replace 'localhost' with your server IP if accessing from outside.
      */
+    remotes: [
+      ['user-app', 'http://172.28.161.186:4212/remoteEntry.mjs'],
+      ['auth-app', 'http://172.28.161.186:4214/remoteEntry.mjs'],
+      ['formApp', 'http://172.28.161.186:4215/remoteEntry.mjs'],
+      ['workflowApp', 'http://172.28.161.186:4216/remoteEntry.mjs'],
+    ],
   },
   { dts: false },
 );

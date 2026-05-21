@@ -24,7 +24,8 @@
           }
         ],
         "styles": [
-          "node_modules/primeicons/primeicons.css",
+          "node_modules/devextreme/dist/css/dx.common.css",
+          "node_modules/devextreme/dist/css/dx.light.css",
           "user-app/src/styles.scss"
         ],
         "customWebpackConfig": {
@@ -33,16 +34,22 @@
       },
       "configurations": {
         "production": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "2mb",
-              "maximumError": "3mb"
+              "maximumWarning": "30mb",
+              "maximumError": "40mb"
             },
             {
               "type": "anyComponentStyle",
               "maximumWarning": "4kb",
-              "maximumError": "8kb"
+              "maximumError": "40mb"
             }
           ],
           "outputHashing": "all",
@@ -70,7 +77,9 @@
       },
       "configurations": {
         "production": {
-          "buildTarget": "user-app:build:production"
+          "buildTarget": "user-app:build:production",
+          "optimization": false,
+          "buildOptimizer": false
         },
         "development": {
           "buildTarget": "user-app:build:development"

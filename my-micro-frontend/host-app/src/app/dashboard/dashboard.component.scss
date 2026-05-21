@@ -44,31 +44,48 @@
         margin-top: 2rem;
     }
 
-    ::ng-deep {
-        .stat-card {
-            .p-card-body {
-                padding: 1.5rem;
-            }
+    .card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
 
-            .p-card-content {
-                padding: 0;
-            }
+    .stat-card-primary {
+        border-left: 4px solid #3B82F6;
+    }
+
+    .stat-card-success {
+        border-left: 4px solid #10B981;
+    }
+
+    .stat-card-warning {
+        border-left: 4px solid #F59E0B;
+    }
+
+    .stat-card-danger {
+        border-left: 4px solid #EF4444;
+    }
+
+    .chart-placeholder {
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #f8fafc;
+        border-radius: 8px;
+        color: #94a3b8;
+        gap: 1rem;
+
+        i {
+            font-size: 3rem;
         }
 
-        .stat-card-primary {
-            border-left: 4px solid #3B82F6;
-        }
-
-        .stat-card-success {
-            border-left: 4px solid #10B981;
-        }
-
-        .stat-card-warning {
-            border-left: 4px solid #F59E0B;
-        }
-
-        .stat-card-danger {
-            border-left: 4px solid #EF4444;
+        p {
+            font-size: 0.875rem;
+            margin: 0;
         }
     }
 

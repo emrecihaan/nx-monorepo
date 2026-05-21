@@ -1,0 +1,59 @@
+<div *ngIf="groupedCount>0" class="selected-data">
+    <span class="caption" [innerHtml]="'selectedGroupsCount' | translate"></span>
+    <span>{{groupedCount}}</span>
+</div>
+<dx-data-grid id="gridContainer" [dataSource]="Data" [showBorders]="true" [allowColumnReordering]="true"
+    (onOptionChanged)="handlePropertyChange($event)"
+    [customizeColumns]="customizeOptions ? customizeOptions : this.customizeColumns" [hoverStateEnabled]="true"
+    [showBorders]="true" [(selectedRowKeys)]="selectedRows" (onClick)="onClickRow($event)" showEditorAlways="true"
+    [allowColumnResizing]="true" [columnResizingMode]="'widget'" [rowAlternationEnabled]="true" [columnMinWidth]="79"
+    [columnAutoWidth]="true" [height]="height ? height : 700" [groupPanel]="{ visible: true }"
+    (onRowPrepared)="onRowPrepared($event)" (onRowInserting)="onRowInserting($event)"
+    (onRowUpdating)="onRowUpdating($event)" (onRowRemoving)="onRowRemoving($event)" #dataGrid>
+
+    <dxo-search-panel [visible]="search" [highlightCaseSensitive]="true"
+        [placeholder]="'search' | translate"></dxo-search-panel>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-header-filter [visible]="true"></dxo-header-filter>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+    <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
+    <dxo-column-chooser [enabled]="columnChooser" title="{{'Sütun Seçici' | translate}}"
+        caption="'Sütun Seçici' | translate" mode="select"></dxo-column-chooser>
+    <dxo-paging [pageSize]="100"></dxo-paging>
+    <dxo-pager [visible]="pager" [showPageSizeSelector]="true" [allowedPageSizes]="allowedPageSize"
+        [showInfo]="true"></dxo-pager>
+    <dxo-editing [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true" mode="row">
+        <!-- 'batch' | 'cell' | 'form' | 'popup' -->
+    </dxo-editing>
+
+    <dxi-column *ngIf="customButton == true" type="buttons">
+
+        <dxi-button [icon]="customButtonIcon ? customButtonIcon :search" [text]="customButtonName"
+            [hint]="customButtonName" [onClick]="onClickCustomButton">
+        </dxi-button>
+        <dxi-button *ngIf="customButtonName2" [icon]="customButtonIcon2 ? customButtonIcon2 :save"
+            [text]="customButtonName2" [hint]="customButtonName2" [onClick]="onClickCustomButton2">
+        </dxi-button>
+        <dxi-button *ngIf="customButtonName3" icon="tel" [text]="customButtonName3" [hint]="customButtonName3"
+            [onClick]="onClickCustomButton3">
+        </dxi-button>
+
+    </dxi-column>
+
+    <dxi-column *ngFor="let colm of columns; let k = index" dataField="{{colm.dataField}}" format="{{colm.format}}"
+        [dataType]="colm.dataType" allowSelectAll="true" [width]="colm.width ? colm.width : auto">
+    </dxi-column>
+
+    <dxo-summary>
+        <!-- <dxi-group-item column="{{columns[0].dataField}}" summaryType="count"> </dxi-group-item> -->
+    </dxo-summary>
+
+    <div *ngIf="selectionMode =='single'">
+        <dxo-selection mode="single"></dxo-selection>
+    </div>
+
+    <dxo-selection *ngIf="selectionMode =='multipleButOneColumn'" mode="multiple"></dxo-selection>
+
+    <dxo-scrolling columnRenderingMode="standard"></dxo-scrolling>
+
+</dx-data-grid>

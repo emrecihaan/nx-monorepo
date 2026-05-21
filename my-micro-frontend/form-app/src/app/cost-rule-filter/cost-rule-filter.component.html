@@ -1,0 +1,83 @@
+<h4>{{'costRuleFilter.title' | translate}}</h4>
+<p-toolbar styleClass="mt-2">
+    <div class="p-toolbar-group-left flex-wrap-container">
+        <button type="button" pButton label="{{'costRuleFilter.createAnExpenseRule' | translate}}" icon="pi pi-check"
+            (click)="openCreateModalShow()" class="custom-btn" [ngClass]="'p-button-success'"></button>
+        <button type="button" pButton label="{{'costRuleFilter.editAnExpenseRule' | translate}}" icon="pi pi-pencil"
+            (click)="openUpdateModalShow()" class="ml-2" [ngClass]="'p-button-help'"></button>
+        <button type="button" pButton label="{{'costRuleFilter.deleteAnExpenseRule' | translate}}" icon="pi pi-trash"
+            (click)="openDeleteModalShow()" class="ml-2" [ngClass]="'p-button-danger'"></button>
+        <button type="button" pButton label="{{'costRuleFilter.copyAnExpenseRule' | translate}}" icon="pi pi-copy"
+            (click)="copyCostRuleFilter()" class="ml-2" [ngClass]="'p-button-info'"></button>
+    </div>
+</p-toolbar>
+
+<div>
+    <div *ngIf="data.length>0" class="card flex" style="margin-top: 20px;">
+        <p-tree [value]="data" class="w-full" selectionMode="single" [(selection)]="selectedData"
+            (onNodeSelect)="nodeSelect($event)">
+        </p-tree>
+    </div>
+</div>
+
+<p-panel styleClass="mt-5" header="{{'costRuleFilter.expenseRuleDetail' | translate}}">
+    <div *ngIf="filterDetaildata">
+        <app-cruddatagrid [Data]="filterDetaildata" [customizeOptions]="customizeGridFilterDetail"
+            [selectedData]="selectedRowFilterDetail" (setSelectedData)="setSelectedFilterRow($event)"
+            [selectionMode]="'single'" [columns]="columnFilterDetail" [height]="300"
+            (rowInsert)="createCostRuleFilterDetail($event)" (rowUpdate)="updateCostRuleFilterDetail($event)"
+            (rowDelete)="deleteCostRuleFilterDetail($event)"></app-cruddatagrid>
+    </div>
+</p-panel>
+<p-panel styleClass="mt-5" header="{{'costRuleFilter.expenseRuleObject' | translate}}">
+    <div style="margin-top: 20px;" *ngIf="objectdata">
+        <app-cruddatagrid [Data]="objectdata" [customizeOptions]="customizeGridObject"
+            [selectedData]="selectedRowObject" (setSelectedData)="setSelectedObjectRow($event)"
+            [selectionMode]="'single'" [columns]="columnObject" [height]="300"
+            (rowInsert)="createCostRuleObject($event)" (rowUpdate)="updateCostRuleObject($event)"
+            (rowDelete)="deleteCostRuleObject($event)"></app-cruddatagrid>
+    </div>
+</p-panel>
+
+<p-dialog *ngIf="createModalShow==true" header="{{'costRuleFilter.createAnExpenseRule' | translate}}" [modal]="true"
+    [(visible)]="createModalShow" [style]="{ width: '40rem' }">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <label for="name">{{'costRuleFilter.ruleName' | translate}}</label>
+            <input id="name" type="text" pInputText [(ngModel)]="newCostRuleFilterData.Description" />
+        </div>
+    </div>
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="createCostRuleFilter()" class="ml-2" [ngClass]="'p-button-success'"></button>
+    </div>
+</p-dialog>
+<p-dialog *ngIf="updateModalShow==true" header="{{'costRuleFilter.updateAnExpenseRule' | translate}}" [modal]="true"
+    [(visible)]="updateModalShow" [style]="{ width: '40rem'}">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <label for="name">{{'costRuleFilter.ruleName' | translate}}</label>
+            <input id="name" type="text" pInputText [(ngModel)]="editCostRuleFilterData.Description" />
+        </div>
+    </div>
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="updateCostRuleFilter()" class="ml-2" [ngClass]="'p-button-success'"></button>
+    </div>
+</p-dialog>
+<p-dialog *ngIf="deleteModalShow==true" header="{{'costRuleFilter.deleteAnExpenseRule' | translate}}" [modal]="true"
+    [(visible)]="deleteModalShow" [style]="{ width: '40rem'}">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <p style="font-weight: 800;">{{'costRuleFilter.sureDelete' | translate}}</p>
+        </div>
+    </div>
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.cancel' | translate}}" icon="pi pi-times"
+            [ngClass]="'p-button-danger'" (click)="deleteModalShow=false"></button>
+        <button type="button" pButton label="{{'button.yes' | translate}}" icon="pi pi-check"
+            (click)="deleteCostRuleFilter()" class="ml-2" [ngClass]="'p-button-success'"></button>
+    </div>
+</p-dialog>
+
+<p-toast></p-toast>

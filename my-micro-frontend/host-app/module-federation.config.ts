@@ -2,34 +2,35 @@ import { ModuleFederationConfig } from '@nx/module-federation';
 
 const config: ModuleFederationConfig = {
   name: 'host-app',
-  /**
-   * Production URLs for IIS deployment:
-   * - user-app: http://your-server:4212
-   * - sap-app: http://your-server:4213 (adjust as needed)
-   * 
-   * For development, Nx will use localhost ports automatically.
-   * For production, update these URLs to match your server.
-   */
-  remotes: [
-    ['user-app', 'http://localhost:4212/remoteEntry.mjs'],
-    ['sap-app', 'http://localhost:4213/remoteEntry.mjs']
-  ],
+  // Localde çalışırken Nx'in projeleri otomatik keşfetmesi için sadece isimlerini veriyoruz.
+  // IP tanımları webpack.prod.config.ts içerisinde production build için geçerlidir.
+  remotes: ['user-app', 'auth-app', 'workflowApp', 'formApp'],
   shared: (libraryName, sharedConfig) => {
-    // ngx-translate servisinin tüm workspace'te tek bir "hafızası" olmasını sağlar
-    if (libraryName === '@ngx-translate/core') {
+    const isCore = libraryName.startsWith('@angular/') ||
+      libraryName.startsWith('rxjs') ||
+      libraryName === 'zone.js' ||
+      libraryName === 'tslib' ||
+      libraryName.startsWith('@ngx-translate/') ||
+      libraryName === 'primeng' ||
+      libraryName.startsWith('primeng/') ||
+      libraryName.startsWith('@primeng/themes');
+
+    if (isCore) {
       return {
         ...sharedConfig,
         singleton: true,
-        strictVersion: false, // Allow version flexibility to avoid conflicts
+        strictVersion: false,
         requiredVersion: false,
+        eager: true // Prod ortamında 'Class extends value undefined' hatasını önlemek için true olmalı
       };
     }
-    // Diğer kütüphaneler için (Angular Core vb.) Nx'in varsayılan ayarlarını koru
+
+    if (libraryName.includes('devextreme')) {
+      return false;
+    }
+
     return sharedConfig;
   },
 };
 
-/**
- * Nx requires a default export of the config to allow correct resolution of the module federation graph.
- **/
 export default config;

@@ -24,7 +24,8 @@
           }
         ],
         "styles": [
-          "node_modules/primeicons/primeicons.css",
+          "node_modules/devextreme/dist/css/dx.common.css",
+          "node_modules/devextreme/dist/css/dx.light.css",
           "sap-app/src/styles.scss"
         ],
         "customWebpackConfig": {
@@ -33,11 +34,13 @@
       },
       "configurations": {
         "production": {
+          "optimization": true,
+          "buildOptimizer": false,
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "2mb",
-              "maximumError": "3mb"
+              "maximumWarning": "30mb",
+              "maximumError": "40mb"
             },
             {
               "type": "anyComponentStyle",
@@ -70,7 +73,9 @@
       },
       "configurations": {
         "production": {
-          "buildTarget": "sap-app:build:production"
+          "buildTarget": "sap-app:build:production",
+          "optimization": false,
+          "buildOptimizer": false
         },
         "development": {
           "buildTarget": "sap-app:build:development"

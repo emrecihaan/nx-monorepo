@@ -1,77 +1,93 @@
-<div *ngIf="groupedCount > 0" class="selected-data">
-    <span class="caption">{{ 'selectedGroupsCount' | translate }}: </span>
-    <span>{{ groupedCount }}</span>
+<div *ngIf="groupedCount>0" class="selected-data">
+    <span class="caption" [innerHtml]="'GRID.SELECTED_GROUPS_COUNT' | translate"></span>
+    <span>{{groupedCount}}</span>
 </div>
+<!-- 
+[stateStoring]="{
+    enabled: true,
+    type: 'localStorage',
+    storageKey: storageKey
+  }"  -->
+<div class="datagrid-container">
+    <dx-data-grid *ngIf="columns && columns.length > 0" #dataGrid id="gridContainer" [dataSource]="Data"
+        [showBorders]="true" [remoteOperations]="false" [allowColumnReordering]="true" [rowAlternationEnabled]="true"
+        (onExporting)="onExporting($event)" (onSelectionChanged)="onSelectionChanged($event)"
+        (onToolbarPreparing)="onToolbarPreparing($event)" (onRowUpdating)="onRowUpdating($event)"
+        (onRowUpdated)="onRowUpdated($event)" (onContextMenuPreparing)="onContextMenuPreparing($event)" [stateStoring]="{
+    enabled: false
+  }" (onOptionChanged)="handlePropertyChange($event)"
+        [customizeColumns]="customizeOptions ? customizeOptions : customizeColumns" [hoverStateEnabled]="true"
+        [(selectedRowKeys)]="selectedRows" (onClick)="onClickRow($event)" showEditorAlways="true"
+        [allowColumnResizing]="false" [columnResizingMode]="'widget'" [columnMinWidth]="79"
+        (onCellPrepared)="subscriber==true?subscriberCell($event):onCellPrepared($event)"
+        (onRowValidating)="onRowValidating($event)" (onEditingStart)="onEditingStart($event)" [height]="height">
 
-<dx-data-grid id="gridContainer" [dataSource]="Data" [showBorders]="true" [allowColumnReordering]="true" [stateStoring]="{
-        enabled: true,
-        type: 'custom',
-        customLoad: loadGridState,
-        customSave: saveGridState
-    }" (onOptionChanged)="handlePropertyChange($event)"
-    [customizeColumns]="customizeOptions ? customizeOptions : customizeColumns" [hoverStateEnabled]="true"
-    [(selectedRowKeys)]="selectedRows" (onRowClick)="onClickRow($event)" [allowColumnResizing]="true"
-    columnResizingMode="widget" [rowAlternationEnabled]="true" [columnMinWidth]="79" [columnAutoWidth]="true"
-    (onCellPrepared)="subscriber ? subscriberCell($event) : onCellPrepared($event)"
-    (onRowPrepared)="onRowPrepared($event)" (onExporting)="onExporting($event)"
-    [groupPanel]="{ visible: showGroupPanel, emptyPanelText: ( 'Gruplamak için buraya sürükleyiniz' | translate ) }"
-    (onRowUpdating)="onRowUpdating($event)" (onRowValidating)="onRowValidating($event)"
-    (onRowRemoved)="onRowRemoved($event)" #dataGrid (onToolbarPreparing)="onToolbarPreparing($event)">
+        <dxo-column-chooser [enabled]="true" mode="select">
+            <!-- <dxo-search [enabled]="true" [editorOptions]="{ placeholder: 'Search column' }"></dxo-search> -->
+            <!-- <dxo-selection [allowSelectAll]="true" [selectByClick]="true" [recursive]="true"></dxo-selection> -->
+        </dxo-column-chooser>
+        <dxo-column-fixing [enabled]="false"></dxo-column-fixing>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
+        <dxo-group-panel [visible]="showGroupPanel"></dxo-group-panel>
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-search-panel [visible]="false" [width]="240" placeholder="Arama..."></dxo-search-panel>
+        <dxo-editing mode="row" [allowUpdating]="rowUpdate" [allowDeleting]="rowDelete" [allowAdding]="rowAdd">
+        </dxo-editing>
+        <dxo-grouping [contextMenuEnabled]="true"> </dxo-grouping>
 
-    <dxo-search-panel [visible]="false"></dxo-search-panel>
-    <dxo-filter-row [visible]="true"></dxo-filter-row>
-    <dxo-header-filter [visible]="true"></dxo-header-filter>
-    <dxo-group-panel [visible]="showGroupPanel"></dxo-group-panel>
-    <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
-    <dxo-column-chooser [enabled]="columnChooser" [title]="'Sütun Seçici' | translate" mode="select">
-    </dxo-column-chooser>
-    <dxo-paging [pageSize]="25"></dxo-paging>
+        <dxo-selection mode="multiple" [deferred]="true" *ngIf="selectionMode=='multiple'"></dxo-selection>
 
-    <dxo-editing mode="popup" [allowUpdating]="rowUpdate" [allowDeleting]="rowDelete" [allowAdding]="rowAdd"
-        [useIcons]="true">
-    </dxo-editing>
+        <dxo-selection mode="single" *ngIf="selectionMode=='single'"></dxo-selection>
 
-    <dxo-pager [visible]="pager" [showPageSizeSelector]="true" [allowedPageSizes]="allowedPageSize" [showInfo]="true">
-    </dxo-pager>
+        <dxo-load-panel [enabled]="true"></dxo-load-panel>
 
-    <dxi-column *ngIf="customButton" type="buttons">
-        <dxi-button [icon]="customButtonIcon ? customButtonIcon : 'search'" [text]="customButtonName"
-            [hint]="customButtonName" [onClick]="onClickCustomButton">
-        </dxi-button>
-        <dxi-button *ngIf="customButtonName2" [icon]="customButtonIcon2 ? customButtonIcon2 : 'save'"
-            [text]="customButtonName2" [hint]="customButtonName2" [onClick]="onClickCustomButton2">
-        </dxi-button>
-        <dxi-button *ngIf="customButtonName3" icon="tel" [text]="customButtonName3" [hint]="customButtonName3"
-            [onClick]="onClickCustomButton3">
-        </dxi-button>
-        <dxi-button *ngIf="customDelete" icon="trash" [text]="'Sil'" [hint]="'Sil'" [onClick]="onClickDelete">
-        </dxi-button>
-        <dxi-button *ngIf="customButtonNameIndex" [icon]="customButtonIconIndex ? customButtonIconIndex : 'search'"
-            [text]="customButtonNameIndex" [hint]="customButtonNameIndex" [onClick]="onClickCustomButtonIndex">
-        </dxi-button>
-    </dxi-column>
+        <dxo-scrolling mode="standard"></dxo-scrolling>
 
-    <dxi-column [allowEditing]="rowUpdate" *ngFor="let colm of columns" [dataField]="colm.dataField"
-        [format]="colm.format" [dataType]="dataTypeFunc(colm)" [width]="colm.width ? colm.width : undefined"
-        [calculateFilterExpression]="calculateFilterExpression">
-        <dxo-lookup *ngIf="colm.lookup" [dataSource]="colm.lookup.dataSource" [displayExpr]="colm.lookup.displayExpr"
-            [valueExpr]="colm.lookup.valueExpr">
-        </dxo-lookup>
-    </dxi-column>
+        <dxo-paging [pageSize]="pageSize"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="allowedPageSize" [showInfo]="true">
+        </dxo-pager>
 
-    <dxo-summary>
-    </dxo-summary>
+        <dxi-column *ngIf="customButton == true" type="buttons">
+            <dxi-button [icon]="customButtonIcon ? customButtonIcon : searchIcon" [text]="customButtonName"
+                [hint]="customButtonName" [onClick]="onClickCustomButton">
+            </dxi-button>
+            <dxi-button *ngIf="customButtonName2" [icon]="customButtonIcon2 ? customButtonIcon2 : save"
+                [text]="customButtonName2" [hint]="customButtonName2" [onClick]="onClickCustomButton2">
+            </dxi-button>
+            <dxi-button *ngIf="customButtonName3" icon="tel" [text]="customButtonName3" [hint]="customButtonName3"
+                [onClick]="onClickCustomButton3">
+            </dxi-button>
+            <dxi-button *ngIf="customDelete == true" [icon]="'trash'" [text]="Sil" [hint]="Sil"
+                [onClick]="onClickDelete">
+            </dxi-button>
+            <dxi-button *ngIf="customButtonNameIndex"
+                [icon]="customButtonIconIndex ? customButtonIconIndex : searchIcon" icon="tel"
+                [text]="customButtonNameIndex" [hint]="customButtonNameIndex" [onClick]="onClickCustomButtonIndex">
+            </dxi-button>
+        </dxi-column>
 
-    <dxo-selection *ngIf="selectionMode === 'single'" mode="single"></dxo-selection>
-    <dxo-selection *ngIf="selectionMode === 'multiple' || selectionMode === 'multipleButOneColumn'"
-        mode="multiple"></dxo-selection>
+        <dxi-column [allowEditing]="rowUpdate" *ngFor="let colm of columns; let k = index" [dataField]="colm.dataField"
+            [format]="colm.format" [dataType]="dataTypeFunc(colm)" [width]="colm.width"
+            [calculateFilterExpression]="calculateFilterExpression">
+            <dxo-lookup *ngIf="colm.lookup" [dataSource]="colm.lookup.dataSource"
+                [displayExpr]="colm.lookup.displayExpr" [valueExpr]="colm.lookup.valueExpr">
+            </dxo-lookup>
+        </dxi-column>
 
-    <dxo-export [enabled]="export" [allowExportSelectedData]="false">
-        <dxo-texts [exportTo]="'Dışa Aktar' | translate" [exportAll]="'Tüm Verileri Excele Aktar' | translate"
-            [exportSelectedRows]="'Seçili verileri Excele Aktar' | translate">
-        </dxo-texts>
-    </dxo-export>
+        <dxo-summary *ngIf="subscriber == true">
+            <dxi-total-item column="TeamName" displayFormat="Toplam:">
+            </dxi-total-item>
+            <dxi-total-item column="Received" summaryType="sum" displayFormat="{0}">
+            </dxi-total-item>
+            <dxi-total-item column="OnTheField" summaryType="sum" displayFormat="{0}">
+            </dxi-total-item>
+            <dxi-total-item column="Opened" summaryType="sum" displayFormat="{0}">
+            </dxi-total-item>
+            <dxi-total-item column="NotOpened" summaryType="sum" displayFormat="{0}">
+            </dxi-total-item>
+        </dxo-summary>
 
-    <dxo-scrolling columnRenderingMode="standard"></dxo-scrolling>
-
-</dx-data-grid>
+    </dx-data-grid>
+</div>

@@ -1,0 +1,66 @@
+<h1 class="header1">{{'userProxyForm.title' | translate}}</h1>
+<p-accordion [value]="0">
+  <p-accordion-panel>
+    <p-accordion-content>
+      <form [formGroup]="userProxyForm" class="p-fluid">
+        <div class="grid mt-2">
+          <div class="col-12 md:col-6">
+            <span class="p-float-label">
+              <p-select id="ownerUser" [options]="userList" optionLabel="fullName" optionValue="id"
+                formControlName="ownerUser" [filter]="true" filterBy="fullName"
+                placeholder="{{'userProxyForm.selectPrincipal' | translate}}">
+              </p-select>
+              <label for="ownerUser">{{'userProxyForm.ownerUser' | translate}}</label>
+            </span>
+            <small *ngIf="userProxyForm.get('ownerUser')?.invalid && formSubmitted" class="p-error block">
+              {{'userProxyForm.principalReq' | translate}}
+            </small>
+          </div>
+
+          <div class="col-12 md:col-6">
+            <span class="p-float-label">
+              <p-select id="proxyUser" [options]="userList" optionLabel="fullName" optionValue="id"
+                formControlName="proxyUser" [filter]="true" filterBy="fullName"
+                placeholder="{{'userProxyForm.selectProxy' | translate}}">
+              </p-select>
+              <label for="proxyUser">{{'userProxyForm.proxyUser' | translate}}</label>
+            </span>
+            <small *ngIf="userProxyForm.get('proxyUser')?.invalid && formSubmitted" class="p-error block">
+              {{'userProxyForm.proxyReq' | translate}}
+            </small>
+          </div>
+
+          <div class="col-12 md:col-4 mt-4">
+            <span class="p-float-label">
+              <p-calendar id="startDate" formControlName="startDate" dateFormat="dd/mm/yy" showIcon="true"></p-calendar>
+              <label for="startDate">{{'userProxyForm.startDate' | translate}}</label>
+            </span>
+          </div>
+
+          <div class="col-12 md:col-4 mt-4">
+            <span class="p-float-label">
+              <p-calendar id="endDate" formControlName="endDate" dateFormat="dd/mm/yy" showIcon="true"></p-calendar>
+              <label for="endDate">{{'userProxyForm.endDate' | translate}}</label>
+            </span>
+            <small *ngIf="userProxyForm.errors?.['dateRangeInvalid'] && formSubmitted" class="p-error block">
+              {{'userProxyForm.endDateBeforeStartDate' | translate}}
+            </small>
+          </div>
+
+          <div class="col-12 md:col-4 mt-4">
+            <span class="p-float-label">
+              <p-select id="status" [options]="statusOptions" formControlName="status" optionLabel="name"
+                optionValue="id"></p-select>
+              <label for="status">{{'userProxyForm.status' | translate}}</label>
+            </span>
+          </div>
+
+          <div class="col-12 mt-3">
+            <button pButton label="{{'button.save' | translate}}" icon="pi pi-check" class="p-button-success"
+              (click)="onSubmit()"></button>
+          </div>
+        </div>
+      </form>
+    </p-accordion-content>
+  </p-accordion-panel>
+</p-accordion>

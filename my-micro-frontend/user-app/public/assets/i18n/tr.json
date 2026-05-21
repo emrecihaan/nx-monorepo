@@ -1,17 +1,57 @@
 {
-    "WELCOME": "Hoşgeldiniz",
-    "USER_APP": {
-        "TITLE": "Kullanıcı Modülü",
-        "SAVE": "Kaydet",
-        "SUCCESS": "Kullanıcı başarıyla kaydedildi"
-    },
-    "SAP_APP": {
-        "TITLE": "SAP Modülü",
-        "SUCCESS": "SAP uygulaması başarıyla yüklendi"
-    },
-    "MENU": {
-        "HOME": "Anasayfa",
-        "USER": "Kullanıcı Uygulaması",
-        "SAP": "SAP Uygulaması"
+    "USER": {
+        "TITLE": "Kullanıcı Paneli",
+        "FORM": {
+            "NAME_LABEL": "Ad Soyad",
+            "NAME_PLACEHOLDER": "Örn: Ahmet Yılmaz",
+            "EMAIL_LABEL": "Email",
+            "EMAIL_PLACEHOLDER": "ornek@sirket.com",
+            "ROLE_LABEL": "Rol",
+            "ROLE_PLACEHOLDER": "Rol Seçin",
+            "DEPARTMENT_LABEL": "Departman",
+            "DEPARTMENT_PLACEHOLDER": "Departman Seçin",
+            "FORM_SUBTITLE": "Kullanıcı bilgilerini girin",
+            "CLEAR_BUTTON": "Temizle",
+            "ADD_BUTTON": "Kullanıcı Ekle"
+        },
+        "TABLE": {
+            "TITLE": "Kullanıcı Listesi",
+            "SUBTITLE": "Toplam {{count}} kullanıcı",
+            "EXPORT_BUTTON": "Dışa Aktar",
+            "COLUMNS": {
+                "ID": "ID",
+                "NAME": "AD SOYAD",
+                "EMAIL": "EMAIL",
+                "ROLE": "ROL",
+                "DEPARTMENT": "DEPARTMAN",
+                "STATUS": "DURUM",
+                "JOIN_DATE": "KATILMA TARİHİ",
+                "ACTIONS": "İŞLEMLER"
+            },
+            "STATUS": {
+                "ACTIVE": "Aktif",
+                "INACTIVE": "Pasif"
+            },
+            "ACTIONS": {
+                "EDIT": "Düzenle",
+                "DELETE": "Sil"
+            },
+            "EMPTY_MESSAGE": "Henüz kullanıcı eklenmemiş"
+        },
+        "ROLES": {
+            "ADMIN": "Admin",
+            "MANAGER": "Yönetici",
+            "DEVELOPER": "Geliştirici",
+            "DESIGNER": "Tasarımcı",
+            "USER": "Kullanıcı"
+        },
+        "DEPARTMENTS": {
+            "ENGINEERING": "Mühendislik",
+            "DESIGN": "Tasarım",
+            "MARKETING": "Pazarlama",
+            "SALES": "Satış",
+            "HR": "İnsan Kaynakları",
+            "FINANCE": "Finans"
+        }
     }
 }

@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { CardModule } from 'primeng/card';
-import { ChartModule } from 'primeng/chart';
+
 
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, TranslateModule, CardModule, ChartModule],
+    imports: [CommonModule, TranslateModule],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'
 })

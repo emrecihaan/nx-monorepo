@@ -77,6 +77,45 @@
             font-weight: 600;
         }
     }
+
+    &.sub-item {
+        margin-left: 1.5rem;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+
+        .nav-icon-wrapper {
+            margin-right: 0.75rem;
+
+            i {
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    .expand-icon {
+        margin-left: auto;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        transition: transform 0.3s;
+    }
+}
+
+.sub-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    overflow: hidden;
+    max-height: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+
+    &.expanded {
+        max-height: 1000px;
+        /* Large enough for many items */
+        opacity: 1;
+        margin-bottom: 0.5rem;
+    }
 }
 
 /* Collapsed State Styles */
@@ -96,6 +135,14 @@
         .active-indicator {
             left: 0;
         }
+
+        .expand-icon {
+            display: none;
+        }
+    }
+
+    .sub-menu {
+        display: none;
     }
 }
 
@@ -122,5 +169,10 @@
                 box-shadow: 2px 0 10px rgba(96, 165, 250, 0.4);
             }
         }
+    }
+
+    .sub-menu.expanded {
+        border-left: 1px solid #334155;
+        margin-left: 1.5rem;
     }
 }

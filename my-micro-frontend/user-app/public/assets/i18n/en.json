@@ -1,17 +1,57 @@
 {
-    "WELCOME": "Welcome",
-    "USER_APP": {
-        "TITLE": "User Module",
-        "SAVE": "Save",
-        "SUCCESS": "User saved successfully"
-    },
-    "SAP_APP": {
-        "TITLE": "SAP Module",
-        "SUCCESS": "SAP app successfully loaded"
-    },
-    "MENU": {
-        "HOME": "Home",
-        "USER": "User App",
-        "SAP": "SAP App"
+    "USER": {
+        "TITLE": "User Panel",
+        "FORM": {
+            "NAME_LABEL": "Full Name",
+            "NAME_PLACEHOLDER": "e.g. John Doe",
+            "EMAIL_LABEL": "Email",
+            "EMAIL_PLACEHOLDER": "example@company.com",
+            "ROLE_LABEL": "Role",
+            "ROLE_PLACEHOLDER": "Select Role",
+            "DEPARTMENT_LABEL": "Department",
+            "DEPARTMENT_PLACEHOLDER": "Select Department",
+            "FORM_SUBTITLE": "Enter user information",
+            "CLEAR_BUTTON": "Clear",
+            "ADD_BUTTON": "Add User"
+        },
+        "TABLE": {
+            "TITLE": "User List",
+            "SUBTITLE": "Total {{count}} users",
+            "EXPORT_BUTTON": "Export",
+            "COLUMNS": {
+                "ID": "ID",
+                "NAME": "NAME",
+                "EMAIL": "EMAIL",
+                "ROLE": "ROLE",
+                "DEPARTMENT": "DEPARTMENT",
+                "STATUS": "STATUS",
+                "JOIN_DATE": "JOIN DATE",
+                "ACTIONS": "ACTIONS"
+            },
+            "STATUS": {
+                "ACTIVE": "Active",
+                "INACTIVE": "Inactive"
+            },
+            "ACTIONS": {
+                "EDIT": "Edit",
+                "DELETE": "Delete"
+            },
+            "EMPTY_MESSAGE": "No users added yet"
+        },
+        "ROLES": {
+            "ADMIN": "Admin",
+            "MANAGER": "Manager",
+            "DEVELOPER": "Developer",
+            "DESIGNER": "Designer",
+            "USER": "User"
+        },
+        "DEPARTMENTS": {
+            "ENGINEERING": "Engineering",
+            "DESIGN": "Design",
+            "MARKETING": "Marketing",
+            "SALES": "Sales",
+            "HR": "HR",
+            "FINANCE": "Finance"
+        }
     }
 }
