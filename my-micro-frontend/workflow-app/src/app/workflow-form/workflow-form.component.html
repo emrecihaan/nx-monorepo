@@ -1,0 +1,43 @@
+<p-accordion [value]="0">
+  <p-accordion-panel>
+    <p-accordion-content>
+      <div class="formgroup-inline mt-2 grid">
+        <span class="p-float-label ml-1 mt-4">
+          <p-select *ngIf="formTypeList" [options]="formTypeList" optionLabel="name" [(ngModel)]="selectedFormType"
+            (onChange)="changeSelectedFormType($event)" showClear="true" [style]="{'width': '200px'}"></p-select>
+          <label>{{'workFlow.formTypeName' | translate }}</label>
+        </span>
+        <!-- <span class="p-float-label ml-1 mt-4">
+                <p-calendar [(ngModel)]="startDate" dateFormat="dd.mm.yy" [showIcon]="true" [showButtonBar]="true"
+                    [showOnFocus]="false">
+                </p-calendar>
+                <label>{{'workFlow.startDate' | translate }}</label>
+            </span>
+            <span class="p-float-label ml-1 mt-4">
+                <p-calendar [(ngModel)]="finishDate" dateFormat="dd.mm.yy" [showIcon]="true" [showButtonBar]="true"
+                    [showOnFocus]="false">
+                </p-calendar>
+                <label>{{'workFlow.finishDate' | translate }}</label>
+            </span> -->
+
+        <div class="ml-1 mt-4">
+          <p-button label="{{'workFlow.search' | translate}}" (onClick)="getUser()"
+            [style]="{'width': '100px'}"></p-button>
+        </div>
+      </div>
+    </p-accordion-content>
+  </p-accordion-panel>
+</p-accordion>
+<p-toolbar class="mt-5">
+  <div class="my-2">
+    <button pButton pRipple label="{{'button.detail' | translate}}" icon="pi pi-save"
+      class="p-button-info p-button mr-2" (click)="detail()"></button>
+  </div>
+</p-toolbar>
+<div style="margin-top: 20px;" *ngIf="data">
+
+  <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
+    (setSelectedData)="setSelectedRow($event)" [selectionMode]="'single'" [columns]="column"></app-datagrid-for-format>
+</div>
+
+<p-toast></p-toast>
