@@ -1,0 +1,168 @@
+<form #formDir="ngForm" (ngSubmit)="save(formDir)">
+    <p-accordion [value]="0">
+        <p-accordion-panel *ngFor="let form of forms; let i = index" [value]="i">
+            <p-accordion-header>{{form.formName}}</p-accordion-header>
+            <p-accordion-content>
+                <div class="form-wrapper">
+                    <div class="grid">
+                        <div *ngFor="let field of form.fields" [ngClass]="'col-' + (getFieldWidth(field) || 12)"
+                            class="mb-3">
+                            <!-- Dropdown -->
+                            <div *ngIf="field.type === 'DropDown'">
+                                <p-select [options]="field.options" [(ngModel)]="fieldValues[field.id]"
+                                    name="field_{{field.id}}" [placeholder]="field.name" optionLabel="label"
+                                    optionValue="value" style="width: 100%;" #modelRef="ngModel"
+                                    [disabled]="isDisabled(field)"
+                                    (onChange)="field.parentRelatedField ? onDynamicChange(field.parentRelatedField, $event) : null">
+                                </p-select>
+                                <small
+                                    *ngIf="isRequired(field) && (fieldValues[field.id] === null || fieldValues[field.id] === undefined) && formDir.submitted"
+                                    class="p-error block">
+                                    {{field.name}} {{'fieldError' | translate}}
+                                </small>
+                                <small *ngIf="formDir.submitted && hasBackendValidationError(field)" class="p-error block">
+                                    {{ getBackendValidationMessage(field) }}
+                                </small>
+                            </div>
+
+                            <!-- Decimal -->
+                            <div *ngIf="field.type === 'Decimal'">
+                                <div>
+                                    <p-floatlabel>
+                                        <input type="number" step="any" name="field_{{field.id}}" pInputText
+                                            [(ngModel)]="fieldValues[field.id]" [disabled]="isDisabled(field)" />
+                                        <label for="email"> {{field.name}}</label>
+                                    </p-floatlabel>
+                                    <small
+                                        *ngIf="isRequired(field) && (fieldValues[field.id] === null || fieldValues[field.id] === undefined) && formDir.submitted"
+                                        class="p-error block">
+                                        {{field.name}} {{'fieldError' | translate}}
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Textbox -->
+                            <div *ngIf="field.type === 'Text'">
+                                <div>
+                                    <p-floatlabel>
+                                        <input type="text" name="field_{{field.id}}" pInputText
+                                            [(ngModel)]="fieldValues[field.id]" [disabled]="isDisabled(field)" />
+                                        <label for="email"> {{field.name}}</label>
+                                    </p-floatlabel>
+                                    <small
+                                        *ngIf="isRequired(field) && (fieldValues[field.id] === null || fieldValues[field.id] === undefined) && formDir.submitted"
+                                        class="p-error block">
+                                        {{field.name}} {{'fieldError' | translate}}
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- PhoneNumber -->
+                            <div *ngIf="field.type === 'PhoneNumber'">
+                                <p-floatlabel>
+                                    <p-inputMask mask="(999) 999-99-99" [(ngModel)]="fieldValues[field.id]"
+                                        name="field_{{field.id}}" [disabled]="isDisabled(field)" [style]="{ width: '100%' }">
+                                    </p-inputMask>
+                                    <label for="email"> {{field.name}}</label>
+                                </p-floatlabel>
+                            </div>
+
+                            <!-- Datepicker -->
+                            <div *ngIf="field.type === 'Date'">
+                                <p-floatlabel>
+                                    <p-datepicker name="field_{{field.id}}" [(ngModel)]="fieldValues[field.id]"
+                                        dateFormat="dd.mm.yy" [showClear]="true"
+                                        [disabled]="isDisabled(field)"></p-datepicker>
+                                    <label for="float-label">{{field.name}}</label>
+                                </p-floatlabel>
+                            </div>
+
+                            <!-- RadioButton -->
+                            <div *ngIf="field.type === 'RadioButton'">
+                                <label class="form-label d-block">{{ field.name }}</label>
+                                <div *ngFor="let option of field.options || []" class="form-check form-check-inline">
+                                    <input name="field_{{field.id}}" class="form-check-input" type="radio"
+                                        [value]="option.value" [(ngModel)]="fieldValues[field.id]"
+                                        [disabled]="isDisabled(field)" />
+                                    <label class="form-check-label" [for]="'field_' + field.id + '_' + option.value">{{
+                                        option.label }}</label>
+                                </div>
+                            </div>
+
+                            <!-- CheckBox -->
+                            <div *ngIf="field.type === 'CheckBox'">
+                                <label class="form-label d-block">{{ field.name }}</label>
+                                <div *ngFor="let option of field.options || []" class="form-check">
+                                    <input class="form-check-input multiple-checkbox" type="checkbox" [value]="option.value"
+                                        name="field_{{field.id}}" id="'field_' + field.id + '_' + option.value"
+                                        [disabled]="isDisabled(field)" />
+                                    <label class="form-check-label" [for]="'field_' + field.id + '_' + option.value">{{
+                                        option.label }}</label>
+                                </div>
+                            </div>
+
+                            <div *ngIf="field.type === 'Datagrid'">
+                                <app-datagrid-for-format [Data]="selectedRows" [columns]="field.dynamicColumns"
+                                    [selectionMode]="field.selectionMode || 'single'"
+                                    [selectedData]="field.selectedData || null">
+                                </app-datagrid-for-format>
+                            </div>
+
+                            <div *ngIf="field.type === 'EditableDatagrid'">
+                                <app-datagrid-for-format [Data]="field.rows" [columns]="field.dynamicColumns"
+                                    [selectionMode]="field.selectionMode || 'single'"
+                                    [selectedData]="field.selectedData || null" [attr.data-code]="field.code"
+                                    [code]="field.code" [height]="300" #editablegrid>
+                                </app-datagrid-for-format>
+                            </div>
+
+                            <div *ngIf="field.type === 'FileUpload'">
+                                <div class="col">
+                                    <!-- Note: app-gemini is heavily coupled and absent. Should be handled by standard file upload. Using dummy here or p-fileUpload -->
+                                    <p-fileUpload mode="basic" chooseLabel="{{'button.fileUpload' | translate}}"
+                                        chooseIcon="pi pi-upload" name="demo[]"
+                                        accept="image/*"
+                                        (onSelect)="onFileSelect($event,field)" maxFileSize="1000000"
+                                        [disabled]="isDisabled(field)"
+                                        #fileUpload>
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-accordion-content>
+        </p-accordion-panel>
+    </p-accordion>
+
+    <div class="grid mt-1 ml-2">
+        <div class="col-12">
+            <button type="submit" pButton label="{{'button.save' | translate}}" *ngIf="buttonIsVisible"></button>
+        </div>
+    </div>
+</form>
+
+<p-dialog *ngIf="difference==true" header="Bütçe Kuralı" [modal]="true" [(visible)]="difference"
+    [style]="{ width: '65rem',height:'25rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [maximizable]="true">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <p style="font-weight: 800;">Bütçe Kuralından dolayı Masrafınız onaylanamamaktadır </p>
+        </div>
+        <div class="p-field p-col-12 p-md-6">
+            <p> Eski Tutar: {{formatCurrency(oldAmounts)}} </p>
+        </div>
+        <div class="p-field p-col-12 p-md-6">
+            <p> Yeni Tutar: {{formatCurrency(oldAmounts + amountRule)}} </p>
+        </div>
+        <div class="p-field p-col-12 p-md-6">
+            <p> Bütçe Kuralı Tutarı: {{formatCurrency(amountRule)}} </p>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="İptal" icon="pi pi-times" class="p-button-danger "
+            (click)="difference=false"></button>
+    </div>
+</p-dialog>
+<p-toast></p-toast>

@@ -1,0 +1,238 @@
+<p-toolbar styleClass="mt-2">
+    <div class="p-toolbar-group-left flex-wrap-container">
+        <button type="button" pButton label="{{'parameterType.createParameterType' | translate}}" icon="pi pi-check"
+            (click)="openCreateModalShow()" class="p-button-success ml-2"></button>
+        <button type="button" pButton label="{{'parameterType.updateParameterType' | translate}}" icon="pi pi-pencil"
+            (click)="openUpdateModalShow()" class="p-button-help ml-2"></button>
+        <button type="button" pButton label="{{'parameterType.deleteParameterType' | translate}}" icon="pi pi-trash"
+            (click)="openDeleteModalShow()" class="p-button-danger ml-2"></button>
+        <button type="button" pButton label="{{'parameterType.detailParameterType' | translate}}" icon="pi pi-save"
+            (click)="openParameterValueListModal()" class="p-button-warning ml-2"></button>
+    </div>
+</p-toolbar>
+<p-panel styleClass="mt-5" header="{{'parameterType.title' | translate}}">
+    <div *ngIf="data">
+        <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
+            (setSelectedData)="setSelectedRow($event)" [selectionMode]="'single'" [columns]="column"></app-datagrid-for-format>
+    </div>
+</p-panel>
+
+<p-dialog *ngIf="createModalShow==true" header="{{'parameterType.createParameterType' | translate}}" [modal]="true"
+    [(visible)]="createModalShow" styleClass="custom-responsive-dialog">
+    <div class="grid">
+        <div class="col-6">
+            <label for="name">{{'parameterType.dfSystemCompanyId' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="number" pInputText [(ngModel)]="newParameterTypeData.DfSystemCompanyId"
+                    style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="title">{{'parameterType.dfFormId' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <p-select [options]="formList" optionLabel="name" [(ngModel)]="selectedForm" [filter]="true"
+                    filterBy="name" placeholder="{{'parameterType.selectForm' | translate}}"
+                    styleClass="w-full"></p-select>
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'parameterType.name' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="newParameterTypeData.Name" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'parameterType.code' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="newParameterTypeData.Code" style="width: 100%;" />
+            </span>
+        </div>
+    </div>
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="createParameterType()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+<p-dialog *ngIf="updateModalShow==true" header="{{'parameterType.updateParameterType' | translate}}" [modal]="true"
+    [(visible)]="updateModalShow" styleClass="custom-responsive-dialog">
+    <div class="grid">
+        <div class="col-6">
+            <label for="name">{{'parameterType.dfSystemCompanyId' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="number" pInputText [(ngModel)]="editParameterTypeData.dfSystemCompanyId"
+                    style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="title">{{'parameterType.dfFormId' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <p-select [options]="formList" optionLabel="name" [(ngModel)]="selectedForm" [filter]="true"
+                    filterBy="name" styleClass="w-full"></p-select>
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'parameterType.name' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="editParameterTypeData.name" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'parameterType.code' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="editParameterTypeData.code" style="width: 100%;" />
+            </span>
+        </div>
+    </div>
+
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="updateParameterType()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="deleteModalShow==true" header="{{'parameterType.deleteParameterType' | translate}}" [modal]="true"
+    [(visible)]="deleteModalShow" [style]="{ width: '65rem'}">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <p style="font-weight: 800;">{{'parameterType.sureDelete' | translate}}</p>
+        </div>
+    </div>
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.cancel' | translate}}" icon="pi pi-times"
+            class="p-button-danger " (click)="deleteModalShow=false"></button>
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="deleteParameterType()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="parameterValueListModal==true&&selectedRow!=null"
+    header="{{'parameterType.parameterValueDetail' | translate}}" [modal]="true" [(visible)]="parameterValueListModal"
+    [style]="{ width: '75rem',height:'45rem' }">
+    <div class="p-fluid p-formgrid p-grid">
+        <app-datagrid-for-format [Data]="parameterValueData" [customizeOptions]="customizeGridParameterValue"
+            [selectedData]="selectedRowParameterValue" (setSelectedData)="setSelectedRowDetail($event)"
+            [selectionMode]="'single'" [columns]="parameterValueColumn"></app-datagrid-for-format>
+    </div>
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.create' | translate}}" icon="pi pi-check"
+            (click)="openCreateParameterValueModalShow()" class="p-button-success ml-2"></button>
+        <button type="button" pButton label="{{'button.update' | translate}}" icon="pi pi-save"
+            (click)="openUpdateParameterValueModalShow()" class="ml-2 p-button-warning"></button>
+        <button type="button" pButton label="{{'button.delete' | translate}}" icon="pi pi-trash"
+            (click)="openDeleteParameterValueModalShow()" class="ml-2 ml-2 p-button-danger"></button>
+    </div>
+</p-dialog>
+<p-dialog *ngIf="createParameterValueModalShow==true" header="{{'parameterType.parameterValueCreate' | translate}}"
+    [modal]="true" [(visible)]="createParameterValueModalShow" [style]="{ width: '60rem',height:'35rem' }">
+    <div class="grid">
+        <div class="col-6">
+            <label for="name">{{'parameterType.parameterValueDisplayName' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="newParameterValueData.DisplayName"
+                    style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'parameterType.parameterValue' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="newParameterValueData.Value"
+                    style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'parameterType.parameterValueType' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="newParameterValueData.Type" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'parameterType.parameterValueStartDate' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="label" type="date" pInputText [(ngModel)]="startDate" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'parameterType.parameterValueEndDate' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="label" type="date" pInputText [(ngModel)]="endDate" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'parameterType.parameterValueIsActive' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <p-select [options]="statusList" optionLabel="name" [(ngModel)]="newParameterValueData.IsActive"
+                    [filter]="true" filterBy="name" style="width: 100%;" styleClass="w-full"></p-select>
+            </span>
+        </div>
+    </div>
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="createParameterValue()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+<p-dialog *ngIf="updateParameterValueModalShow==true" header="{{'parameterType.parameterValueUpdate' | translate}}"
+    [modal]="true" [(visible)]="updateParameterValueModalShow" [style]="{ width: '60rem',height:'35rem' }">
+    <div class="grid">
+        <div class="col-6">
+            <label for="name">{{'parameterType.parameterValueDisplayName' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="editParameterValueData.displayName"
+                    style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'parameterType.parameterValue' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="editParameterValueData.value"
+                    style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'parameterType.parameterValueType' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="editParameterValueData.type"
+                    style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'parameterType.parameterValueStartDate' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="label" type="date" pInputText [(ngModel)]="startDate" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'parameterType.parameterValueEndDate' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="label" type="date" pInputText [(ngModel)]="endDate" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'parameterType.parameterValueIsActive' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <p-select [options]="statusList" optionLabel="name" [(ngModel)]="editParameterValueData.IsActive"
+                    [filter]="true" filterBy="name" style="width: 100%;" styleClass="w-full"></p-select>
+            </span>
+        </div>
+    </div>
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="updateParameterValue()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+<p-dialog *ngIf="deleteParameterValueModalShow==true" header="{{'parameterType.parameterValueDelete' | translate}}"
+    [modal]="true" [(visible)]="deleteParameterValueModalShow" [style]="{ width: '30rem',height:'15rem' }">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <p style="font-weight: 800;">{{'parameterType.sureDeleteParameterValue' | translate}}</p>
+        </div>
+    </div>
+    <div class="mt-3 flex justify-content-end">
+        <button type="button" pButton label="{{'button.cancel' | translate}}" icon="pi pi-times"
+            class="p-button-danger " (click)="deleteParameterValueModalShow=false"></button>
+        <button type="button" pButton label="{{'button.yes' | translate}}" icon="pi pi-check"
+            (click)="deleteParameterValue()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+
+<p-toast></p-toast>

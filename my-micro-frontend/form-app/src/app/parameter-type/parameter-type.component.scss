@@ -1,0 +1,74 @@
+.parameter-type-container {
+  padding: 2rem;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      color: var(--text-color);
+      font-weight: 600;
+    }
+  }
+
+  .grid-section {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+}
+
+.p-toolbar-group-left.flex-wrap-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+
+  ::ng-deep .p-button {
+    white-space: nowrap;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    flex: 0 1 auto;
+    margin: 0 !important;
+
+    .p-button-label {
+      font-weight: 500;
+    }
+
+    @media screen and (max-width: 992px) {
+      flex: 1 0 calc(50% - 0.5rem);
+      font-size: 0.8rem;
+    }
+
+    @media screen and (max-width: 414px) {
+      font-size: 0.7rem;
+      padding: 0.4rem;
+    }
+  }
+}
+
+.form-field {
+  width: 100%;
+  
+  ::ng-deep .p-floatlabel {
+    width: 100%;
+    
+    input {
+      width: 100%;
+    }
+  }
+}
+
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.justify-content-end { justify-content: flex-end; }
+.gap-2 { gap: 0.5rem; }
+.gap-5 { gap: 1.5rem; }
+.mt-4 { margin-top: 1.5rem; }
+.w-full { width: 100%; }
+.py-3 { padding-top: 1rem; padding-bottom: 1rem; }

@@ -1,42 +1,108 @@
-import { Component, OnInit, Input, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Input, signal, ChangeDetectorRef, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { MenuItem } from 'primeng/api';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PageSubService } from '@my-micro-frontend/shared-core';
+import { HttpClient } from '@angular/common/http';
+
+export interface MenuItem {
+  label: string;
+  icon: string;
+  routerLink: string[];
+  styleClass?: string;
+  items?: MenuItem[];
+  expanded?: boolean;
+}
 
 @Component({
   selector: 'lib-menu',
   standalone: true,
-  imports: [CommonModule, RouterModule, TranslateModule],
+  imports: [RouterModule, TranslateModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent implements OnInit {
   @Input() collapsed = false;
+  model: any[] = [];
 
-  constructor(public router: Router) { }
+  private router = inject(Router);
+  private pageSubService = inject(PageSubService);
+  private translate = inject(TranslateService);
+  private cdr = inject(ChangeDetectorRef);
+  private http = inject(HttpClient);
+
+  constructor() {
+    this.getStaticMenu();
+    this.getPages();
+    this.translate.onLangChange.subscribe(() => {
+      this.translateStaticMenu();
+      this.getPages();
+    });
+  }
 
   protected sidebarCollapsed = signal(false);
   ngOnInit(): void { }
 
-  protected menuItems: MenuItem[] = [
-    {
-      label: 'Home',
-      icon: 'pi pi-home',
-      routerLink: ['/'],
-      styleClass: 'menu-item'
-    },
-    {
-      label: 'User Management',
-      icon: 'pi pi-users',
-      routerLink: ['/user-app'],
-      styleClass: 'menu-item'
-    },
-    {
-      label: 'Financial Statements (SAP)',
-      icon: 'pi pi-briefcase',
-      routerLink: ['/sap-app'],
-      styleClass: 'menu-item'
+
+  private rawStaticMenuItems: MenuItem[] = [];
+  private staticMenuItems: MenuItem[] = [];
+
+  protected menuItems: MenuItem[] = [];
+
+  getStaticMenu() {
+    this.http.get<MenuItem[]>('assets/data/menu.json').subscribe((res) => {
+      this.rawStaticMenuItems = res;
+      this.translateStaticMenu();
+    });
+  }
+
+  translateStaticMenu() {
+    this.staticMenuItems = this.rawStaticMenuItems.map(item => ({
+      ...item,
+      label: this.translate.instant(item.label)
+    }));
+    this.updateMenuItems();
+  }
+
+  updateMenuItems() {
+    this.menuItems = [...this.staticMenuItems, ...this.model];
+    this.cdr.detectChanges();
+  }
+
+  getPages() {
+    return this.pageSubService.getPages().subscribe((res) => {
+      console.log('Menu API Response:', res);
+      const pages = Array.isArray(res) ? res : (res?.response || []);
+      const modelList: MenuItem[] = [];
+      if (pages.length > 0) {
+        for (const page of pages) {
+          let newPage: MenuItem;
+          const translatedLabel = this.translate.instant(`${page.pageName}`);
+          if (page.subPages && page.subPages.length > 0) {
+            newPage = { label: translatedLabel, icon: page.icon, routerLink: ['/'], items: [] };
+            for (const pageSub of page.subPages) {
+              const translatedSubLabel = this.translate.instant(`${pageSub.subPageName}`);
+              const subUrl = pageSub.url ? (pageSub.url.startsWith('/') ? pageSub.url : '/' + pageSub.url) : '/';
+              const newSubPage: MenuItem = { label: translatedSubLabel, icon: pageSub.icon, routerLink: [subUrl] };
+              newPage.items?.push(newSubPage);
+            }
+          }
+          else {
+            const mainUrl = page.url ? (page.url.startsWith('/') ? page.url : '/' + page.url) : '/';
+            newPage = { label: page.pageName, icon: page.icon, routerLink: [mainUrl] };
+          }
+          modelList.push(newPage);
+        }
+      }
+      this.model = modelList;
+      this.updateMenuItems();
+    })
+  }
+
+  toggleSubMenu(item: MenuItem) {
+    if (item.items && item.items.length > 0) {
+      item.expanded = !item.expanded;
+    } else {
+      this.router.navigate(item.routerLink);
     }
-  ];
+  }
 }

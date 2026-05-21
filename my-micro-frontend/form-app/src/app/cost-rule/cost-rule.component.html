@@ -1,0 +1,94 @@
+<p-toolbar styleClass="mt-2">
+  <div class="p-toolbar-group-left flex-wrap-container">
+    <button type="button" pButton label="{{'COST_RULE.createAnExpenseRule' | translate}}" icon="pi pi-check"
+      (click)="openCreateModalShow()" class="ml-2" [ngClass]="'p-button-success'"></button>
+    <button type="button" pButton label="{{'COST_RULE.editAnExpenseRule' | translate}}" icon="pi pi-pencil"
+      (click)="openUpdateModalShow()" class="ml-2" [ngClass]="'p-button-help'"></button>
+    <button type="button" pButton label="{{'COST_RULE.deleteAnExpenseRule' | translate}}" icon="pi pi-trash"
+      (click)="openDeleteModalShow()" class="ml-2" [ngClass]="'p-button-danger'"></button>
+    <button type="button" pButton label="{{'COST_RULE.detailAnExpenseRule' | translate}}" icon="pi pi-save"
+      (click)="goDetail()" class="p-button-warning ml-2"></button>
+  </div>
+</p-toolbar>
+
+<p-panel styleClass="mt-5" header="{{'COST_RULE.TITLE' | translate}}">
+  <div *ngIf="data">
+    <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
+      (setSelectedData)="setSelectedRow($event)" [selectionMode]="'single'"
+      [columns]="column"></app-datagrid-for-format>
+  </div>
+</p-panel>
+
+<!-- Create Modal -->
+<p-dialog *ngIf="createModalShow" header="{{'COST_RULE.createAnExpenseRule' | translate}}" [modal]="true"
+  [(visible)]="createModalShow" [style]="{ width: '450px' }">
+  
+  <div class="flex flex-column gap-5 mt-4">
+    <div class="form-field">
+      <p-floatlabel variant="on">
+        <input pInputText id="ruleName" type="text" [(ngModel)]="newCostRuleData.RuleName" class="w-full" />
+        <label for="ruleName">{{'COST_RULE.ruleName' | translate}} *</label>
+      </p-floatlabel>
+    </div>
+
+    <div class="form-field">
+      <p-floatlabel variant="on">
+        <input pInputText id="companyId" type="number" [(ngModel)]="newCostRuleData.DfSystemCompanyId" class="w-full" />
+        <label for="companyId">{{'COST_RULE.dfSystemCompanyId' | translate}} *</label>
+      </p-floatlabel>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2">
+      <p-button label="{{'button.cancel' | translate}}" severity="danger" [text]="true" (onClick)="createModalShow = false"></p-button>
+      <p-button label="{{'button.save' | translate}}" icon="pi pi-check" severity="success" (onClick)="createCostRule()" [disabled]="isDisableButton"></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Update Modal -->
+<p-dialog *ngIf="updateModalShow" header="{{'COST_RULE.editAnExpenseRule' | translate}}" [modal]="true"
+  [(visible)]="updateModalShow" [style]="{ width: '450px' }">
+  
+  <div class="flex flex-column gap-5 mt-4">
+    <div class="form-field">
+      <p-floatlabel variant="on">
+        <input pInputText id="editRuleName" type="text" [(ngModel)]="editCostRuleData.RuleName" class="w-full" />
+        <label for="editRuleName">{{'COST_RULE.ruleName' | translate}} *</label>
+      </p-floatlabel>
+    </div>
+
+    <div class="form-field">
+      <p-floatlabel variant="on">
+        <input pInputText id="editCompanyId" type="number" [(ngModel)]="editCostRuleData.DfSystemCompanyId" class="w-full" />
+        <label for="editCompanyId">{{'COST_RULE.dfSystemCompanyId' | translate}} *</label>
+      </p-floatlabel>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2">
+      <p-button label="{{'button.cancel' | translate}}" severity="danger" [text]="true" (onClick)="updateModalShow = false"></p-button>
+      <p-button label="{{'button.save' | translate}}" icon="pi pi-check" severity="success" (onClick)="updateCostRule()" [disabled]="isDisableButton"></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Delete Modal -->
+<p-dialog *ngIf="deleteModalShow" header="{{'COST_RULE.deleteAnExpenseRule' | translate}}" [modal]="true"
+  [(visible)]="deleteModalShow" [style]="{ width: '450px' }">
+  <div class="py-3">
+    <p style="font-weight: 600; font-size: 1.1rem; line-height: 1.5;">{{'COST_RULE.sureDelete' | translate}}</p>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2">
+      <p-button label="{{'button.cancel' | translate}}" icon="pi pi-times" severity="secondary" [text]="true"
+        (onClick)="deleteModalShow=false" [disabled]="isDisableButton"></p-button>
+      <p-button label="{{'button.yes' | translate}}" icon="pi pi-trash" severity="danger" (onClick)="deleteBudgetRule()"
+        [disabled]="isDisableButton"></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>

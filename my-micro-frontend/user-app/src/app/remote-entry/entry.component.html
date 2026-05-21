@@ -1,130 +1,154 @@
 <div class="users-page">
-    <!-- Toast for notifications -->
-    <p-toast position="top-right"></p-toast>
+    <!-- Removed Toast -->
 
     <!-- Add User Form -->
     <div class="form-section animate-fade-in">
-        <p-card class="form-card">
+        <div class="form-card card">
             <div class="card-header">
                 <div>
                     <h3 class="card-title">{{ 'USER.TITLE' | translate }}</h3>
-                    <p class="card-subtitle">Kullanıcı bilgilerini girin</p>
+                    <p class="card-subtitle">{{ 'USER.FORM.FORM_SUBTITLE' | translate }}</p>
                 </div>
-                <button pButton icon="pi pi-refresh" class="p-button-text p-button-rounded" (click)="resetForm()"
-                    pTooltip="Formu Temizle" tooltipPosition="bottom">
-                </button>
+                <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" (click)="resetForm()"
+                    severity="secondary"></p-button>
             </div>
 
             <div class="form-grid">
                 <div class="form-field">
-                    <label for="name">Ad Soyad *</label>
-                    <input id="name" type="text" pInputText [(ngModel)]="newUser.name" placeholder="Örn: Ahmet User"
-                        class="w-full">
+                    <p-floatlabel variant="on">
+                        <input pInputText id="userCode" type="text" [(ngModel)]="newUser.userCode" class="w-full" />
+                        <label for="userCode">Kullanıcı Kodu *</label>
+                    </p-floatlabel>
                 </div>
 
                 <div class="form-field">
-                    <label for="email">Email *</label>
-                    <input id="email" type="email" pInputText [(ngModel)]="newUser.email" placeholder="ornek@sirket.com"
-                        class="w-full">
+                    <p-floatlabel variant="on">
+                        <input pInputText id="userName" type="text" [(ngModel)]="newUser.userName" class="w-full" />
+                        <label for="userName">Ad *</label>
+                    </p-floatlabel>
                 </div>
 
                 <div class="form-field">
-                    <label for="role">Rol *</label>
-                    <p-select id="role" [(ngModel)]="newUser.role" [options]="roles" optionLabel="label"
-                        optionValue="value" placeholder="Rol Seçin" [style]="{'width': '100%'}" appendTo="body">
-                    </p-select>
+                    <p-floatlabel variant="on">
+                        <input pInputText id="userSurname" type="text" [(ngModel)]="newUser.userSurname"
+                            class="w-full" />
+                        <label for="userSurname">Soyad *</label>
+                    </p-floatlabel>
                 </div>
 
                 <div class="form-field">
-                    <label for="department">Departman *</label>
-                    <p-select id="department" [(ngModel)]="newUser.department" [options]="departments"
-                        optionLabel="label" optionValue="value" placeholder="Departman Seçin"
-                        [style]="{'width': '100%'}" appendTo="body">
-                    </p-select>
+                    <p-floatlabel variant="on">
+                        <input pInputText id="email" type="email" [(ngModel)]="newUser.email" class="w-full" />
+                        <label for="email">E-posta *</label>
+                    </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                    <p-floatlabel variant="on">
+                        <input pInputText id="phoneNumber1" type="tel" [(ngModel)]="newUser.phoneNumber1"
+                            class="w-full" />
+                        <label for="phoneNumber1">Telefon 1</label>
+                    </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                    <p-floatlabel variant="on">
+                        <input pInputText id="phoneNumber2" type="tel" [(ngModel)]="newUser.phoneNumber2"
+                            class="w-full" />
+                        <label for="phoneNumber2">Telefon 2</label>
+                    </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                    <p-floatlabel variant="on">
+                        <input pInputText id="gender" type="text" [(ngModel)]="newUser.gender" class="w-full" />
+                        <label for="gender">Cinsiyet</label>
+                    </p-floatlabel>
                 </div>
             </div>
 
             <div class="form-actions">
-                <button class="btn btn-secondary" (click)="resetForm()">
-                    <i class="pi pi-times"></i>
-                    <span>Temizle</span>
-                </button>
-                <button class="btn btn-success" (click)="addUser()">
-                    <i class="pi pi-plus"></i>
-                    <span>Kullanıcı Ekle</span>
-                </button>
+                <p-button [label]="'USER.FORM.CLEAR_BUTTON' | translate" icon="pi pi-times" severity="secondary"
+                    (click)="resetForm()"></p-button>
+                <p-button [label]="'USER.FORM.ADD_BUTTON' | translate" icon="pi pi-plus" severity="success"
+                    (click)="addUser()"></p-button>
             </div>
-        </p-card>
+        </div>
     </div>
 
-    <!-- Users Table -->
-    <div class="table-section animate-fade-in">
-        <p-card class="table-card">
-            <div class="card-header">
-                <div>
-                    <h3 class="card-title">Kullanıcı Listesi</h3>
-                    <p class="card-subtitle">Toplam {{ users.length }} kullanıcı</p>
-                </div>
-                <button class="btn btn-outlined-blue">
-                    <i class="pi pi-download"></i>
-                    <span>Export</span>
-                </button>
+    <!-- Shared Reusable DataGrid -->
+    <div class="table-section animate-fade-in" style="margin-bottom: 2rem;">
+        <div class="card">
+            <h3 class="card-title">Shared Reusable DataGrid</h3>
+
+            <div *ngIf="loading" style="text-align: center; padding: 3rem;">
+                <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: var(--primary-color);"></i>
+                <p style="margin-top: 1rem; color: var(--text-color-secondary);">Kullanıcılar yükleniyor...</p>
             </div>
 
-            <p-table [value]="users" styleClass="custom-table" [paginator]="true" [rows]="10"
-                [showCurrentPageReport]="true"
-                currentPageReportTemplate="{first} - {last} arası, toplam {totalRecords} kayıt">
+            <app-datagrid-for-format *ngIf="!loading" [Data]="users" [columns]="gridColumns" [gridId]="'userGrid'"
+                [export]="true" [columnChooser]="true" [rowUpdate]="true">
+            </app-datagrid-for-format>
+        </div>
+    </div>
 
+    <!-- Users Table (PrimeNG) -->
+    <!-- <div class="table-section animate-fade-in">
+        <div class="table-card card">
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title">{{ 'USER.TABLE.TITLE' | translate }}</h3>
+                    <p class="card-subtitle">{{ 'USER.TABLE.SUBTITLE' | translate:{count: users.length} }}</p>
+                </div>
+                <p-button [label]="'USER.TABLE.EXPORT_BUTTON' | translate" icon="pi pi-download" [outlined]="true"
+                    severity="info"></p-button>
+            </div>
+
+            <div *ngIf="loading" style="text-align: center; padding: 3rem;">
+                <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: var(--primary-color);"></i>
+                <p style="margin-top: 1rem; color: var(--text-color-secondary);">Kullanıcılar yükleniyor...</p>
+            </div>
+
+            <p-table *ngIf="!loading" [value]="users" [tableStyle]="{ 'min-width': '50rem' }"
+                styleClass="p-datatable-sm">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 5%">ID</th>
-                        <th style="width: 20%">AD SOYAD</th>
-                        <th style="width: 20%">EMAIL</th>
-                        <th style="width: 10%">ROL</th>
-                        <th style="width: 15%">DEPARTMAN</th>
-                        <th style="width: 10%">DURUM</th>
-                        <th style="width: 10%">KATILMA TARİHİ</th>
-                        <th style="width: 10%">İŞLEMLER</th>
+                        <th style="width: 12%">Kullanıcı Kodu</th>
+                        <th style="width: 15%">Ad</th>
+                        <th style="width: 15%">Soyad</th>
+                        <th style="width: 20%">E-posta</th>
+                        <th style="width: 12%">Telefon 1</th>
+                        <th style="width: 12%">Telefon 2</th>
+                        <th style="width: 8%">Aktif</th>
+                        <th style="width: 10%">İşlemler</th>
                     </tr>
                 </ng-template>
-
                 <ng-template pTemplate="body" let-user>
                     <tr>
                         <td><strong>#{{ user.id }}</strong></td>
-                        <td>
-                            <div class="user-cell">
-                                <div class="user-avatar">
-                                    {{ user.name.charAt(0) }}
-                                </div>
-                                <span>{{ user.name }}</span>
-                            </div>
-                        </td>
+                        <td>{{ user.userCode }}</td>
+                        <td>{{ user.userName }}</td>
+                        <td>{{ user.userSurname }}</td>
                         <td>{{ user.email }}</td>
+                        <td>{{ user.phoneNumber1 }}</td>
+                        <td>{{ user.phoneNumber2 }}</td>
                         <td>
-                            <span class="role-badge">{{ getRoleLabel(user.role) }}</span>
+                            <span class="status-aktif" *ngIf="user.isActive">Aktif</span>
+                            <span class="status-pasif" *ngIf="!user.isActive">Pasif</span>
                         </td>
-                        <td>{{ getDepartmentLabel(user.department) }}</td>
-                        <td>
-                            <span class="status-aktif" *ngIf="user.status === 'active'">Aktif</span>
-                            <span class="status-pasif" *ngIf="user.status !== 'active'">Pasif</span>
-                        </td>
-                        <td>{{ user.joinDate }}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn-icon edit" title="Düzenle">
-                                    <i class="pi pi-pencil"></i>
-                                </button>
-                                <button class="btn-icon delete" title="Sil" (click)="deleteUser(user)">
-                                    <i class="pi pi-trash"></i>
-                                </button>
+                                <p-button icon="pi pi-pencil" [text]="true" [rounded]="true" severity="info"></p-button>
+                                <p-button icon="pi pi-trash" [text]="true" [rounded]="true" severity="danger"
+                                    (onClick)="deleteUser(user)"></p-button>
                             </div>
                         </td>
                     </tr>
                 </ng-template>
-
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td colspan="8" class="empty-message">
+                        <td colspan="9" class="empty-message">
                             <div class="empty-state">
                                 <i class="pi pi-users empty-icon"></i>
                                 <p>Henüz kullanıcı eklenmemiş</p>
@@ -133,23 +157,8 @@
                     </tr>
                 </ng-template>
             </p-table>
-        </p-card>
-    </div>
+        </div>
+    </div> -->
 
-    <!-- DevExtreme Datagrid -->
-    <div class="table-section animate-fade-in" style="margin-top: 2rem;">
-        <p-card class="table-card">
-            <div class="card-header">
-                <div>
-                    <h3 class="card-title">DevExtreme Kullanıcı Listesi (Dinamik)</h3>
-                    <p class="card-subtitle">Aynı veri kaynağını kullanan alternatif görünüm</p>
-                </div>
-            </div>
 
-            <div style="height: 400px; padding: 1rem;">
-                <app-datagrid-for-format [Data]="users" [columns]="gridColumns">
-                </app-datagrid-for-format>
-            </div>
-        </p-card>
-    </div>
 </div>

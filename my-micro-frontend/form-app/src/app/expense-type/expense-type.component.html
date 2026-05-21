@@ -1,0 +1,96 @@
+<h1 class="header1">{{'expenseTypeForm.title' | translate}}</h1>
+
+<p-accordion [value]="0">
+    <p-accordion-panel>
+        <!-- <p-accordion-header>{{expenseTypeForm.formTitle}}</p-accordion-header> -->
+        <p-accordion-content>
+            <form [formGroup]="expenseTypeForm" class="p-fluid">
+                <div class="grid mt-2">
+                    <div class="col">
+                        <span class="p-float-label">
+                            <input id="kostv" type="text" pInputText formControlName="kostv" />
+                            <label for="kostv">{{'expenseTypeForm.kostv' | translate}}</label>
+                        </span>
+                        <small id="kostv" *ngIf="expenseTypeForm.get('kostv')?.invalid && formSubmitted"
+                            class="p-error block"> {{'expenseTypeForm.kostvReq' |
+                            translate}}</small>
+                    </div>
+                    <div class="col">
+                        <span class="p-float-label">
+                            <input id="text" type="text" pInputText formControlName="text" />
+                            <label for="text">{{'expenseTypeForm.text' | translate}}</label>
+                        </span>
+                        <small id="text" *ngIf="expenseTypeForm.get('text')?.invalid && formSubmitted"
+                            class="p-error block"> {{'expenseTypeForm.textReq' |
+                            translate}}</small>
+                    </div>
+                    <div class="col">
+                        <span class="p-float-label">
+                            <p-calendar id="startDate" formControlName="startDate" dateFormat="dd/mm/yy"
+                                showIcon="true"></p-calendar>
+                            <label for="startDate">{{'expenseTypeForm.startDate' | translate}}</label>
+                        </span>
+                        <small id="startDate" *ngIf="expenseTypeForm.get('startDate')?.invalid && formSubmitted"
+                            class="p-error block"> {{'expenseTypeForm.startDateReq' |
+                            translate}}</small>
+                    </div>
+                    <div class="col">
+                        <span class="p-float-label">
+                            <p-calendar id="endDate" formControlName="endDate" dateFormat="dd/mm/yy"
+                                showIcon="true"></p-calendar>
+                            <label for="endDate">{{'expenseTypeForm.endDate' | translate}}</label>
+                        </span>
+                        <small id="endDate" *ngIf="expenseTypeForm.get('endDate')?.invalid && formSubmitted"
+                            class="p-error block">
+                            {{'expenseTypeForm.endDateReq' |
+                            translate}}</small>
+                        <small id="dateRange" *ngIf="expenseTypeForm.errors?.['dateRangeInvalid'] && formSubmitted"
+                            class="p-error block">
+                            {{'expenseTypeForm.endDateBeforeStartDate' | translate}}</small>
+                    </div>
+                    <div class="col">
+                        <span class="p-float-label">
+                            <p-select id="company" [options]="companyList" optionLabel="name" optionValue="id"
+                                formControlName="company" placeholder="{{'expenseTypeForm.selectCompany' | translate}}">
+                            </p-select>
+                            <label for="company">{{'expenseTypeForm.company' | translate}}</label>
+                        </span>
+                        <small id="company" *ngIf="expenseTypeForm.get('company')?.invalid && formSubmitted"
+                            class="p-error block">
+                            {{'expenseTypeForm.companyReq' | translate}}
+                        </small>
+                    </div>
+                    <div class="col">
+                        <span class="p-float-label">
+                            <p-select id="status" [options]="statusOptions" formControlName="status" optionLabel="name"
+                                optionValue="id" placeholder="{{'expenseGroup.selectStatus' | translate}}"
+                                [showClear]="true" > 
+                                <!-- [autoDisplayFirst]="false" -->
+                            </p-select>
+                            <label for="status">{{'expenseGroup.status' | translate}}</label>
+                        </span>
+                        <small id="status" *ngIf="expenseTypeForm.get('status')?.invalid && formSubmitted"
+                            class="p-error block">
+                            {{'expenseGroup.statusReq' | translate}}
+                        </small>
+                    </div>
+                    <div class="col">
+                        <button pButton label="{{'button.save' | translate}}" class="p-button-success"
+                            (click)="onSubmit()"></button>
+                    </div>
+                </div>
+            </form>
+        </p-accordion-content>
+    </p-accordion-panel>
+</p-accordion>
+
+<div class="mt-4">
+    <p-panel>
+        <app-datagrid-for-format [Data]="Data" [columns]="columns" [selectedData]="selectedRow"
+            (setSelectedData)="setSelectedRow($event)" [selectionMode]="'single'" [rowUpdate]="true"
+            (onRowUpdating)="onRowUpdate($event)" [rowAdd]="false">
+        </app-datagrid-for-format>
+    </p-panel>
+</div>
+
+<p-toast></p-toast>

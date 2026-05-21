@@ -1,0 +1,32 @@
+[
+  {
+    "label": "MENU.HOME",
+    "icon": "pi pi-home",
+    "routerLink": ["/app"],
+    "styleClass": "menu-item"
+  },
+  {
+    "label": "MENU.USER",
+    "icon": "pi pi-users",
+    "routerLink": ["/app/user-app"],
+    "styleClass": "menu-item"
+  },
+  {
+    "label": "MENU.DYNAMIC_FORM",
+    "icon": "pi pi-file-edit",
+    "routerLink": ["/app/form-app/dynamic-form", "1"],
+    "styleClass": "menu-item"
+  },
+  {
+    "label": "MENU.REPORT",
+    "icon": "pi pi-chart-bar",
+    "routerLink": ["/app/form-app/report"],
+    "styleClass": "menu-item"
+  },
+  {
+    "label": "MENU.COST_RULE",
+    "icon": "pi pi-dollar",
+    "routerLink": ["/app/form-app/cost-rule"],
+    "styleClass": "menu-item"
+  }
+]

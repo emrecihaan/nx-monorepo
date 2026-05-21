@@ -83,6 +83,21 @@
       background: #f8fafc;
       border-radius: 12px;
 
+      .user-avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+        flex-shrink: 0;
+      }
+
       .user-info {
         display: flex;
         flex-direction: column;
@@ -174,6 +189,35 @@
       }
     }
   }
+
+  .profile-item {
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+
+    .profile-avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #eff6ff;
+      color: #3b82f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: 2px solid #dbeafe;
+      transition: all 0.2s;
+      cursor: pointer;
+
+      &:hover {
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+        transform: scale(1.05);
+      }
+    }
+  }
 }
 
 .layout-content {
@@ -203,6 +247,7 @@
       .brand-text {
         background: linear-gradient(135deg, #f8fafc 0%, #3b82f6 100%);
         -webkit-background-clip: text;
+        background-clip: text;
       }
     }
 
@@ -211,6 +256,12 @@
 
       .user-card {
         background: #0f172a;
+
+        .user-avatar-circle {
+          background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+          border: 1px solid #475569;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
 
         .user-name {
           color: #f8fafc;
@@ -244,6 +295,20 @@
           background: #334155 !important;
           color: #60a5fa !important;
         }
+      }
+    }
+  }
+
+  .profile-item {
+    .profile-avatar-circle {
+      background: #1e293b;
+      color: #94a3b8;
+      border-color: #334155;
+
+      &:hover {
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
       }
     }
   }

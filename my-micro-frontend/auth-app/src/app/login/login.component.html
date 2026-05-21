@@ -1,0 +1,58 @@
+<div class="login-page-wrapper">
+    <p-toast></p-toast>
+
+    <!-- Top Header -->
+    <header class="login-header-nav">
+        <div class="header-left">
+            <div class="logo-container">
+                <img src="/assets/images/btc_logo.png" alt="BTC Logo" class="logo-img">
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="lang-selector">
+                <p-button label="TR" [text]="true" [rounded]="true" (onClick)="switchLanguage('tr')"
+                    [severity]="currentLang === 'tr' ? 'info' : 'secondary'"
+                    [class.active]="currentLang === 'tr'"></p-button>
+                <p-button label="EN" [text]="true" [rounded]="true" (onClick)="switchLanguage('en')"
+                    [severity]="currentLang === 'en' ? 'info' : 'secondary'"
+                    [class.active]="currentLang === 'en'"></p-button>
+            </div>
+        </div>
+    </header>
+
+    <div class="login-container">
+        <div class="login-card animate-fade-in">
+            <div class="login-header">
+                <h2>{{ 'LOGIN.WELCOME' | translate }}</h2>
+                <p>{{ 'LOGIN.SUBTITLE' | translate }}</p>
+            </div>
+
+            <div class="form-section">
+                <div class="form-field">
+                    <p-floatlabel>
+                        <input pInputText id="username" type="text" [(ngModel)]="username" class="w-full"
+                            (keydown.enter)="login()" />
+                        <label for="username">{{ 'LOGIN.USERNAME' | translate }}</label>
+                    </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                    <p-floatlabel>
+                        <input pInputText id="password" type="password" [(ngModel)]="password" class="w-full"
+                            (keydown.enter)="login()" />
+                        <label for="password">{{ 'LOGIN.PASSWORD' | translate }}</label>
+                    </p-floatlabel>
+                </div>
+
+                <div class="form-actions">
+                    <p-button [label]="'LOGIN.BUTTON' | translate" [loading]="loading" icon="pi pi-sign-in"
+                        styleClass="w-full" (onClick)="login()"></p-button>
+                </div>
+            </div>
+
+            <div class="login-footer">
+                <p>{{ 'LOGIN.FOOTER' | translate }}</p>
+            </div>
+        </div>
+    </div>
+</div>

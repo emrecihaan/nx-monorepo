@@ -1,13 +1,42 @@
 <nav class="sidebar-nav">
-    <div *ngFor="let item of menuItems" class="nav-item" [routerLink]="item.routerLink" routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: item.routerLink[0] === '/'}" [title]="collapsed ? item.label : ''">
-        <!-- Active Indicator -->
-        <div class="active-indicator"></div>
+    @for (item of menuItems; track item.label) {
+    <div class="nav-item-wrapper">
+        <div class="nav-item" (click)="toggleSubMenu(item)"
+            [routerLinkActive]="item.items && item.items.length > 0 ? '' : 'active'"
+            [routerLinkActiveOptions]="{exact: item.routerLink[0] === '/'}" [title]="collapsed ? item.label : ''">
+            <!-- Active Indicator -->
+            <div class="active-indicator"></div>
 
-        <div class="nav-icon-wrapper">
-            <i [class]="item.icon"></i>
+            <div class="nav-icon-wrapper">
+                <i [class]="item.icon"></i>
+            </div>
+
+            @if (!collapsed) {
+            <span class="nav-label">{{ item.label }}</span>
+            }
+
+            <!-- Expand/Collapse Icon -->
+            @if (!collapsed && item.items && item.items.length > 0) {
+            <div class="expand-icon">
+                <i class="pi" [class.pi-chevron-down]="item.expanded" [class.pi-chevron-right]="!item.expanded"></i>
+            </div>
+            }
         </div>
 
-        <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
+        <!-- Sub Menu Items -->
+        @if (!collapsed && item.items && item.items.length > 0) {
+        <div class="sub-menu" [class.expanded]="item.expanded">
+            @for (subItem of item.items; track subItem.label) {
+            <div class="nav-item sub-item" [routerLink]="subItem.routerLink" routerLinkActive="active"
+                [title]="collapsed ? subItem.label : ''">
+                <div class="nav-icon-wrapper">
+                    <i [class]="subItem.icon"></i>
+                </div>
+                <span class="nav-label">{{ subItem.label }}</span>
+            </div>
+            }
+        </div>
+        }
     </div>
+    }
 </nav>
