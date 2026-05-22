@@ -18,6 +18,7 @@ import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormService } from '@my-micro-frontend/shared-core';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { API } from 'libs/shared-core/src/lib/constants/form/API';
 
 @Component({
@@ -38,7 +39,8 @@ import { API } from 'libs/shared-core/src/lib/constants/form/API';
     DialogModule,
     ToastModule,
     InputTextModule,
-    FloatLabelModule
+    FloatLabelModule,
+    ProgressSpinnerModule
   ],
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
@@ -62,6 +64,7 @@ export class DynamicFormComponent implements OnInit {
   image: any;
   user: any;
   postData: any;
+  isLoading: boolean = true;
 
   selectedRows: any[] = [];
   dynamicColumns: any[] = [];
@@ -121,41 +124,44 @@ export class DynamicFormComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.resetFormState();
+      this.isLoading = true;
       this.dfFormId = params.get('dfformid');
       this.trFormId = params.get('trformid');
 
-      if (this.dfFormId) {
-        this.formService.getDfFormById(this.dfFormId).subscribe((res: any) => {
-          this.dfForm = res.response.dfForm;
-        });
-      }
-
       if (this.trFormId == null) {
-        this.buttonIsVisible = true;
-        this.formName = "";
-        debugger
-        this.formService.getDfFormById(this.dfFormId).subscribe((res: any) => {
-          this.dfForm = res.response.dfForm;
-          this.validationModel = res.response[0].dfFormFieldValidation;
+        this.formService.getDfFormById(this.dfFormId).subscribe({
+          next: (res: any) => {
+            this.dfForm = res.response.dfForm;
+            this.validationModel = res.response[0].dfFormFieldValidation;
 
-          res.response.forEach((formItem: any) => {
-            this.createDynamicForm(formItem);
-          });
+            res.response.forEach((formItem: any) => {
+              this.createDynamicForm(formItem);
+            });
+            this.buttonIsVisible = true;
+            this.isLoading = false;
+          },
+          error: () => this.isLoading = false
         });
       } else {
-        this.formService.getTrFormById(Number(this.trFormId)).subscribe((res: any) => {
-          this.dfFormId = res.response[0].dfform.dfForm.id;
-          res.response.forEach((formItem: any) => {
-            if (this.user && this.user.id == formItem.trForm.userId) {
-              if (formItem.trForm.dfFormStatusId != 3 && formItem.trForm.dfFormStatusId != 2) {
-                this.buttonIsVisible = true;
-              }
-            }
+        this.formService.getTrFormById(Number(this.trFormId)).subscribe({
+          next: (res: any) => {
+            if (res.response && res.response.length > 0) {
+              this.dfFormId = res.response[0].dfform.dfForm.id;
+              res.response.forEach((formItem: any) => {
+                if (this.user && this.user.id == formItem.trForm.userId) {
+                  if (formItem.trForm.dfFormStatusId != 3 && formItem.trForm.dfFormStatusId != 2) {
+                    this.buttonIsVisible = true;
+                  }
+                }
 
-            this.formName = formItem.dfform.dfForm.description || '';
-            this.createDynamicForm(formItem.dfform);
-            this.getData(formItem.trForm.formValues);
-          });
+                this.formName = formItem.dfform.dfForm.description || '';
+                this.createDynamicForm(formItem.dfform);
+                this.getData(formItem.trForm.formValues);
+              });
+            }
+            this.isLoading = false;
+          },
+          error: () => this.isLoading = false
         });
       }
     });

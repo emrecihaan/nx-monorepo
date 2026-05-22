@@ -20,14 +20,24 @@ export class API {
             live: "/api8091/api/PageSub"
         },
         form: {
-            local: "https://localhost:44309/api/DfForm",
-            test: "http://172.28.161.186:8115/api/DfForm",
-            live: "/api8091/api/DfForm"
+            local: "https://localhost:44300/api",
+            test: "http://172.28.161.186/api/form",
+            live: ""
         },
         cost: {
             local: "https://localhost:44309/api/DfCostRule",
             test: "http://172.28.161.186:8115/api/DfCostRule",
             live: "/api8091/api/DfCostRule"
+        },
+        company: {
+            local: "https://localhost:44309/api/Company",
+            test: "http://172.28.161.186/api/system/company",
+            live: "/api8090/api/Company"
+        },
+        dfCostGroup: {
+            local: "https://localhost:44300/api/DfCostGroup",
+            test: "http://172.28.161.186/api/form/DfCostGroup",
+            live: ""
         },
     }
     static base = {

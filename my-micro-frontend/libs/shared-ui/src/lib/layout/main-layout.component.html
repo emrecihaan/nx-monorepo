@@ -3,10 +3,10 @@
 
   <aside class="layout-sidebar">
     <div class="sidebar-header">
-      <div class="brand">
+      <div class="brand" routerLink="/app" style="cursor: pointer;">
         <i class="pi pi-bolt brand-icon"></i>
         @if (!sidebarCollapsed) {
-        <span class="brand-text">ADMIN PANEL</span>
+        <span class="brand-text">BTC Panel</span>
         }
       </div>
     </div>
@@ -33,11 +33,10 @@
       <div class="topbar-left">
         <p-button icon="pi pi-bars" [text]="true" [rounded]="true" (onClick)="toggleSidebar()"
           severity="secondary"></p-button>
-        @if (!sidebarCollapsed) {
-        <div class="breadcrumb">
-          <span class="breadcrumb-item">Dashboard</span>
+        <div class="breadcrumb-wrapper">
+          <p-breadcrumb [model]="breadcrumbItems"
+            [style]="{ background: 'transparent', border: 'none', padding: '0' }"></p-breadcrumb>
         </div>
-        }
       </div>
 
       <div class="topbar-right">

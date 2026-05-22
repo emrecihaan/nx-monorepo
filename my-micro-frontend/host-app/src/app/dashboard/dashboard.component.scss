@@ -6,44 +6,6 @@
         margin-bottom: 2rem;
     }
 
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 1.5rem;
-    }
-
-    .col-12 {
-        grid-column: span 12;
-    }
-
-    .md\:col-6 {
-        @media (min-width: 768px) {
-            grid-column: span 6;
-        }
-    }
-
-    .lg\:col-3 {
-        @media (min-width: 1024px) {
-            grid-column: span 3;
-        }
-    }
-
-    .lg\:col-4 {
-        @media (min-width: 1024px) {
-            grid-column: span 4;
-        }
-    }
-
-    .lg\:col-8 {
-        @media (min-width: 1024px) {
-            grid-column: span 8;
-        }
-    }
-
-    .mt-4 {
-        margin-top: 2rem;
-    }
-
     .card {
         background: #ffffff;
         border-radius: 12px;

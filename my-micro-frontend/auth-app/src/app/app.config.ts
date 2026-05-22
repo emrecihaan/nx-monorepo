@@ -2,7 +2,7 @@ import {
     ApplicationConfig,
     provideBrowserGlobalErrorListeners,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
@@ -19,7 +19,7 @@ import { MessageService } from 'primeng/api';
 export const appConfig: ApplicationConfig = {
     providers: [
         provideBrowserGlobalErrorListeners(),
-        provideRouter(appRoutes),
+        provideRouter(appRoutes, withHashLocation()),
         provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
         provideSharedTranslation(),
         provideDevExtreme(),

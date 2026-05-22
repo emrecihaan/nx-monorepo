@@ -1,0 +1,22 @@
+.expense-group-container {
+    padding: 20px;
+
+    .header1 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .p-error {
+        color: #e24c4c !important; /* PrimeNG Kırmızısı */
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        display: block;
+        font-weight: 500;
+    }
+
+    // Grid içindeki alanların altındaki boşluğu düzenleyelim
+    .col, .col-2, .col-3, .col-1 {
+        padding-bottom: 1.5rem;
+    }
+}
