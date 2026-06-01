@@ -1,8 +1,8 @@
-import { Component, OnInit, Output, EventEmitter, inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { FormService } from '@my-micro-frontend/shared-core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { FormService, GridTranslateService } from '@my-micro-frontend/shared-core';
 import { DatagridForFormatComponent } from '@my-micro-frontend/shared-ui';
 import { MessageService } from 'primeng/api';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
@@ -12,6 +12,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+
 
 @Component({
   selector: 'app-report',
@@ -68,16 +69,18 @@ export class ReportComponent implements OnInit {
   overAmount = 0;
   periodListAll: any;
 
-  private formService = inject(FormService);
-  private router = inject(Router);
-  private messageService = inject(MessageService);
-  private translateService = inject(TranslateService);
-
-  constructor() {
+  constructor(
+    public formService: FormService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private messageService: MessageService,
+    private translateService: TranslateService,
+    public gridTranslate: GridTranslateService,
+    private cdr: ChangeDetectorRef) {
     this.getUser();
   }
-
   ngOnInit(): void {
+
     setTimeout(() => {
       const lang = localStorage.getItem('languageKey');
       if (lang) {
@@ -85,74 +88,106 @@ export class ReportComponent implements OnInit {
         this.translateService.use(lang);
       }
     }, 1000);
+    const today = new Date();
+    const todayStr =
+      today.getFullYear() + '-' +
+      (today.getMonth() + 1).toString().padStart(2, '0') + '-' +
+      today.getDate().toString().padStart(2, '0');
+
+
+    this.formService.getReportByFormId(1, todayStr).subscribe((res) => {
+      if (res.code != "99") {
+        const addedColumns = new Set<string>();
+        const tempColumns: any[] = [];
+        const tempData: any[] = [];
+
+        res.response.forEach((field: any, index: number) => {
+          const parsed = JSON.parse(field.formValues);
+          const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
+          formValues.id = field.id || index;
+          Object.keys(formValues).forEach(key => {
+            if (!addedColumns.has(key)) {
+              tempColumns.push({
+                dataField: key,
+                caption: key.charAt(0).toUpperCase() + key.slice(1)
+              });
+              addedColumns.add(key);
+            }
+          });
+          tempData.push(formValues);
+        });
+        this.gridTranslate.traslateColumns("reportColumns", tempColumns);
+        this.column = tempColumns;
+        this.data = tempData;
+        this.cdr.detectChanges();
+      }
+    })
 
     this.getFormList();
-
-    this.customizeGrid = (columns: any[]) => {
-       // Note: gridTranslate removed as it is absent in target project
-       // Standard translations handled by datagrid component itself or via translateService
-    }
   }
 
   createReport() {
-    if (this.selectedRows == null || this.selectedRows.length == 0) {
+    if (!this.selectedRows || this.selectedRows.length === 0) {
       return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen en az bir kayıt seçiniz!" });
     }
 
     if (this.selectedForm == null) {
       return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen Form seçiniz!" });
     }
-    this.selectedAmounts = this.selectedRows.reduce((total, item) => total + (item.amount || 0), 0);
+
+    // Seçili anahtarlardan gerçek nesneleri bulalım
+    const selectedDataObjects = this.selectedRows.map(key =>
+      typeof key === 'object' ? key : this.data.find(d => d.id === key)
+    ).filter(d => d !== undefined);
+
+    this.selectedAmounts = selectedDataObjects.reduce((total, item) => total + (item.amount || 0), 0);
     this.getBudgetRules();
   }
 
   updateField() {
-    if (this.selectedRow == null) {
-      return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen en az bir kayıt seçiniz!" });
+    if (!this.selectedRows || this.selectedRows.length !== 1) {
+      return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen güncellemek için tek bir kayıt seçiniz!" });
     }
-    this.router.navigate(['/dynamic-form/0', this.selectedRow.id]);
+    const selectedKey = this.selectedRows[0];
+    const selected = typeof selectedKey === 'object' ? selectedKey : this.data.find(d => d.id === selectedKey);
+
+    if (selected) {
+      this.router.navigate(['../dynamic-form/0', selected.id], { relativeTo: this.route });
+    }
   }
 
   deleteField() {
-    if (this.selectedRow == null) {
-      return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen en az bir kayıt seçiniz!" });
+    if (!this.selectedRows || this.selectedRows.length === 0) {
+      return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen silmek için kayıt seçiniz!" });
     }
-    const model = {
-      Id: this.selectedRow.id
-    }
-    let counter = 0;
 
-    if (this.selectedRows.length == 0) {
+    const selectedKey = this.selectedRows[0];
+    const selected = typeof selectedKey === 'object' ? selectedKey : this.data.find(d => d.id === selectedKey);
+
+    if (selected) {
+      const model = {
+        Id: selected.id
+      };
+
       this.formService.deleteTrForm(model).subscribe((res: any) => {
         if (res.code != "99") {
-          this.messageService.add({ severity: 'success', summary: this.translateService.instant("success"), detail: this.translateService.instant("success") });
+          this.messageService.add({
+            severity: 'success',
+            summary: this.translateService.instant("success"),
+            detail: this.translateService.instant("success")
+          });
           window.location.reload();
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: this.translateService.instant("error"),
+            detail: this.translateService.instant(res.errorCode?.toString() || "99")
+          });
         }
-        else {
-          return this.messageService.add({ severity: 'error', summary: this.translateService.instant("error"), detail: this.translateService.instant(res.errorCode.toString()) })
-        }
-      })
-    }
-    else {
-      for (const element of this.selectedRows) {
-        const deleteModel = { Id: element.id };
-        counter = counter + 1;
-        this.formService.deleteTrForm(deleteModel).subscribe((res: any) => {
-          if (res.code != "99") {
-            this.messageService.add({ severity: 'success', summary: this.translateService.instant("success"), detail: this.translateService.instant("success") });
-          }
-          else {
-            this.messageService.add({ severity: 'error', summary: this.translateService.instant("error"), detail: this.translateService.instant(res.errorCode.toString()) })
-          }
-        });
-        if (counter == this.selectedRows.length) {
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        }
-      }
+      });
     }
   }
+
 
   setSelectedRow(selected: any) {
     this.selectedRow = selected;
@@ -262,9 +297,9 @@ export class ReportComponent implements OnInit {
   }
 
   getUser() {
-     // Note: GeneralSystemService removed as it is absent in target project. 
-     // Defaulting to null or dummy if needed.
-     this.user = { id: 1 }; 
+    // Note: GeneralSystemService removed as it is absent in target project. 
+    // Defaulting to null or dummy if needed.
+    this.user = { id: 1 };
   }
 
   createBill() {
@@ -278,11 +313,12 @@ export class ReportComponent implements OnInit {
         const periodItem = this.periodListAll.find((p: any) => p.id == this.selectedPeriod.id);
         const value = periodItem?.value;
         if (value) {
-            const [y, m, d] = value.split('-').map(Number);
-            date = new Date(Date.UTC(y, m - 1, d))
-            this.router.navigate(['/dynamic-form', formDetail.reportedLineFormId], {
-              state: { reportedDate: date }
-            });
+          const [y, m, d] = value.split('-').map(Number);
+          date = new Date(Date.UTC(y, m - 1, d))
+          this.router.navigate(['../dynamic-form', formDetail.reportedLineFormId], {
+            relativeTo: this.route,
+            state: { reportedDate: date }
+          });
         }
       }
       else {
@@ -304,29 +340,36 @@ export class ReportComponent implements OnInit {
         const periodItem = this.periodListAll.find((p: any) => p.id == this.selectedPeriod.id);
         const value = periodItem?.value;
         if (value) {
-            const [y, m, d] = value.split('-').map(Number);
-            date = new Date(Date.UTC(y, m - 1, d)).toISOString();
+          const [y, m, d] = value.split('-').map(Number);
+          date = new Date(Date.UTC(y, m - 1, d)).toISOString();
         }
       }
 
       this.formService.getReportByFormId(formDetail.reportedLineFormId, date).subscribe((res: any) => {
         if (res.code != "99") {
           const addedColumns = new Set<string>();
+          const tempColumns: any[] = [];
+          const tempData: any[] = [];
+
           res.response.forEach((field: any) => {
             const parsed = JSON.parse(field.formValues);
             const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
             formValues.id = field.id;
             Object.keys(formValues).forEach(key => {
               if (!addedColumns.has(key)) {
-                this.column.push({
+                tempColumns.push({
                   dataField: key,
                   caption: key.charAt(0).toUpperCase() + key.slice(1)
                 });
                 addedColumns.add(key);
               }
             });
-            this.data.push(formValues);
+            tempData.push(formValues);
           });
+          this.gridTranslate.traslateColumns("reportColumns", tempColumns);
+          this.column = tempColumns;
+          this.data = tempData;
+          this.cdr.detectChanges();
         }
       })
     }

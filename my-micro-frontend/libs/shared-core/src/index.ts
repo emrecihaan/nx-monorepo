@@ -21,5 +21,12 @@ export * from './lib/guards/auth.guard';
 export * from './lib/i18n/i18n.provider';
 export * from './lib/constants/base/API';
 export * from './lib/constants/form/form-urls.constant';
+
+export * from './lib/services/form/form.service';
+export * from './lib/services/breadcrumb.service';
+export * from './lib/services/company/company.service';
+export * from './lib/services/expense-group/expense-group.service';
+
 export * from './lib/constants/constants/system-api-urls.constant';
 export * from './lib/services/form/form.service';
+

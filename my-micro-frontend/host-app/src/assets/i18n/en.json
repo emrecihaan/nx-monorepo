@@ -76,5 +76,50 @@
         "TOKEN_ERROR": "Could not retrieve token.",
         "LOGIN_SUCCESS": "Login successful.",
         "LOGIN_FAILED": "Login failed. Please check your credentials."
+    },
+    "button": {
+        "add": "Create",
+        "delete": "Delete",
+        "update": "Update",
+        "createReport": "Create Report",
+        "createBill": "Create Bill",
+        "search": "Search",
+        "cancel": "Cancel",
+        "export": "Export"
+    },
+    "reportColumns": {
+        "date": "Tarih",
+        "paymentType": "Ödeme Türü",
+        "department": "Bölüm",
+        "expenseType": "Masraf Türü",
+        "documentNo": "Belge No",
+        "title": "Unvan",
+        "identityNo": "Kimlik No",
+        "expenseDescription": "Masraf Açıklaması",
+        "fisDetay": "Fiş Detay",
+        "id": "Id",
+        "documentType": "Belge Türü",
+        "seriNo": "Seri No",
+        "advensePayment": "Avans Ödemesi",
+        "sureDeleteParameterValue": "Parametre Değeri silinecektir kabul ediyor musunuz ?"
+    },
+    "expenseRequestColumns": {
+        "buttons": "",
+        "id": "ID",
+        "status": "Durum",
+        "activity": "Aktivite",
+        "year": "Yıl",
+        "month": "Ay",
+        "amount": "Tutar",
+        "amountExcludingVat": "KDV Hariç",
+        "budgetOverrun": "Bütçe Aşımı",
+        "requestOwner": "Talep Sahibi",
+        "personnelCode": "Personel Kodu",
+        "paymentType": "Ödeme Türü",
+        "odk": "ÖDK",
+        "ledger": "Kebir",
+        "requestHandler": "Talep Kimde",
+        "evaluation": "Değerlendirme",
+        "transferInfo": "Aktarım Bilgisi"
     }
 }

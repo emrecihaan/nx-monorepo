@@ -1,7 +1,7 @@
 import { API } from "../base/API";
 
 export const BASE_URL = API.baseRoute(API.apiType) + API.serviceRoute("form", API.apiType);
-export const GET_DF_FORM_BY_ID = `${BASE_URL}/getDfFormById`;
+export const GET_DF_FORM_BY_ID = `${BASE_URL}/DfForm/getDfFormById`;
 export const GET_DF_FORMFIELDS_BY_FIELDID = `${BASE_URL}/DfFormFields/getDfFormFieldsByFieldId`;
 export const SAVE_TR_FORM = `${BASE_URL}/TrForm/saveTrForm`;
 export const GET_TR_FORM_BY_ID = `${BASE_URL}/TrForm/getTrFormById`;

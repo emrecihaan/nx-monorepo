@@ -1,52 +1,46 @@
 .form-wrapper {
-    // background-color: #f0f0f0; /* Gri zemin */
-    //padding: 1rem;
     border-radius: 8px;
     box-sizing: border-box;
     width: 100%;
 }
 
-.left-form .full-width {
-    width: 100%;
+.form-wrapper {
+    input:not([type="checkbox"]):not([type="radio"]),
+    p-select,
+    p-datepicker,
+    p-inputtext,
+    p-inputmask,
+    textarea {
+        width: 100% !important;
+        box-sizing: border-box;
+    }
 }
 
-.left-form input,
-.left-form p-dropdown,
-.left-form p-calendar,
-.left-form textarea {
-    width: 100%;
+::ng-deep {
+    .p-datepicker, 
+    .p-datepicker-input,
+    .p-select,
+    .p-inputtext,
+    .p-inputmask-input {
+        width: 100% !important;
+    }
+
+    .p-floatlabel {
+        width: 100%;
+        display: block;
+        
+        input, p-datepicker, p-select {
+            width: 100% !important;
+        }
+    }
 }
 
-.preview-area img {
-    max-width: 100%;
-    max-height: 200px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.form-wrapper  input:not([type="checkbox"]):not([type="radio"]),
-.form-wrapper p-dropdown,
-.form-wrapper p-calendar,
-.form-wrapper p-inputtext,
-.form-wrapper textarea {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-::ng-deep  .p-calendar {
-    width: 100% !important;
-}
-
-::ng-deep  .p-calendar input {
-    width: 100% !important;
-    box-sizing: border-box;
-}
-
-::ng-deep   .p-dropdown {
-    width: 100% !important;
-}
-
-::ng-deep  .p-dropdown input {
-    width: 100% !important;
-    box-sizing: border-box;
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    gap: 1rem;
+    color: var(--text-muted, #64748b);
 }

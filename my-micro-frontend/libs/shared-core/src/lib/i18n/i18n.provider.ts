@@ -5,8 +5,8 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export function initializeI18n(translate: TranslateService) {
     return () => {
-        translate.setDefaultLang('en');
-        return translate.use('en');
+        translate.setDefaultLang('tr');
+        return translate.use('tr');
     };
 }
 

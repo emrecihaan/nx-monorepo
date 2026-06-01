@@ -77,18 +77,33 @@ export class MenuComponent implements OnInit {
         for (const page of pages) {
           let newPage: MenuItem;
           const translatedLabel = this.translate.instant(`${page.pageName}`);
+          let appPrefix = '/app';
+          const pageNameLower = page.pageName?.toLowerCase() || '';
+          if (pageNameLower.includes('masraf') || pageNameLower.includes('form')) {
+            appPrefix = '/app/form-app';
+          } else if (pageNameLower.includes('kullanıcı') || pageNameLower.includes('user')) {
+            appPrefix = '/app/user-app';
+          } else if (pageNameLower.includes('iş akış') || pageNameLower.includes('workflow')) {
+            appPrefix = '/app/workflow-app';
+          }
           if (page.subPages && page.subPages.length > 0) {
             newPage = { label: translatedLabel, icon: page.icon, routerLink: ['/'], items: [] };
             for (const pageSub of page.subPages) {
               const translatedSubLabel = this.translate.instant(`${pageSub.subPageName}`);
-              const subUrl = pageSub.url ? (pageSub.url.startsWith('/') ? pageSub.url : '/' + pageSub.url) : '/';
-              const newSubPage: MenuItem = { label: translatedSubLabel, icon: pageSub.icon, routerLink: [subUrl] };
+              let finalUrl = pageSub.url;
+              if (finalUrl && !finalUrl.startsWith('/app')) {
+                finalUrl = appPrefix + (finalUrl.startsWith('/') ? finalUrl : '/' + finalUrl);
+              }
+              const newSubPage: MenuItem = { label: translatedSubLabel, icon: pageSub.icon, routerLink: [finalUrl] };
               newPage.items?.push(newSubPage);
             }
           }
           else {
-            const mainUrl = page.url ? (page.url.startsWith('/') ? page.url : '/' + page.url) : '/';
-            newPage = { label: page.pageName, icon: page.icon, routerLink: [mainUrl] };
+            let finalUrl = '/';
+            if (page.url && !page.url.startsWith('/app') && page.url !== '/') {
+              finalUrl = appPrefix + (page.url.startsWith('/') ? page.url : '/' + page.url);
+            }
+            newPage = { label: page.pageName, icon: page.icon, routerLink: [finalUrl] };
           }
           modelList.push(newPage);
         }

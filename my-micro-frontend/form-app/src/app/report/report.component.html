@@ -1,47 +1,31 @@
-<div class="formgroup-inline mt-3">
-    <p-floatlabel class="ml-1 mt-1">
+<div class="top-bar animate-fade-in">
+    <div class="filters-left">
         <p-select [options]="formList" optionLabel="name" [(ngModel)]="selectedForm" [filter]="true" filterBy="name"
-            (onChange)="changeSelectedForm($event)" placeholder="Form Seçiniz" [style]="{ width: '100%' }"></p-select>
-        <label for="description"> {{'dfForm' | translate}} </label>
-    </p-floatlabel>
-    <p-floatlabel class="ml-1 mt-1">
-        <p-select [options]="periodList" optionLabel="name" [(ngModel)]="selectedPeriod" [filter]="true"
-            filterBy="name" placeholder="Dönem Seçiniz" [style]="{ width: '100%' }"></p-select>
-        <label for="description"> {{'quarter' | translate}} </label>
-    </p-floatlabel>
-
-    <p-floatlabel class="ml-1 mt-1">
+            (onChange)="changeSelectedForm($event)" placeholder="Form"></p-select>
+        <p-select [options]="periodList" optionLabel="name" [(ngModel)]="selectedPeriod" [filter]="true" filterBy="name"
+            placeholder="Dönem"></p-select>
         <p-select [options]="currencyList" optionLabel="name" [(ngModel)]="selectedCurrency" [filter]="true"
-            filterBy="name" placeholder="Kur Seçiniz" [style]="{ width: '100%' }"></p-select>
-        <label for="description"> {{'currency' | translate}} </label>
-    </p-floatlabel>
-
-    <span class="ml-1 mt-1">
-        <button pButton pRipple label="Ara" class="p-button-secondary mr-2" (click)="searchReports()"
-            style="float: right;"></button>
-    </span>
-    <div class="col justify-content-end">
-        <button pButton pRipple label="{{'button.createReport' | translate}}" class="p-button-primary mr-2"
-            (click)="createReport()" style="float: right;"></button>
-        <button pButton pRipple label="{{'button.update' | translate}}" class="p-button-warning mr-2"
-            style="float: right;" (click)="updateField()"></button>
-
-        <button pButton pRipple label="{{'button.delete' | translate}}" class="p-button-danger mr-2"
-            (click)="deleteField()" style="float: right;"></button>
-        <button pButton pRipple label="Fiş Oluştur" class="p-button-secondary mr-2" (click)="createBill()"
-            style="float: right;"></button>
+            filterBy="name" placeholder="Para Birimi"></p-select>
+        <button pButton label="Ara" class="btn-ara" (click)="searchReports()" icon="pi pi-search"></button>
     </div>
 
+    <div class="actions-right">
+        <button pButton label="Fiş Oluştur" class="btn-fis" (click)="createBill()" icon="pi pi-folder-plus"></button>
+        <button pButton label="Sil" class="btn-sil" (click)="deleteField()" icon="pi pi-trash"></button>
+        <button pButton label="Güncelle" class="btn-guncelle" (click)="updateField()" icon="pi pi-sync"></button>
+        <button pButton label="Rapor Oluştur" class="btn-rapor" (click)="createReport()"
+            icon="pi pi-file-export"></button>
+    </div>
 </div>
 
 <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
-    [selectedRows]="selectedRows" (setSelectedData)="setSelectedRow($event)" (setSelectedRows)="setSelectedRows($event)"
-    [selectionMode]="'multipleButOneColumn'" #gridRef [columns]="column"></app-datagrid-for-format>
+    [selectedRows]="selectedRows" [keyExpr]="'id'" (setSelectedData)="setSelectedRow($event)"
+    (setSelectedRows)="setSelectedRows($event)" [selectionMode]="'single'" #gridRef
+    [columns]="column"></app-datagrid-for-format>
 
 <p-dialog *ngIf="difference==true" header="Bütçe Kuralı" [modal]="true" [(visible)]="difference"
     [style]="{ width: '65rem',height:'25rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
     [maximizable]="true">
-
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col-12 p-md-6">
             <p style="font-weight: 800;">Bütçe Kuralından dolayı Masrafınız onaylanamamaktadır </p>
@@ -60,7 +44,6 @@
             <input id="name" type="number" pInputText [(ngModel)]="overAmount" />
         </div>
     </div>
-
     <div class="mt-8 flex justify-content-end">
         <button type="button" pButton label="İptal" icon="pi pi-times" class="p-button-danger "
             (click)="difference=false"></button>
