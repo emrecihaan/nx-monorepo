@@ -141,7 +141,7 @@
     },
 
     "success": "Başarılı",
-    "error": "Hata"
+    "error": "Hata",
 
     "parameterType": {
         "title": "Parametre Tipi Listesi",
