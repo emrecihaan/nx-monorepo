@@ -28,7 +28,7 @@ export const UPDATE_PARAMETER_TYPE = `${BASE_URL}/DfFormParameterType/UpdateDfFo
 
 export const DELETE_PARAMETER_TYPE = `${BASE_URL}/DfFormParameterType/DeleteDfFormParameterType`;
 
-export const  GET_FORM_PARAMETER_VALUE_LIST  = `${BASE_URL}/DfFormParameterValue/GetFormParameterValueListByTypeId`;
+export const GET_FORM_PARAMETER_VALUE_LIST = `${BASE_URL}/DfFormParameterValue/GetFormParameterValueListByTypeId`;
 
 export const CREATE_PARAMETER_VALUE = `${BASE_URL}/DfFormParameterValue/CreateDfFormParameterValue`;
 
@@ -37,7 +37,7 @@ export const UPDATE_PARAMETER_VALUE = `${BASE_URL}/DfFormParameterValue/UpdateDf
 export const DELETE_PARAMETER_VALUE = `${BASE_URL}/DfFormParameterValue/DeleteDfFormParameterValue`;
 
 //Expense Type
-export const GET_ALL_COST_TYPE = `${BASE_URL}/DfCostType/getDfCostTypes`; 
+export const GET_ALL_COST_TYPE = `${BASE_URL}/DfCostType/getDfCostTypes`;
 
 export const SAVE_OR_UPDATE_COST_TYPE = `${BASE_URL}/DfCostType/SaveOrUpdateCostType`
 
@@ -45,3 +45,7 @@ export const SAVE_OR_UPDATE_COST_TYPE = `${BASE_URL}/DfCostType/SaveOrUpdateCost
 export const GET_ALL_USER_PROXY = `${BASE_URL}/DfUserProxy/getAllDfUserProxy`;
 
 export const SAVE_OR_UPDATE_USER_PROXY = `${BASE_URL}/DfUserProxy/SaveOrUpdateUserProxy`;
+
+export const GET_FORM_LIST_BY_DFFORMID = `${BASE_URL}/TrForm/getFormListByDfFormId`;
+
+export const GET_FORM_LIST_BY_DFFORMID_AND_USERID = `${BASE_URL}/TrForm/getFormListByDfFormIdAndUserId`;
