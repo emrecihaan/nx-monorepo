@@ -119,6 +119,12 @@ export class DynamicFormComponent implements OnInit {
     this.editableDynamicColumns = [];
     this.dfFormId = null;
     this.trFormId = null;
+    this.internalForms = [];
+    this.fieldValues = {};
+    this.dynamicColumns = [];
+    this.selectedRows = [];
+    this.disabledFields = {};
+    this.uploadedFileGuid = null;
   }
 
   ngOnInit(): void {
@@ -139,8 +145,12 @@ export class DynamicFormComponent implements OnInit {
             });
             this.buttonIsVisible = true;
             this.isLoading = false;
+            this.cdRef.detectChanges();
           },
-          error: () => this.isLoading = false
+          error: () => {
+            this.isLoading = false;
+            this.cdRef.detectChanges();
+          }
         });
       } else {
         this.formService.getTrFormById(Number(this.trFormId)).subscribe({
@@ -160,8 +170,12 @@ export class DynamicFormComponent implements OnInit {
               });
             }
             this.isLoading = false;
+            this.cdRef.detectChanges();
           },
-          error: () => this.isLoading = false
+          error: () => {
+            this.isLoading = false;
+            this.cdRef.detectChanges();
+          }
         });
       }
     });
@@ -356,6 +370,7 @@ export class DynamicFormComponent implements OnInit {
               let parsed: any = res?.response;
               if (typeof parsed === 'string') parsed = JSON.parse(parsed);
               newField.options = parsed || [];
+              this.cdRef.detectChanges();
             });
           } else if (field.definedData) {
             let parsed: any = field.definedData;

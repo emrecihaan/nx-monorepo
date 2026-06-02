@@ -2,7 +2,9 @@
   display: flex;
   min-height: 100vh;
   background: #f8fafc;
-  transition: background 0.3s;
+  transition: background 0.3s, padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-left: 320px;
+  overflow-x: hidden;
 
   &.dark-theme {
     background: #0f172a;
@@ -10,12 +12,10 @@
   }
 
   &.sidebar-collapsed {
+    padding-left: 80px;
+
     .layout-sidebar {
       width: 80px;
-    }
-
-    .layout-main {
-      margin-left: 80px;
     }
   }
 }
@@ -68,6 +68,7 @@
   .sidebar-content {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 1rem 0;
   }
 
@@ -119,11 +120,9 @@
 
 .layout-main {
   flex: 1;
-  margin-left: 320px;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .layout-topbar {
@@ -338,6 +337,10 @@
 
 /* Responsive */
 @media (max-width: 991px) {
+  .layout-wrapper {
+    padding-left: 0;
+  }
+
   .layout-sidebar {
     transform: translateX(-100%);
 

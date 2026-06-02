@@ -46,7 +46,9 @@
     .nav-label {
         font-size: 0.95rem;
         font-weight: 500;
-        white-space: nowrap;
+        white-space: normal;
+        word-break: break-word;
+        line-height: 1.4;
         transition: color 0.3s;
     }
 
@@ -111,7 +113,7 @@
     opacity: 0;
 
     &.expanded {
-        max-height: 1000px;
+        max-height: 3000px;
         /* Large enough for many items */
         opacity: 1;
         margin-bottom: 0.5rem;
