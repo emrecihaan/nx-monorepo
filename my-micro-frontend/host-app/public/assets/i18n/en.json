@@ -126,5 +126,16 @@
         "statusReq": "Status is required",
         "selectCompany": "Select Company",
         "selectStatus": "Select Status"
+    },
+    "budgetReport": {
+        "title": "Budget Report",
+        "formTitle": "Search Criteria",
+        "form": "Select Form",
+        "user": "Select User",
+        "status": "Select Status",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "search": "Search",
+        "statistics": "Statistics"
     }
 }
