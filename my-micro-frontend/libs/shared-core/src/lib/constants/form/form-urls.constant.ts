@@ -53,3 +53,7 @@ export const GET_FORM_LIST_BY_DFFORMID_AND_USERID = `${BASE_URL}/TrForm/getFormL
 export const GET_ALL_DF_FORM = `${BASE_URL}/DfForm/getAllDfForm`;
 
 export const GET_USER_TRFORM_REPORT = `${BASE_URL}/TrForm/GetUserTrFormReport`;
+
+export const GET_EXPENSE_REQUEST_FORMS = `${BASE_URL}/TrForm/GetExpenseRequestForms`;
+
+export const SEND_SAP = `${BASE_URL}/TrForm/sendSAP`

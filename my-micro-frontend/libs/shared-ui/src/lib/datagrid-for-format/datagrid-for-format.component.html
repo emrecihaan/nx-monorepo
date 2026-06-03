@@ -91,5 +91,15 @@
             </dxi-total-item>
         </dxo-summary>
 
+        <dxo-master-detail *ngIf="detailColumns" [enabled]="true" template="detail"></dxo-master-detail>
+        <div *dxTemplate="let detail of 'detail'">
+            <div class="master-detail-caption" *ngIf="detailHeader">{{detailHeader}}</div>
+            <dx-data-grid [dataSource]="detail.data[detailDataField]" [showBorders]="true" [columnAutoWidth]="true">
+                <dxi-column *ngFor="let colm of detailColumns" [dataField]="colm.dataField"
+                    [caption]="colm.caption" [format]="colm.format" [dataType]="dataTypeFunc(colm)">
+                </dxi-column>
+            </dx-data-grid>
+        </div>
+
     </dx-data-grid>
 </div>
