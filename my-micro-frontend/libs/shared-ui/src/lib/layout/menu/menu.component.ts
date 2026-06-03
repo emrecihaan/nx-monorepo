@@ -81,6 +81,8 @@ export class MenuComponent implements OnInit {
           const pageNameLower = page.pageName?.toLowerCase() || '';
           if (pageNameLower.includes('budget-report') || pageNameLower.includes('bütçe')) {
             appPrefix = '/app/workflow-app';
+          } else if (pageNameLower.includes('masraf erp')) {
+            appPrefix = '/app/workflow-app';
           } else if (pageNameLower.includes('masraf') || pageNameLower.includes('form')) {
             appPrefix = '/app/form-app';
           } else if (pageNameLower.includes('kullanıcı') || pageNameLower.includes('user')) {
@@ -99,6 +101,9 @@ export class MenuComponent implements OnInit {
               if (finalUrl && finalUrl.includes('budgetreportuser')) {
                 finalUrl = '/app/workflow-app/budgetreportuser';
               }
+              if (finalUrl && finalUrl.includes('expense-request')) {
+                finalUrl = '/app/workflow-app/expense-request';
+              }
               const newSubPage: MenuItem = { label: translatedSubLabel, icon: pageSub.icon, routerLink: [finalUrl] };
               newPage.items?.push(newSubPage);
             }
@@ -110,6 +115,9 @@ export class MenuComponent implements OnInit {
             }
             if (finalUrl && finalUrl.includes('budgetreportuser')) {
               finalUrl = '/app/workflow-app/budgetreportuser';
+            }
+            if (finalUrl && finalUrl.includes('expense-request')) {
+              finalUrl = '/app/workflow-app/expense-request';
             }
             newPage = { label: page.pageName, icon: page.icon, routerLink: [finalUrl] };
           }
