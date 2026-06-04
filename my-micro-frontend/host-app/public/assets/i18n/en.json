@@ -31,7 +31,8 @@
         "USER": "User App",
         "SAP": "SAP App",
         "REPORT": "Reports",
-        "DYNAMIC_FORM": "Dynamic Form"
+        "DYNAMIC_FORM": "Dynamic Form",
+        "WORKFLOW_FORM": "Workflow Form"
     },
     "USER": {
         "TITLE": "User Panel",
@@ -126,5 +127,45 @@
         "statusReq": "Status is required",
         "selectCompany": "Select Company",
         "selectStatus": "Select Status"
+    },
+    "formListColumns": {
+        "id": "Id",
+        "dfForm.description": "Description",
+        "formValues": "Form Values",
+        "userName": "Username",
+        "statusName": "Status Name",
+        "formApplyCycle": "Form Apply Cycle"
+    },
+    "button": {
+        "save": "Save",
+        "detail": "Detail"
+    },
+    "workFlow": {
+        "title": "Workflows",
+        "formTitle": "Workflow Search",
+        "formTypeName": "Form Type",
+        "startDate": "Start Date",
+        "finishDate": "End Date",
+        "search": "Search"
+    },
+    "fieldWarning": "Please select a row.",
+    "expenseCenterForm": {
+        "title": "Expense Center",
+        "formTitle": "Expense Center Form",
+        "kostl": "KOSTL",
+        "kostlReq": "KOSTL Required",
+        "text": "Expense Center Name",
+        "textReq": "Expense Center Name Required",
+        "startDate": "Start Date",
+        "startDateReq": "Start Date Required",
+        "endDate": "End Date",
+        "endDateReq": "End Date Required",
+        "status": "Status",
+        "company": "Company",
+        "companyReq": "Company Required",
+        "selectCompany": "Select Company",
+        "selectStatus": "Select Status",
+        "statusReq": "Status Required",
+        "endDateBeforeStartDate": "End Date must be after Start Date."
     }
 }

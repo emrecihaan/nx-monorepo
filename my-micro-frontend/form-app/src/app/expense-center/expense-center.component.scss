@@ -1,4 +1,5 @@
-.workflow-form-container {
+/* Empty SCSS for expense-center */
+.expense-center-container {
     padding: 20px;
 
     .header1 {
@@ -9,12 +10,14 @@
 
     .p-error {
         color: #e24c4c !important;
+        /* PrimeNG Kırmızısı */
         font-size: 0.85rem;
         margin-top: 0.25rem;
         display: block;
         font-weight: 500;
     }
 
+    // Grid içindeki alanların altındaki boşluğu düzenleyelim
     .col,
     .col-2,
     .col-3,

@@ -49,3 +49,7 @@ export const SAVE_OR_UPDATE_USER_PROXY = `${BASE_URL}/DfUserProxy/SaveOrUpdateUs
 export const GET_FORM_LIST_BY_DFFORMID = `${BASE_URL}/TrForm/getFormListByDfFormId`;
 
 export const GET_FORM_LIST_BY_DFFORMID_AND_USERID = `${BASE_URL}/TrForm/getFormListByDfFormIdAndUserId`;
+
+export const GET_ALL_COST_CENTERS = `${BASE_URL}/DfCostCenter/getAllDfCostCenters`;
+
+export const SAVE_OR_UPDATE_COST_CENTER = `${BASE_URL}/DfCostCenter/SaveOrUpdateCostCenter`;

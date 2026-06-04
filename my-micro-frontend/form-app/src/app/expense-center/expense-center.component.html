@@ -1,0 +1,97 @@
+<div class="expense-center-container">
+    <h1 class="header1">{{'expenseCenterForm.title' | translate}}</h1>
+
+    <p-accordion [value]="0">
+        <p-accordion-panel [value]="0">
+            <p-accordion-header>{{'expenseCenterForm.formTitle' | translate}}</p-accordion-header>
+            <p-accordion-content>
+                <form *ngIf="expenseCenterForm" [formGroup]="expenseCenterForm" class="p-fluid">
+                    <div class="grid align-items-start">
+                        <div class="col-2 mt-4">
+                            <p-floatlabel>
+                                <input id="kostl" type="text" pInputText formControlName="kostl" />
+                                <label for="kostl">{{'expenseCenterForm.kostl' | translate}}</label>
+                            </p-floatlabel>
+                            <small id="kostl" *ngIf="expenseCenterForm.get('kostl')?.invalid && formSubmitted"
+                                class="p-error block"> {{'expenseCenterForm.kostlReq' |
+                                translate}}</small>
+                        </div>
+                        <div class="col-2 mt-4">
+                            <p-floatlabel>
+                                <input id="text" type="text" pInputText formControlName="text" />
+                                <label for="text">{{'expenseCenterForm.text' | translate}}</label>
+                            </p-floatlabel>
+                            <small id="text" *ngIf="expenseCenterForm.get('text')?.invalid && formSubmitted"
+                                class="p-error block"> {{'expenseCenterForm.textReq' |
+                                translate}}</small>
+                        </div>
+                        <div class="col-2 mt-4">
+                            <p-floatlabel>
+                                <p-datepicker id="startDate" formControlName="startDate" dateFormat="dd/mm/yy"
+                                    [showIcon]="true"></p-datepicker>
+                                <label for="startDate">{{'expenseCenterForm.startDate' | translate}}</label>
+                            </p-floatlabel>
+                            <small id="startDate" *ngIf="expenseCenterForm.get('startDate')?.invalid && formSubmitted"
+                                class="p-error block"> {{'expenseCenterForm.startDateReq' |
+                                translate}}</small>
+                        </div>
+                        <div class="col-2 mt-4">
+                            <p-floatlabel>
+                                <p-datepicker id="endDate" formControlName="endDate" dateFormat="dd/mm/yy"
+                                    [showIcon]="true"></p-datepicker>
+                                <label for="endDate">{{'expenseCenterForm.endDate' | translate}}</label>
+                            </p-floatlabel>
+                            <small id="endDate" *ngIf="expenseCenterForm.get('endDate')?.invalid && formSubmitted"
+                                class="p-error block">
+                                {{'expenseCenterForm.endDateReq' |
+                                translate}}</small>
+                            <small id="dateRange"
+                                *ngIf="expenseCenterForm.errors?.['dateRangeInvalid'] && formSubmitted"
+                                class="p-error block">
+                                {{'expenseCenterForm.endDateBeforeStartDate' | translate}}</small>
+                        </div>
+                        <div class="col-2 mt-4">
+                            <p-floatlabel>
+                                <p-select id="company" [options]="companyList" optionLabel="name" optionValue="id"
+                                    formControlName="company"
+                                    placeholder="{{'expenseCenterForm.selectCompany' | translate}}">
+                                </p-select>
+                                <label for="company">{{'expenseCenterForm.company' | translate}}</label>
+                            </p-floatlabel>
+                            <small id="company" *ngIf="expenseCenterForm.get('company')?.invalid && formSubmitted"
+                                class="p-error block">
+                                {{'expenseCenterForm.companyReq' | translate}}
+                            </small>
+                        </div>
+                        <div class="col-2 mt-4">
+                            <p-floatlabel>
+                                <p-select id="status" [options]="statusOptions" formControlName="status"
+                                    optionLabel="name" optionValue="id"
+                                    placeholder="{{'expenseGroup.selectStatus' | translate}}" [showClear]="true">
+                                    <!-- [autoDisplayFirst]="false" -->
+                                </p-select>
+                                <label for="status">{{'expenseGroup.status' | translate}}</label>
+                            </p-floatlabel>
+                            <small id="status" *ngIf="expenseCenterForm.get('status')?.invalid && formSubmitted"
+                                class="p-error block">
+                                {{'expenseGroup.statusReq' | translate}}
+                            </small>
+                        </div>
+                        <div class="col-1 mt-4 flex align-items-start">
+                            <button pButton label="{{'button.save' | translate}}" class="p-button-success"
+                                (click)="onSubmit()"></button>
+                        </div>
+                    </div>
+                </form>
+            </p-accordion-content>
+        </p-accordion-panel>
+    </p-accordion>
+    <div class="mt-4">
+        <p-panel>
+            <app-datagrid-for-format [Data]="Data" [columns]="columns" [selectedData]="selectedRow"
+                (setSelectedData)="setSelectedRow($event)" [selectionMode]="'single'" [editingMode]="'row'"
+                (onRowUpdating)="onRowUpdate($event)" [rowAdd]="false">
+            </app-datagrid-for-format>
+        </p-panel>
+    </div>
+</div>
