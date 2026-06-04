@@ -50,6 +50,9 @@ export const GET_FORM_LIST_BY_DFFORMID = `${BASE_URL}/TrForm/getFormListByDfForm
 
 export const GET_FORM_LIST_BY_DFFORMID_AND_USERID = `${BASE_URL}/TrForm/getFormListByDfFormIdAndUserId`;
 
+export const GET_ALL_COST_CENTERS = `${BASE_URL}/DfCostCenter/getAllDfCostCenters`;
+
+export const SAVE_OR_UPDATE_COST_CENTER = `${BASE_URL}/DfCostCenter/SaveOrUpdateCostCenter`;
 export const GET_ALL_DF_FORM = `${BASE_URL}/DfForm/getAllDfForm`;
 
 export const GET_USER_TRFORM_REPORT = `${BASE_URL}/TrForm/GetUserTrFormReport`;

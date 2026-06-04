@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -94,7 +94,6 @@ export class WorkflowFormComponent implements OnInit {
   private systemService = inject(SystemService);
   private translateService = inject(TranslateService);
   private messageService = inject(MessageService);
-  private datePipe = inject(DatePipe);
   private router = inject(Router);
 
   constructor() { }
@@ -107,7 +106,6 @@ export class WorkflowFormComponent implements OnInit {
         for (const iterator of columns) {
           iterator.caption = this.translateService.instant("formListColumns" + "." + iterator.name);
         }
-        //this.gridTranslate.traslateColumns("formListColumns", columns);
       }
     }, 1000);
   }
@@ -140,7 +138,7 @@ export class WorkflowFormComponent implements OnInit {
     else {
       this.messageService.add({
         severity: 'warn',
-        summary: this.translateService.instant("warning"),
+        summary: this.translateService.instant("WARNING"),
         detail: this.translateService.instant("fieldWarning")
       });
     }
