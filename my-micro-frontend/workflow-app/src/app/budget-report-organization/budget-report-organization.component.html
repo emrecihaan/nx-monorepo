@@ -1,0 +1,78 @@
+<div class="budget-report-container">
+    <h1 class="header1">{{'budgetReport.title' | translate}}</h1>
+    <p-accordion [value]="0">
+        <p-accordion-panel [value]="0">
+            <p-accordion-header>{{'budgetReport.formTitle' | translate}}</p-accordion-header>
+            <p-accordion-content>
+                <div class="p-fluid">
+                    <div class="grid align-items-start">
+                        <div class="col-12 md:col-2 mt-4">
+                            <p-floatlabel *ngIf="formList">
+                                <p-select inputId="formSelect" [options]="formList" optionLabel="name"
+                                    [(ngModel)]="selectedForm" (onChange)="changeSelectedForm($event)" showClear="true"
+                                    filter="true" styleClass="w-full"></p-select>
+                                <label for="formSelect">{{'budgetReport.form' | translate }}</label>
+                            </p-floatlabel>
+                        </div>
+
+                        <div class="col-12 md:col-2 mt-4">
+                            <p-floatlabel *ngIf="organizationList">
+                                <p-select inputId="orgSelect" [options]="organizationList" optionLabel="name"
+                                    [(ngModel)]="selectedOrganization" (onChange)="changeSelectedOrganization($event)"
+                                    showClear="true" filter="true" styleClass="w-full"></p-select>
+                                <label for="orgSelect">{{'budgetReport.organization' | translate }}</label>
+                            </p-floatlabel>
+                        </div>
+
+                        <div class="col-12 md:col-2 mt-4">
+                            <p-floatlabel *ngIf="statusList">
+                                <p-select inputId="statusSelect" [options]="statusList" optionLabel="name"
+                                    [(ngModel)]="selectedStatus" (onChange)="changeSelectedStatus($event)"
+                                    showClear="true" filter="true" styleClass="w-full"></p-select>
+                                <label for="statusSelect">{{'budgetReport.status' | translate }}</label>
+                            </p-floatlabel>
+                        </div>
+
+                        <div class="col-12 md:col mt-4">
+                            <p-floatlabel>
+                                <p-datepicker inputId="startDate" [(ngModel)]="startDate" dateFormat="dd.mm.yy"
+                                    styleClass="w-full"></p-datepicker>
+                                <label for="startDate">{{'budgetReport.startDate' | translate }}</label>
+                            </p-floatlabel>
+                        </div>
+
+                        <div class="col-12 md:col mt-4">
+                            <p-floatlabel>
+                                <p-datepicker inputId="endDate" [(ngModel)]="endDate" dateFormat="dd.mm.yy"
+                                    styleClass="w-full"></p-datepicker>
+                                <label for="endDate">{{'budgetReport.endDate' | translate }}</label>
+                            </p-floatlabel>
+                        </div>
+
+                        <div class="col-12 md:col-1 mt-4 flex align-items-start">
+                            <p-button label="{{'budgetReport.search' | translate}}" styleClass="p-button-success w-full"
+                                (onClick)="getBudgetReportForOrganization()"></p-button>
+                        </div>
+                    </div>
+                </div>
+            </p-accordion-content>
+        </p-accordion-panel>
+    </p-accordion>
+</div>
+
+
+<div class="px-6 py-8">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">İstatistikler</h2>
+
+    <dx-chart #chart [dataSource]="chartData" [commonSeriesSettings]="{ type: 'bar', argumentField: 'user' }">
+        <dxi-series valueField="amount" name="Harcama Tutarı"></dxi-series>
+    </dx-chart>
+
+    <dx-pivot-grid #pivotGrid id="pivotgrid" [dataSource]="pivotGridDataSource" [allowSortingBySummary]="true"
+        [allowFiltering]="true" [showBorders]="true" [showColumnTotals]="false" [showColumnGrandTotals]="false"
+        [showRowTotals]="false" [showRowGrandTotals]="false">
+        <dxo-field-chooser [enabled]="true" [height]="400"></dxo-field-chooser>
+    </dx-pivot-grid>
+</div>
+
+<p-toast></p-toast>
