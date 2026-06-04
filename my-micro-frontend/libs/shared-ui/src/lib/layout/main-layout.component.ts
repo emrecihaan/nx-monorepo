@@ -60,6 +60,10 @@ export class MainLayoutComponent {
       else if (segment === 'dynamic-form') label = 'Dinamik Form';
       else if (segment === 'dashboard') label = 'Kontrol Paneli';
       else if (segment === 'expense-group') label = 'Masraf Grubu';
+      else if (segment === 'budgetreportuser') {
+        const translated = this.translate.instant('budgetReport.title');
+        label = translated !== 'budgetReport.title' ? translated : 'Bütçe Kullanıcı Raporu';
+      }
       else {
         label = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
       }

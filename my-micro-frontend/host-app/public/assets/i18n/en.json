@@ -128,6 +128,7 @@
         "selectCompany": "Select Company",
         "selectStatus": "Select Status"
     },
+
     "formListColumns": {
         "id": "Id",
         "dfForm.description": "Description",
@@ -166,6 +167,17 @@
         "selectCompany": "Select Company",
         "selectStatus": "Select Status",
         "statusReq": "Status Required",
-        "endDateBeforeStartDate": "End Date must be after Start Date."
+        "endDateBeforeStartDate": "End Date must be after Start Date.",
+    },
+    "budgetReport": {
+        "title": "Budget Report",
+        "formTitle": "Search Criteria",
+        "form": "Select Form",
+        "user": "Select User",
+        "status": "Select Status",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "search": "Search",
+        "statistics": "Statistics"
     }
 }

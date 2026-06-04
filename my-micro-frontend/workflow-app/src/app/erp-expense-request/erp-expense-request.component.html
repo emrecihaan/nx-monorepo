@@ -1,0 +1,63 @@
+<p-accordion value="0">
+  <p-accordion-panel value="0">
+    <p-accordion-header>Filtre</p-accordion-header>
+    <p-accordion-content>
+      <div class="grid" [formGroup]="filterForm">
+        <div class="col">
+          <input pInputText type="text" formControlName="formOwner" placeholder="Form Sahibi" style="width: 100%;" />
+        </div>
+        <div class="col">
+          <p-select id="formStatus" formControlName="formStatus" [options]="statusOptions" optionLabel="label"
+            optionValue="value" placeholder="Form Durumu" style="width: 100%;"></p-select>
+        </div>
+        <div class="col">
+          <p-select id="periodYear" formControlName="periodYear" [options]="options" optionLabel="label"
+            optionValue="value" placeholder="Dönem (Yıl)" style="width: 100%;"></p-select>
+        </div>
+        <div class="col">
+          <p-select id="periodMonth" formControlName="periodMonth" [options]="options" optionLabel="label"
+            optionValue="value" placeholder="Dönem (Ay)" style="width: 100%;"></p-select>
+        </div>
+        <div class="col-3">
+          <p-datepicker id="sapDate" formControlName="sapDate" dateFormat="dd.mm.yy" [showClear]="true"
+            placeholder="Sap Fiş Tarihi" styleClass="w-full"></p-datepicker>
+        </div>
+        <div class="col-auto flex align-items-center">
+          <button pButton pRipple label="Ara" class="p-button-primary" type="button" (click)="onSearch()"></button>
+        </div>
+      </div>
+    </p-accordion-content>
+  </p-accordion-panel>
+</p-accordion>
+
+<div class="mt-3"></div>
+
+<p-accordion value="0">
+  <p-accordion-panel value="0">
+    <p-accordion-header>İşlemler</p-accordion-header>
+    <p-accordion-content>
+      <div class="flex flex-wrap gap-2">
+        <button pButton pRipple label=" Seçilen Talepleri SAP Aktar" (click)="sendSAP()" class="p-button-info"><i
+            class="pi pi-angle-double-right mr-2"></i></button>
+        <button pButton pRipple label=" Seçilen Talepleri Sil" class="p-button-info"><i
+            class="pi pi-times-circle mr-2"></i></button>
+        <button pButton pRipple label=" Seçilen Taleplerin Ters Kaydını Al" class="p-button-info"><i
+            class="pi pi-arrows-h mr-2"></i></button>
+        <button pButton pRipple label=" Seçilen Talepleri Geri Gönder" class="p-button-info"><i
+            class="pi pi-arrow-circle-left mr-2"></i></button>
+        <button pButton pRipple label=" Kredi Kartı Harcamaları İndir" class="p-button-info"><i
+            class="pi pi-file-pdf mr-2"></i></button>
+        <button pButton pRipple label=" Seçilen Masraf Formunu İndir" class="p-button-info"><i
+            class="pi pi-file-pdf mr-2"></i></button>
+      </div>
+    </p-accordion-content>
+  </p-accordion-panel>
+</p-accordion>
+
+<div style="margin-top: 20px;">
+  <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" (setSelectedRows)="setSelectedRows($event)"
+    [selectionMode]="'multipleButOneColumn'" [columns]="column" [customButton]="true" [customButtonName2]="'Görüntüle'"
+    [customButtonIcon2]="'edit'" (customButtonReturn2)="callShow($event)" [detailHeader]="detailHeader"
+    [detailColumns]="detailColumn" [detailDataField]="'items'">
+  </app-datagrid-for-format>
+</div>

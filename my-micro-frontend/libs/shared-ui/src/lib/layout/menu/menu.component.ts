@@ -79,7 +79,11 @@ export class MenuComponent implements OnInit {
           const translatedLabel = this.translate.instant(`${page.pageName}`);
           let appPrefix = '/app';
           const pageNameLower = page.pageName?.toLowerCase() || '';
-          if (pageNameLower.includes('masraf') || pageNameLower.includes('form')) {
+          if (pageNameLower.includes('budget-report') || pageNameLower.includes('bütçe')) {
+            appPrefix = '/app/workflow-app';
+          } else if (pageNameLower.includes('masraf erp')) {
+            appPrefix = '/app/workflow-app';
+          } else if (pageNameLower.includes('masraf') || pageNameLower.includes('form')) {
             appPrefix = '/app/form-app';
           } else if (pageNameLower.includes('kullanıcı') || pageNameLower.includes('user')) {
             appPrefix = '/app/user-app';
@@ -94,6 +98,12 @@ export class MenuComponent implements OnInit {
               if (finalUrl && !finalUrl.startsWith('/app')) {
                 finalUrl = appPrefix + (finalUrl.startsWith('/') ? finalUrl : '/' + finalUrl);
               }
+              if (finalUrl && finalUrl.includes('budgetreportuser')) {
+                finalUrl = '/app/workflow-app/budgetreportuser';
+              }
+              if (finalUrl && finalUrl.includes('expense-request')) {
+                finalUrl = '/app/workflow-app/expense-request';
+              }
               const newSubPage: MenuItem = { label: translatedSubLabel, icon: pageSub.icon, routerLink: [finalUrl] };
               newPage.items?.push(newSubPage);
             }
@@ -102,6 +112,12 @@ export class MenuComponent implements OnInit {
             let finalUrl = '/';
             if (page.url && !page.url.startsWith('/app') && page.url !== '/') {
               finalUrl = appPrefix + (page.url.startsWith('/') ? page.url : '/' + page.url);
+            }
+            if (finalUrl && finalUrl.includes('budgetreportuser')) {
+              finalUrl = '/app/workflow-app/budgetreportuser';
+            }
+            if (finalUrl && finalUrl.includes('expense-request')) {
+              finalUrl = '/app/workflow-app/expense-request';
             }
             newPage = { label: page.pageName, icon: page.icon, routerLink: [finalUrl] };
           }

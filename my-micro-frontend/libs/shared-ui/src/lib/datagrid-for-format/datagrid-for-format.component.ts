@@ -38,6 +38,10 @@ export class DatagridForFormatComponent implements OnInit {
     @Input() editingMode: string = 'cell';
     @Output() setSelectedData = new EventEmitter<any>();
 
+    @Input() detailHeader: any;
+    @Input() detailColumns: any;
+    @Input() detailDataField: string = 'items';
+
     @Input() customButton: any;
     @Input() customButtonName: any;
     @Input() customButtonFunction!: Function;
