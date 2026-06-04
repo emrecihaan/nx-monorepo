@@ -56,4 +56,8 @@ export const GET_USER_TRFORM_REPORT = `${BASE_URL}/TrForm/GetUserTrFormReport`;
 
 export const GET_EXPENSE_REQUEST_FORMS = `${BASE_URL}/TrForm/GetExpenseRequestForms`;
 
-export const SEND_SAP = `${BASE_URL}/TrForm/sendSAP`
+export const SEND_SAP = `${BASE_URL}/TrForm/sendSAP`;
+
+export const GET_ORGANIZATION_LIST_FOR_DROPDOWN = `${BASE_URL}/TrForm/getOrganizationListForDropdown`;
+
+export const GET_ORGANIZATION_TRFORM_REPORT = `${BASE_URL}/TrForm/GetOrganizationTrFormReport`;

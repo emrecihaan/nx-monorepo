@@ -104,6 +104,9 @@ export class MenuComponent implements OnInit {
               if (finalUrl && finalUrl.includes('expense-request')) {
                 finalUrl = '/app/workflow-app/expense-request';
               }
+              if (finalUrl && finalUrl.includes('budgetreportorganization')) {
+                finalUrl = '/app/workflow-app/budgetreportorganization';
+              }
               const newSubPage: MenuItem = { label: translatedSubLabel, icon: pageSub.icon, routerLink: [finalUrl] };
               newPage.items?.push(newSubPage);
             }
@@ -118,6 +121,9 @@ export class MenuComponent implements OnInit {
             }
             if (finalUrl && finalUrl.includes('expense-request')) {
               finalUrl = '/app/workflow-app/expense-request';
+            }
+            if (finalUrl && finalUrl.includes('budgetreportorganization')) {
+              finalUrl = '/app/workflow-app/budgetreportorganization';
             }
             newPage = { label: page.pageName, icon: page.icon, routerLink: [finalUrl] };
           }

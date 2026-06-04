@@ -236,6 +236,7 @@
         "status": "Durum Seçiniz",
         "startDate": "Başlangıç Tarihi",
         "endDate": "Bitiş Tarihi",
+        "organization": "Organizasyon Seçiniz",
         "search": "Ara",
         "statistics": "İstatistikler"
     }

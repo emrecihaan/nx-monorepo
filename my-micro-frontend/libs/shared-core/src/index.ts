@@ -13,6 +13,7 @@ export * from './lib/utils/date.util';
 export * from './lib/services/login/login.service';
 export * from './lib/services/system/page/page-sub.service';
 export * from './lib/services/system/system.service';
+export * from './lib/services/system/general-system/general-system.service';
 
 export * from './lib/interceptors/auth.interceptor';
 export * from './lib/interceptors/error.interceptor';
