@@ -31,7 +31,8 @@
         "USER": "Kullanıcı Uygulaması",
         "SAP": "SAP Uygulaması",
         "REPORT": "Raporlar",
-        "DYNAMIC_FORM": "Dinamik Form"
+        "DYNAMIC_FORM": "Dinamik Form",
+        "WORKFLOW_FORM": "İş Akışı Formu"
     },
     "USER": {
         "TITLE": "Kullanıcı Paneli",
@@ -133,7 +134,8 @@
         "dateRangeReq": "Tarih Aralığı zorunludur"
     },
     "button": {
-        "save": "Kaydet"
+        "save": "Kaydet",
+        "detail": "Detay"
     },
     "messageServiceMessages": {
         "recordAddedSuccessfully": "Kayıt başarıyla eklendi",
@@ -223,10 +225,41 @@
         "endDateBeforeStartDate": "Bitiş tarihi başlangıç tarihinden önce olamaz"
     },
     "workFlow": {
+        "title": "İş Akışları",
+        "formTitle": "İş Akışı Arama",
         "formTypeName": "Form Tipi",
         "startDate": "Başlangıç Zamanı",
         "finishDate": "Bitiş Zamanı",
         "search": "Ara"
+    },
+    "formListColumns": {
+        "id": "Id",
+        "dfForm.description": "Form Açıklaması",
+        "formValues": "Form Değerleri",
+        "userName": "Kullanıcı Adı",
+        "formApplyCycle": "Onay Döngüsü",
+        "statusName": "Durum",
+        "trFormId": "Id1"
+    },
+    "fieldWarning": "Lütfen bir satır seçin.",
+    "expenseCenterForm": {
+        "title": "Masraf Yeri",
+        "formTitle": "Masraf Yeri Formu",
+        "kostl": "KOSTL",
+        "kostlReq": "KOSTL Zorunlu",
+        "text": "Masraf Yeri Adı",
+        "textReq": "Masraf Yeri Adı Zorunlu",
+        "startDate": "Başlangıç Tarihi",
+        "startDateReq": "Başlangıç Tarihi Zorunlu",
+        "endDate": "Bitiş Tarihi",
+        "endDateReq": "Bitiş Tarihi Zorunlu",
+        "status": "Durum",
+        "company": "Şirket",
+        "companyReq": "Şirket Zorunlu",
+        "selectCompany": "Şirket Seçiniz",
+        "selectStatus": "Durum Seçiniz",
+        "statusReq": "Durum Zorunlu",
+        "endDateBeforeStartDate": "Bitiş Tarihi Başlangıç Tarihinden Sonra Olmalıdır."
     },
     "budgetReport": {
         "title": "Bütçe Kullanıcı Raporu",
@@ -239,5 +272,6 @@
         "organization": "Organizasyon Seçiniz",
         "search": "Ara",
         "statistics": "İstatistikler"
+
     }
 }

@@ -9,6 +9,7 @@ import { ParameterTypeComponent } from '../parameter-type/parameter-type.compone
 import { ExpenseTypeComponent } from '../expense-type/expense-type.component';
 import { UserProxyComponent } from '../user-proxy/user-proxy.component';
 import { ExpenseGroupComponent } from '../expense-group/expense-group.component';
+import { ExpenseCenterComponent } from '../expense-center/expense-center.component';
 
 export const remoteRoutes: Route[] = [
   { path: '', component: RemoteEntry },
@@ -22,4 +23,5 @@ export const remoteRoutes: Route[] = [
   { path: 'expense-type', component: ExpenseTypeComponent },
   { path: 'user-proxy', component: UserProxyComponent },
   { path: 'expense-group', component: ExpenseGroupComponent },
+  { path: 'expense-center', component: ExpenseCenterComponent },
 ];

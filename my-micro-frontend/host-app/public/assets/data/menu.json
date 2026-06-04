@@ -23,5 +23,13 @@
       "1"
     ],
     "styleClass": "menu-item"
+  },
+  {
+    "label": "MENU.WORKFLOW_FORM",
+    "icon": "pi pi-sitemap",
+    "routerLink": [
+      "/app/workflow-app/workflow-form"
+    ],
+    "styleClass": "menu-item"
   }
 ]
