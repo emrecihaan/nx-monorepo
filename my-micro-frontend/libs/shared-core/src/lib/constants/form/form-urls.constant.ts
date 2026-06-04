@@ -66,4 +66,3 @@ export const GET_ORGANIZATION_LIST_FOR_DROPDOWN = `${BASE_URL}/TrForm/getOrganiz
 
 export const GET_ORGANIZATION_TRFORM_REPORT = `${BASE_URL}/TrForm/GetOrganizationTrFormReport`;
 
-export const SEND_SAP = `${BASE_URL}/TrForm/sendSAP`
