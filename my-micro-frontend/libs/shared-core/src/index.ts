@@ -31,3 +31,4 @@ export * from './lib/services/expense-group/expense-group.service';
 export * from './lib/constants/constants/system-api-urls.constant';
 export * from './lib/services/form/form.service';
 
+export * from './lib/services/app-selection.service';

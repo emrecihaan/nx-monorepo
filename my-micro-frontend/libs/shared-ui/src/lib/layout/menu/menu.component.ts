@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, signal, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, Input, signal, ChangeDetectorRef, inject, effect } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PageSubService } from '@my-micro-frontend/shared-core';
+import { PageSubService, AppSelectionService } from '@my-micro-frontend/shared-core';
 import { HttpClient } from '@angular/common/http';
 
 export interface MenuItem {
@@ -29,6 +29,7 @@ export class MenuComponent implements OnInit {
   private translate = inject(TranslateService);
   private cdr = inject(ChangeDetectorRef);
   private http = inject(HttpClient);
+  private appSelectionService = inject(AppSelectionService);
 
   constructor() {
     this.getStaticMenu();
@@ -36,6 +37,10 @@ export class MenuComponent implements OnInit {
     this.translate.onLangChange.subscribe(() => {
       this.translateStaticMenu();
       this.getPages();
+    });
+    effect(() => {
+      const selected = this.appSelectionService.selectedApp();
+      this.updateMenuItems();
     });
   }
 
@@ -64,8 +69,55 @@ export class MenuComponent implements OnInit {
   }
 
   updateMenuItems() {
-    this.menuItems = [...this.staticMenuItems, ...this.model];
+    const selectedApp = this.appSelectionService.selectedApp();
+    let filteredModel = this.model;
+    
+    if (selectedApp) {
+      const routePrefix = selectedApp === 'workflowApp' ? '/app/workflow-app' : '/app/form-app';
+      const routesToApp = (link?: string[]) => link && link.length > 0 && link[0].startsWith(routePrefix);
+
+      filteredModel = this.model.map((item: any) => {
+        // Kopyasını oluştur ki orijinal model bozulmasın
+        const newItem = { ...item };
+        // Eğer alt menüleri varsa, onları da kendi içinde filtrele
+        if (newItem.items) {
+          newItem.items = newItem.items.filter((sub: any) => routesToApp(sub.routerLink));
+        }
+        return newItem;
+      }).filter((item: any) => {
+        // Ana menü direkt eşleşiyorsa veya altında eşleşen alt menü kaldıysa göster
+        if (routesToApp(item.routerLink)) return true;
+        if (item.items && item.items.length > 0) return true;
+        return false;
+      });
+    }
+
+    this.menuItems = [...this.staticMenuItems, ...filteredModel];
     this.cdr.detectChanges();
+  }
+
+  getAppPrefixForUrl(url: string | undefined): string {
+    if (!url) return '/app';
+    const urlLower = url.toLowerCase();
+    
+    const formAppPaths = [
+      'dynamic-form', 'report', 'expense-reports', 'expense-group', 'cost-rule',
+      'costrulefilter', 'parametertype', 'expense-center', 'user-proxy', 'notfound'
+    ];
+    if (formAppPaths.some(p => urlLower.includes(p))) {
+      return '/app/form-app';
+    }
+
+    const workflowAppPaths = [
+      'workflow-form', 'admin-dashboard', 'organization', 'formapproverrule',
+      'formapproverruledetail', 'budgetrule', 'budgetreportorganization',
+      'expense-request', 'budgetreportuser'
+    ];
+    if (workflowAppPaths.some(p => urlLower.includes(p))) {
+      return '/app/workflow-app';
+    }
+    
+    return '/app';
   }
 
   getPages() {
@@ -77,55 +129,29 @@ export class MenuComponent implements OnInit {
         for (const page of pages) {
           let newPage: MenuItem;
           const translatedLabel = this.translate.instant(`${page.pageName}`);
-          let appPrefix = '/app';
-          const pageNameLower = page.pageName?.toLowerCase() || '';
-          if (pageNameLower.includes('budget-report') || pageNameLower.includes('bütçe')) {
-            appPrefix = '/app/workflow-app';
-          } else if (pageNameLower.includes('masraf erp')) {
-            appPrefix = '/app/workflow-app';
-          } else if (pageNameLower.includes('masraf') || pageNameLower.includes('form')) {
-            appPrefix = '/app/form-app';
-          } else if (pageNameLower.includes('kullanıcı') || pageNameLower.includes('user')) {
-            appPrefix = '/app/user-app';
-          } else if (pageNameLower.includes('iş akış') || pageNameLower.includes('workflow')) {
-            appPrefix = '/app/workflow-app';
-          }
+          
           if (page.subPages && page.subPages.length > 0) {
             newPage = { label: translatedLabel, icon: page.icon, routerLink: ['/'], items: [] };
             for (const pageSub of page.subPages) {
               const translatedSubLabel = this.translate.instant(`${pageSub.subPageName}`);
               let finalUrl = pageSub.url;
+              
+              const prefix = this.getAppPrefixForUrl(finalUrl);
               if (finalUrl && !finalUrl.startsWith('/app')) {
-                finalUrl = appPrefix + (finalUrl.startsWith('/') ? finalUrl : '/' + finalUrl);
+                finalUrl = prefix + (finalUrl.startsWith('/') ? finalUrl : '/' + finalUrl);
               }
-              if (finalUrl && finalUrl.includes('budgetreportuser')) {
-                finalUrl = '/app/workflow-app/budgetreportuser';
-              }
-              if (finalUrl && finalUrl.includes('expense-request')) {
-                finalUrl = '/app/workflow-app/expense-request';
-              }
-              if (finalUrl && finalUrl.includes('budgetreportorganization')) {
-                finalUrl = '/app/workflow-app/budgetreportorganization';
-              }
+              
               const newSubPage: MenuItem = { label: translatedSubLabel, icon: pageSub.icon, routerLink: [finalUrl] };
               newPage.items?.push(newSubPage);
             }
           }
           else {
-            let finalUrl = '/';
-            if (page.url && !page.url.startsWith('/app') && page.url !== '/') {
-              finalUrl = appPrefix + (page.url.startsWith('/') ? page.url : '/' + page.url);
+            let finalUrl = page.url || '/';
+            const prefix = this.getAppPrefixForUrl(finalUrl);
+            if (finalUrl && !finalUrl.startsWith('/app') && finalUrl !== '/') {
+              finalUrl = prefix + (finalUrl.startsWith('/') ? finalUrl : '/' + finalUrl);
             }
-            if (finalUrl && finalUrl.includes('budgetreportuser')) {
-              finalUrl = '/app/workflow-app/budgetreportuser';
-            }
-            if (finalUrl && finalUrl.includes('expense-request')) {
-              finalUrl = '/app/workflow-app/expense-request';
-            }
-            if (finalUrl && finalUrl.includes('budgetreportorganization')) {
-              finalUrl = '/app/workflow-app/budgetreportorganization';
-            }
-            newPage = { label: page.pageName, icon: page.icon, routerLink: [finalUrl] };
+            newPage = { label: translatedLabel, icon: page.icon, routerLink: [finalUrl] };
           }
           modelList.push(newPage);
         }

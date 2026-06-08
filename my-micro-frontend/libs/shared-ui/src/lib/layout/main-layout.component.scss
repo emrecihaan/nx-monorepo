@@ -18,6 +18,10 @@
       width: 80px;
     }
   }
+
+  &.no-sidebar {
+    padding-left: 0;
+  }
 }
 
 .layout-sidebar {
