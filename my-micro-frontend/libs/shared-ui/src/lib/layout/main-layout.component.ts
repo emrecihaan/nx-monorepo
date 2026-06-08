@@ -6,7 +6,7 @@ import { ToastComponent } from '../toast/toast.component';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { TokenService, BreadcrumbService } from '@my-micro-frontend/shared-core';
+import { TokenService, BreadcrumbService, AppSelectionService } from '@my-micro-frontend/shared-core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
@@ -29,7 +29,8 @@ export class MainLayoutComponent {
     private translate: TranslateService,
     private tokenService: TokenService,
     private router: Router,
-    private breadcrumbService: BreadcrumbService
+    private breadcrumbService: BreadcrumbService,
+    public appSelectionService: AppSelectionService
   ) {
     this.currentLang = this.translate.currentLang || 'tr';
     this.applyTheme();
@@ -97,5 +98,10 @@ export class MainLayoutComponent {
   logout() {
     this.tokenService.removeToken();
     this.router.navigate(['/login']);
+  }
+
+  changeProject() {
+    this.appSelectionService.setApp(null);
+    this.router.navigate(['/app']);
   }
 }

@@ -1,6 +1,7 @@
-<div class="layout-wrapper" [class.sidebar-collapsed]="sidebarCollapsed" [class.dark-theme]="isDarkTheme">
+<div class="layout-wrapper" [class.sidebar-collapsed]="sidebarCollapsed" [class.dark-theme]="isDarkTheme" [class.no-sidebar]="!appSelectionService.selectedApp()">
   <lib-toast></lib-toast>
 
+  @if (appSelectionService.selectedApp()) {
   <aside class="layout-sidebar">
     <div class="sidebar-header">
       <div class="brand" routerLink="/app" style="cursor: pointer;">
@@ -27,12 +28,15 @@
     </div>
     }
   </aside>
+  }
 
   <div class="layout-main">
     <header class="layout-topbar">
       <div class="topbar-left">
+        @if (appSelectionService.selectedApp()) {
         <p-button icon="pi pi-bars" [text]="true" [rounded]="true" (onClick)="toggleSidebar()"
           severity="secondary"></p-button>
+        }
         <div class="breadcrumb-wrapper">
           <p-breadcrumb [model]="breadcrumbItems"
             [style]="{ background: 'transparent', border: 'none', padding: '0' }"></p-breadcrumb>
@@ -40,6 +44,10 @@
       </div>
 
       <div class="topbar-right">
+        @if (appSelectionService.selectedApp()) {
+        <p-button label="Proje Değiştir" icon="pi pi-th-large" [text]="true" [rounded]="true" (onClick)="changeProject()" severity="secondary" class="mr-2"></p-button>
+        }
+
         <p-button [icon]="isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'" [text]="true" [rounded]="true"
           (onClick)="toggleTheme()" severity="secondary"></p-button>
 
