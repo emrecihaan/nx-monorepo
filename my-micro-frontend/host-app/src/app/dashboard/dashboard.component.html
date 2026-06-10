@@ -1,5 +1,4 @@
-<div class="dashboard-container" [class.no-padding]="!appSelectionService.selectedApp()">
-    @if (appSelectionService.selectedApp()) {
+<div class="dashboard-container">
     <h1 class="dashboard-title">{{ 'DASHBOARD.TITLE' | translate }}</h1>
 
     <!-- Statistics Cards -->
@@ -95,21 +94,4 @@
             </div>
         </div>
     </div>
-    } @else {
-    <div class="selection-container">
-        <h1 class="selection-title">Proje Seçiniz</h1>
-        <div class="selection-cards">
-            <div class="card selection-card" (click)="selectApp('workflowApp')">
-                <i class="pi pi-sitemap selection-icon" style="color: #3B82F6"></i>
-                <h2>İş Akış Uygulaması</h2>
-                <p>İş akışları ve süreç yönetimi projelerine gitmek için tıklayın.</p>
-            </div>
-            <div class="card selection-card" (click)="selectApp('formApp')">
-                <i class="pi pi-file-edit selection-icon" style="color: #10B981"></i>
-                <h2>Masraf Uygulaması</h2>
-                <p>Dinamik formlar ve veri girişi projelerine gitmek için tıklayın.</p>
-            </div>
-        </div>
-    </div>
-    }
 </div>

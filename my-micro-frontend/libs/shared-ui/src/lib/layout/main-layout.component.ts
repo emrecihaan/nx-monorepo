@@ -96,12 +96,13 @@ export class MainLayoutComponent {
   }
 
   logout() {
+    this.appSelectionService.setApp(null, null);
     this.tokenService.removeToken();
     this.router.navigate(['/login']);
   }
 
   changeProject() {
-    this.appSelectionService.setApp(null);
+    this.appSelectionService.setApp(null, null);
     this.router.navigate(['/app']);
   }
 }

@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { MainLayoutComponent } from '@my-micro-frontend/shared-ui';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SelectProjectComponent } from './select-project/select-project.component';
 import { authGuard } from '@my-micro-frontend/shared-core';
 
 export const appRoutes: Route[] = [
@@ -20,6 +21,11 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: '',
+        component: SelectProjectComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
         component: DashboardComponent,
       },
       {
