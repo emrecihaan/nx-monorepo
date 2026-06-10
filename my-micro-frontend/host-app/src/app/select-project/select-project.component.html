@@ -1,0 +1,31 @@
+<div class="selection-container">
+
+    <!-- Loading State -->
+    <div *ngIf="loadingProjects" class="flex justify-content-center align-items-center" style="min-height: 200px;">
+        <i class="pi pi-spin pi-spinner" style="font-size: 3rem; color: #3B82F6;"></i>
+    </div>
+
+    <!-- Loaded State -->
+    <ng-container *ngIf="!loadingProjects">
+        
+        <!-- Title (Only if there are projects) -->
+        <h1 *ngIf="projects.length > 0" class="selection-title">Proje Seçiniz</h1>
+
+        <!-- Dynamic Projects Cards -->
+        <div class="selection-cards" *ngIf="projects.length > 0">
+            <div class="card selection-card" *ngFor="let project of projects" (click)="selectApp(project)">
+                <i class="pi pi-briefcase selection-icon" style="color: #3B82F6"></i>
+                <h2>{{ project.projectName }}</h2>
+                <p>{{ project.description }}</p>
+            </div>
+        </div>
+
+        <!-- Fallback if no projects loaded from API -->
+        <div *ngIf="projects.length === 0" class="flex flex-column align-items-center justify-content-center p-5" style="width: 100%; text-align: center; margin-top: 2rem;">
+            <i class="pi pi-exclamation-circle" style="font-size: 4rem; color: #94a3b8; margin-bottom: 1.5rem;"></i>
+            <h2 style="color: #475569; font-weight: 500; margin: 0; font-size: 1.5rem;">Kullanıcınıza Ait Tanımlı Bir Proje Bulunmamaktadır.</h2>
+        </div>
+
+    </ng-container>
+
+</div>

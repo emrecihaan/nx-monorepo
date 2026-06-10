@@ -1,8 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { AppSelectionService, AppType } from '@my-micro-frontend/shared-core';
-import { Router } from '@angular/router';
+import { AppSelectionService } from '@my-micro-frontend/shared-core';
 
 
 @Component({
@@ -14,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
     public appSelectionService = inject(AppSelectionService);
-    private router = inject(Router);
+    private cdr = inject(ChangeDetectorRef);
 
     chartData: any;
     chartOptions: any;
@@ -28,15 +27,6 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.initChart();
-    }
-
-    selectApp(appType: AppType) {
-        this.appSelectionService.setApp(appType);
-        if (appType === 'workflowApp') {
-            this.router.navigate(['/app/workflow-app']);
-        } else if (appType === 'formApp') {
-            this.router.navigate(['/app/form-app']);
-        }
     }
 
     initChart() {
