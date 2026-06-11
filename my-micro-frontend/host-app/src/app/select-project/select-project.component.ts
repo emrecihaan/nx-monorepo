@@ -17,7 +17,8 @@ export class SelectProjectComponent implements OnInit {
   private tokenService = inject(TokenService);
   private cdr = inject(ChangeDetectorRef);
 
-  projects: any[] = [];
+  applications: any[] = [];
+  selectedApplication: any = null;
   loadingProjects: boolean = false;
 
   ngOnInit() {
@@ -29,27 +30,35 @@ export class SelectProjectComponent implements OnInit {
   loadProjects() {
     const userId = this.tokenService.getUserId();
     this.loadingProjects = true;
-    this.systemService.getProjectDetailByRoleId(userId).subscribe({
+    this.systemService.getPageCategoryByUserId(userId).subscribe({
       next: (res: any) => {
         this.loadingProjects = false;
-        if (res && res.code === '200') {
-          this.projects = res.response;
+        if (res && (res.code === '200' || res.code === 200)) {
+          this.applications = res.response || [];
         } else {
-          this.projects = [];
+          this.applications = [];
         }
         this.cdr.detectChanges();
       },
       error: (err) => {
         this.loadingProjects = false;
-        console.error('Projeler yüklenemedi:', err);
+        console.error('Uygulamalar yüklenemedi:', err);
         this.cdr.detectChanges();
       }
     });
   }
 
-  selectApp(project?: any) {
-    const appType = project?.appType || 'workflowApp';
-    const projectId = project?.projectId || project?.id;
+  selectApplication(app: any) {
+    if (this.selectedApplication === app) {
+      this.selectedApplication = null;
+    } else {
+      this.selectedApplication = app;
+    }
+  }
+
+  selectCategory(app: any, category: any) {
+    const appType = app.applicationId === 1002 ? 'formApp' : 'workflowApp';
+    const projectId = category.pageCategoryId;
     this.appSelectionService.setApp(appType, projectId);
     this.router.navigate(['/app/dashboard']);
   }

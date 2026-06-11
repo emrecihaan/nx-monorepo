@@ -7,23 +7,42 @@
 
     <!-- Loaded State -->
     <ng-container *ngIf="!loadingProjects">
-        
-        <!-- Title (Only if there are projects) -->
-        <h1 *ngIf="projects.length > 0" class="selection-title">Proje Seçiniz</h1>
 
-        <!-- Dynamic Projects Cards -->
-        <div class="selection-cards" *ngIf="projects.length > 0">
-            <div class="card selection-card" *ngFor="let project of projects" (click)="selectApp(project)">
+        <!-- Title -->
+        <h1 *ngIf="applications.length > 0" class="selection-title">
+            {{ selectedApplication ? 'Kategori Seçiniz' : 'Uygulama Seçiniz' }}
+        </h1>
+
+        <!-- Dynamic Applications Cards -->
+        <div class="selection-cards" *ngIf="applications.length > 0 && !selectedApplication">
+            <div class="card selection-card fade-in-down" *ngFor="let app of applications; let i = index"
+                [ngClass]="'stagger-' + ((i % 5) + 1)" (click)="selectApplication(app)">
                 <i class="pi pi-briefcase selection-icon" style="color: #3B82F6"></i>
-                <h2>{{ project.projectName }}</h2>
-                <p>{{ project.description }}</p>
+                <h2>{{ app.applicationName || app.ApplicationName }}</h2>
+            </div>
+        </div>
+
+        <!-- Dynamic Categories Cards -->
+        <div class="categories-container" *ngIf="selectedApplication">
+            <button class="back-btn" (click)="selectedApplication = null">
+                <i class="pi pi-arrow-left"></i> Geri Dön
+            </button>
+            <div class="selection-cards">
+                <div class="card selection-card category-card fade-in-down"
+                    *ngFor="let category of selectedApplication.pageCategories; let i = index"
+                    [ngClass]="'stagger-' + ((i % 5) + 1)" (click)="selectCategory(selectedApplication, category)">
+                    <i class="pi pi-folder selection-icon" style="color: #10B981"></i>
+                    <h2>{{ category.pageCategoryName }}</h2>
+                </div>
             </div>
         </div>
 
         <!-- Fallback if no projects loaded from API -->
-        <div *ngIf="projects.length === 0" class="flex flex-column align-items-center justify-content-center p-5" style="width: 100%; text-align: center; margin-top: 2rem;">
+        <div *ngIf="applications.length === 0" class="flex flex-column align-items-center justify-content-center p-5"
+            style="width: 100%; text-align: center; margin-top: 2rem;">
             <i class="pi pi-exclamation-circle" style="font-size: 4rem; color: #94a3b8; margin-bottom: 1.5rem;"></i>
-            <h2 style="color: #475569; font-weight: 500; margin: 0; font-size: 1.5rem;">Kullanıcınıza Ait Tanımlı Bir Proje Bulunmamaktadır.</h2>
+            <h2 style="color: #475569; font-weight: 500; margin: 0; font-size: 1.5rem;">Kullanıcınıza Ait Tanımlı Bir
+                Uygulama Bulunmamaktadır.</h2>
         </div>
 
     </ng-container>
