@@ -60,7 +60,7 @@ export class MenuComponent implements OnInit {
 
   loadPages(projectId?: string | null) {
     if (projectId) {
-      this.pageSubService.getSubPagesByProjectId(projectId).subscribe((res) => {
+      this.pageSubService.getSubPagesByPageCategoryId(projectId).subscribe((res) => {
         this.processPagesResponse(res);
       });
     } else {

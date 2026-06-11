@@ -5,13 +5,17 @@
     justify-content: center;
     min-height: calc(100vh - 150px);
     padding: 2rem;
+    position: relative;
+    overflow: hidden;
     
     .selection-title {
         font-size: 2.5rem;
         color: var(--text-color);
         margin-bottom: 3rem;
-        font-weight: 600;
+        font-weight: 700;
         text-align: center;
+        letter-spacing: -0.5px;
+        animation: fadeInDown 0.6s ease-out forwards;
     }
     
     .selection-cards {
@@ -20,45 +24,161 @@
         flex-wrap: wrap;
         justify-content: center;
         max-width: 1200px;
+        perspective: 1000px;
         
         .selection-card {
-            background: var(--surface-card);
-            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
             padding: 3rem 2rem;
-            width: 300px;
+            width: 320px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
             
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 50%;
+                height: 100%;
+                background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+                transform: skewX(-20deg);
+                transition: all 0.6s;
+            }
+
             &:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-                border-color: var(--primary-color);
+                transform: translateY(-12px) scale(1.02);
+                box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15), inset 0 0 0 2px var(--primary-color);
+                
+                &::before {
+                    left: 200%;
+                }
                 
                 .selection-icon {
-                    transform: scale(1.1);
+                    transform: scale(1.2) rotate(5deg);
+                    color: var(--primary-color) !important;
                 }
             }
             
             .selection-icon {
-                font-size: 4rem;
+                font-size: 4.5rem;
                 margin-bottom: 1.5rem;
-                transition: transform 0.3s ease;
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                display: inline-block;
             }
             
             h2 {
-                font-size: 1.5rem;
+                font-size: 1.15rem;
                 color: var(--text-color);
-                margin-bottom: 1rem;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                font-family: 'Outfit', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                text-transform: uppercase;
+                opacity: 0.9;
             }
             
             p {
                 color: var(--text-color-secondary);
-                line-height: 1.5;
+                line-height: 1.6;
                 margin: 0;
+                font-size: 1.1rem;
+            }
+        }
+    }
+
+    .categories-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        animation: scaleUp 0.5s ease-out forwards;
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid var(--surface-border);
+            color: var(--text-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background: var(--surface-hover);
+                transform: translateX(-5px);
+            }
+
+            i {
+                font-size: 1rem;
+            }
+        }
+
+        .category-card {
+            width: 280px;
+            padding: 2.5rem 1.5rem;
+            border-radius: 1.2rem;
+            
+            .selection-icon {
+                font-size: 3.5rem;
+            }
+
+            h2 {
+                font-size: 1.15rem;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+            }
+
+            &:hover {
+                box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15), inset 0 0 0 2px #10B981;
+                .selection-icon {
+                    color: #10B981 !important;
+                }
             }
         }
     }
 }
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleUp {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in-down {
+    opacity: 0;
+    animation: fadeInDown 0.6s ease-out forwards;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+

@@ -8,3 +8,5 @@ export const GET_USER_REDIS = `${BASE_URL}/User/GetRedisUserId`;
 export const GET_ROLE_BY_USER_ID = `${BASE_URL}/Role/GetRoleByUserId`;
 export const SAVE_SYSTEM_LANGUAGE_FOR_USER = `${BASE_URL}/User/SaveSystemLanguageForUser`;
 export const GET_PROJECT_DETAIL_BY_ROLE_ID = `${BASE_URL}/Project/GetProjectDetailByRoleId`;
+
+export const GET_PAGE_CATEGORY_BY_USER_ID = `${BASE_URL}/Application/GetPageCategoryByUserId`;
