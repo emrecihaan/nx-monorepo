@@ -96,7 +96,10 @@ export class WorkflowFormComponent implements OnInit {
   private messageService = inject(MessageService);
   private router = inject(Router);
 
-  constructor() { }
+  constructor() {
+    this.getDfFormList();
+    this.getUser();
+  }
 
   ngOnInit(): void {
     this.initializeColumns();
@@ -133,7 +136,7 @@ export class WorkflowFormComponent implements OnInit {
   detail() {
     if (this.selectedRow != null) {
       console.log("deneme", this.selectedRow);
-      this.router.navigate(['/dynamic-form', this.selectedRow.dfForm.id, this.selectedRow.id]);
+      this.router.navigate(['/app/form-app/dynamic-form', this.selectedRow.dfForm.id, this.selectedRow.id]);
     }
     else {
       this.messageService.add({
