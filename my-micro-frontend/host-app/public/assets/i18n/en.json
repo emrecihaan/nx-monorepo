@@ -128,7 +128,6 @@
         "selectCompany": "Select Company",
         "selectStatus": "Select Status"
     },
-
     "formListColumns": {
         "id": "Id",
         "dfForm.description": "Description",
@@ -179,5 +178,16 @@
         "endDate": "End Date",
         "search": "Search",
         "statistics": "Statistics"
+    },
+    "budgetReportOrganization": {
+        "title": "Bütçe Organizasyon Raporu",
+        "formTitle": "Arama Kriterleri",
+        "form": "Form Seçiniz",
+        "organization": "Organizasyon Seçiniz",
+        "status": "Durum Seçiniz",
+        "startDate": "Başlangıç Tarihi",
+        "endDate": "Bitiş Tarihi",
+        "search": "Ara",
+        "statistics": "İstatistikler"
     }
 }

@@ -272,6 +272,46 @@
         "organization": "Organizasyon Seçiniz",
         "search": "Ara",
         "statistics": "İstatistikler"
-
+    },
+    "budgetRule": {
+        "title": "Bütçe Kuralları",
+        "createBudgetRule": "Kural Oluştur",
+        "editBudgetRule": "Kural Düzenle",
+        "deleteBudgetRule": "Kural Sil",
+        "detailBudgetRule": "Kural Detayı",
+        "creationBudgetRule": "Bütçe Kuralı Oluşturma",
+        "updateBudgetRule": "Bütçe Kuralı Güncelleme",
+        "deleteBudgetRuleConfirm": "Bütçe kuralını silmek istediğinize emin misiniz?",
+        "createBudgetRuleObject": "Kural Nesnesi Oluştur",
+        "updateBudgetRuleObject": "Kural Nesnesi Güncelle",
+        "deleteBudgetRuleObject": "Kural Nesnesi Sil",
+        "deleteBudgetRuleObjectConfirm": "Kural nesnesini silmek istediğinize emin misiniz?",
+        "budgetRule": "Bütçe Kuralı",
+        "ruleName": "Kural Adı",
+        "ruleNameReq": "Kural Adı zorunlu",
+        "limitAmount": "Limit Tutarı",
+        "limitAmountReq": "Limit Tutarı zorunlu",
+        "currency": "Para Birimi",
+        "currencyReq": "Para Birimi zorunlu",
+        "startDate": "Başlangıç Tarihi",
+        "startDateReq": "Başlangıç Tarihi zorunlu",
+        "endDate": "Bitiş Tarihi",
+        "endDateReq": "Bitiş Tarihi zorunlu",
+        "startDateValidation": "Başlangıç tarihi bitiş tarihinden sonra olamaz",
+        "isActive": "Durum",
+        "statusReq": "Durum seçimi zorunlu",
+        "objType": "Nesne Tipi",
+        "objID": "Nesne ID"
+    },
+    "budgetReportOrganization": {
+        "title": "Bütçe Organizasyon Raporu",
+        "formTitle": "Arama Kriterleri",
+        "form": "Form Seçiniz",
+        "organization": "Organizasyon Seçiniz",
+        "status": "Durum Seçiniz",
+        "startDate": "Başlangıç Tarihi",
+        "endDate": "Bitiş Tarihi",
+        "search": "Ara",
+        "statistics": "İstatistikler"
     }
 }
