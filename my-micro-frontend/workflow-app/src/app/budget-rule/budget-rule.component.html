@@ -1,0 +1,233 @@
+<!-- <h4>{{'budgetRule.title' | translate}}</h4> -->
+<p-toolbar styleClass="mt-2">
+    <div class="p-toolbar-group-left flex-wrap-container">
+        <button type="button" pButton label="{{'budgetRule.createBudgetRule' | translate}}" icon="pi pi-check"
+            (click)="openCreateModalShow()" class="p-button-success ml-2"></button>
+        <button type="button" pButton label="{{'budgetRule.editBudgetRule' | translate}}" icon="pi pi-pencil"
+            (click)="openUpdateModalShow()" class="p-button-help ml-2"></button>
+        <button type="button" pButton label="{{'budgetRule.deleteBudgetRule' | translate}}" icon="pi pi-trash"
+            (click)="openDeleteModalShow()" class="p-button-danger ml-2"></button>
+        <button type="button" pButton label="{{'budgetRule.detailBudgetRule' | translate}}" icon="pi pi-save"
+            (click)="showDetail()" class="p-button-warning ml-2"></button>
+    </div>
+</p-toolbar>
+
+<p-panel styleClass="mt-5" header="{{'budgetRule.title' | translate}}">
+    <div *ngIf="data && data.length > 0">
+        <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
+            (setSelectedData)="setSelectedRow($event)" [selectionMode]="'single'"
+            [columns]="column"></app-datagrid-for-format>
+    </div>
+</p-panel>
+
+<!-- budget modals -->
+<p-dialog *ngIf="createModalShow==true" header="{{'budgetRule.creationBudgetRule' | translate}}" [modal]="true"
+    [(visible)]="createModalShow" [style]="{ width: '65rem',height:'34rem' }" [maximizable]="false">
+    <div class="grid">
+        <div class="col-6">
+            <label for="name">{{'budgetRule.ruleName' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" placeholder="{{'budgetRule.ruleName' | translate}}" pInputText
+                    [(ngModel)]="newBudgetRule.RuleName" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'budgetRule.limitAmount' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="number" placeholder="Limit" pInputText [(ngModel)]="newBudgetRule.LimitAmount"
+                    style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'budgetRule.currency' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <p-select [options]="currencyList" optionLabel="name" [(ngModel)]="selectedCurrency" [filter]="true"
+                    filterBy="name" style="width: 100%;" styleClass="w-full"></p-select>
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'budgetRule.startDate' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="label" type="date" pInputText [(ngModel)]="startDate" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'budgetRule.endDate' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="label" type="date" pInputText [(ngModel)]="endDate" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'budgetRule.isActive' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <p-select [options]="statusList" optionLabel="name" [(ngModel)]="newBudgetRule.IsActive" [filter]="true"
+                    filterBy="name" style="width: 100%;" styleClass="w-full"></p-select>
+            </span>
+        </div>
+    </div>
+
+    <div class="mt-2 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="createBudgetRule()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+
+
+<p-dialog *ngIf="updateModalShow==true" header="{{'budgetRule.budgetRuleRegulation' | translate}}" [modal]="true"
+    [(visible)]="updateModalShow" [style]="{ width: '65rem',height:'34rem' }" [maximizable]="false">
+    <div class="grid">
+        <div class="col-6">
+            <label for="name">{{'budgetRule.ruleName' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="text" pInputText [(ngModel)]="editBudgetRule.RuleName" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'budgetRule.limitAmount' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="name" type="number" pInputText [(ngModel)]="editBudgetRule.LimitAmount"
+                    style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="name">{{'budgetRule.currency' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <p-select [options]="currencyList" optionLabel="name" [(ngModel)]="selectedCurrency" [filter]="true"
+                    filterBy="name" style="width: 100%;" styleClass="w-full"></p-select>
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'budgetRule.startDate' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="label" type="date" pInputText [(ngModel)]="startDate" style="width: 100%;" />
+            </span>
+
+        </div>
+        <div class="col-6">
+            <label for="label">{{'budgetRule.endDate' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <input id="label" type="date" pInputText [(ngModel)]="endDate" style="width: 100%;" />
+            </span>
+        </div>
+        <div class="col-6">
+            <label for="label">{{'budgetRule.isActive' | translate}}</label>
+            <span class="p-float-label mt-2">
+                <p-select [options]="statusList" optionLabel="name" [(ngModel)]="editBudgetRule.IsActive"
+                    [filter]="true" filterBy="name" style="width: 100%;" styleClass="w-full"></p-select>
+            </span>
+        </div>
+    </div>
+    <div class="mt-2 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="updateBudgetRule()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="deleteModalShow==true" header="{{'budgetRule.deleteBudgetRule_' | translate}}" [modal]="true"
+    [(visible)]="deleteModalShow" [style]="{ width: '65rem',height:'12rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <p style="font-weight: 800;">{{'budgetRule.budgetRuleDeleteConfirm' | translate}}</p>
+        </div>
+    </div>
+    <div class="mt-2 flex justify-content-end">
+        <button type="button" pButton label="{{'button.cancel' | translate}}" icon="pi pi-times"
+            class="p-button-danger " (click)="deleteModalShow=false"></button>
+        <button type="button" pButton label="{{'button.yes' | translate}}" icon="pi pi-check"
+            (click)="deleteBudgetRule()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+
+<!-- detail modal -->
+<p-dialog *ngIf="detailModalShow==true&&selectedRow!=null" header="{{'budgetRule.detailBudgetRule' | translate}}"
+    [modal]="true" [(visible)]="detailModalShow" [style]="{ width: '65rem',height:'45rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <app-datagrid-for-format *ngIf="selectedRow" [Data]="detailData" [customizeOptions]="customizeGridDetail"
+            [selectedData]="selectedRowDetail" (setSelectedData)="setSelectedRowDetail($event)"
+            [selectionMode]="'single'" [columns]="detailColumn"></app-datagrid-for-format>
+    </div>
+
+    <div class="mt-2 flex justify-content-end">
+        <button type="button" pButton label="{{'button.create' | translate}}" icon="pi pi-check"
+            (click)="openCreateBudgetRuleObjectModal()" class="p-button-success ml-2"></button>
+        <button type="button" pButton label="{{'button.update' | translate}}" icon="pi pi-save"
+            (click)="openUpdateBudgetRuleObjectModal()" class="ml-2 p-button-warning"></button>
+        <button type="button" pButton label="{{'button.delete' | translate}}" icon="pi pi-trash"
+            (click)="openDeleteBudgetRuleObjectModal()" class="ml-2 ml-2 p-button-danger"></button>
+    </div>
+</p-dialog>
+
+
+<p-dialog *ngIf="showCreateBudgetRuleObjectModal==true" header="{{'budgetRule.createBudgetRule' | translate}}"
+    [modal]="true" [(visible)]="showCreateBudgetRuleObjectModal" [style]="{ width: '65rem',height:'30rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <label for="name">{{'budgetRule.objeId' | translate}}</label>
+            <input id="name" type="text" pInputText [(ngModel)]="newBudgetRuleObject.ObjID" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="name">{{'budgetRule.objType' | translate}}</label>
+            <input id="name" type="text" pInputText [(ngModel)]="newBudgetRuleObject.ObjType" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="name">{{'budgetRule.budgetRule' | translate}}</label>
+            <p-select [options]="budgetRuleList" optionLabel="name" [(ngModel)]="selectedBudgetRule" [filter]="true"
+                filterBy="name" [disabled]="true"></p-select>
+        </div>
+    </div>
+
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="createBudgetRuleObject()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="showUpdateBudgetRuleObjectModal==true" header="{{'budgetRule.updateBudgetRuleObject' | translate}}"
+    [modal]="true" [(visible)]="showUpdateBudgetRuleObjectModal" [style]="{ width: '65rem',height:'30rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <label for="name">{{'budgetRule.objeId' | translate}}</label>
+            <input id="name" type="text" pInputText [(ngModel)]="editBudgetRuleObject.ObjID" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="name">{{'budgetRule.objType' | translate}}</label>
+            <input id="name" type="text" pInputText [(ngModel)]="editBudgetRuleObject.ObjType" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="name">{{'budgetRule.budgetRule' | translate}}</label>
+            <p-select [options]="budgetRuleList" optionLabel="name" [(ngModel)]="selectedBudgetRule" [filter]="true"
+                filterBy="name" [disabled]="true"></p-select>
+        </div>
+    </div>
+
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="{{'button.save' | translate}}" icon="pi pi-check"
+            (click)="updateBudgetRuleObject()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+
+
+
+<p-dialog *ngIf="showDeleteBudgetRuleObjectModal==true" header="{{'budgetRule.deleteBudgetRuleObject' | translate}}"
+    [modal]="true" [(visible)]="showDeleteBudgetRuleObjectModal" [style]="{ width: '65rem',height:'12rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false">
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <p style="font-weight: 800;">{{'budgetRule.deleteBudgetRuleObjectConfirm' | translate}}</p>
+        </div>
+    </div>
+    <div class="mt-2 flex justify-content-end">
+        <button type="button" pButton label="{{'button.cancel' | translate}}" icon="pi pi-times"
+            class="p-button-danger " (click)="showDeleteBudgetRuleObjectModal=false"></button>
+        <button type="button" pButton label="{{'button.yes' | translate}}" icon="pi pi-check"
+            (click)="deleteBudgetRuleObject()" class="p-button-success ml-2" [disabled]="isDisableButton"></button>
+    </div>
+</p-dialog>
+
+<p-toast></p-toast>

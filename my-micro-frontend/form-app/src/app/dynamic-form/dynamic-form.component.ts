@@ -17,7 +17,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { FormService } from '@my-micro-frontend/shared-core';
+import { FormService, GeneralSystemService } from '@my-micro-frontend/shared-core';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { API } from 'libs/shared-core/src/lib/constants/form/API';
 
@@ -92,14 +92,15 @@ export class DynamicFormComponent implements OnInit {
     private translateService: TranslateService,
     // Note: Replaced GeneralSystemService with dynamic resolution or removed if unused
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private generalService: GeneralSystemService
   ) {
     const nav = this.router.getCurrentNavigation();
     this.selectedRows = nav?.extras?.state?.['selectedRows'] || [];
     this.overAmount = nav?.extras?.state?.['overAmount'] || 0;
     this.reportedDate = nav?.extras?.state?.['reportedDate'] || new Date();
 
-    // this.getUser(); // Assuming getUser is handled via base/token service now
+    this.getUser();
   }
 
   getEditableGridByCode(code: string): DatagridForFormatComponent | undefined {
@@ -179,6 +180,15 @@ export class DynamicFormComponent implements OnInit {
         });
       }
     });
+  }
+
+  getUser() {
+    return this.generalService.getUserRedis().subscribe(async (res: any) => {
+      if (res.code !== "99") {
+        this.user = res.response;
+        console.log("user", this.user);
+      }
+    })
   }
 
   getData(data: any): void {

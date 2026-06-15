@@ -66,3 +66,20 @@ export const GET_ORGANIZATION_LIST_FOR_DROPDOWN = `${BASE_URL}/TrForm/getOrganiz
 
 export const GET_ORGANIZATION_TRFORM_REPORT = `${BASE_URL}/TrForm/GetOrganizationTrFormReport`;
 
+//DfBudgetRule 
+export const CREATE_BUDGET_RULE = `${BASE_URL}/DfBudgetRule/CreateDfBudgetRule`;
+
+export const UPDATE_BUDGET_RULE = `${BASE_URL}/DfBudgetRule/UpdateDfBudgetRule`;
+
+export const DELETE_BUDGET_RULE = `${BASE_URL}/DfBudgetRule/DeleteDfBudgetRule`;
+
+export const GET_ALL_BUDGET_RULE = `${BASE_URL}/DfBudgetRule/getAllDfBudgetRule`;
+
+//DfBudgetRuleObject
+export const CREATE_BUDGET_RULE_OBJECT = `${BASE_URL}/DfBudgetRuleObject/CreateDfBudgetRuleObject`;
+
+export const UPDATE_BUDGET_RULE_OBJECT = `${BASE_URL}/DfBudgetRuleObject/UpdateDfBudgetRuleObject`;
+
+export const DELETE_BUDGET_RULE_OBJECT = `${BASE_URL}/DfBudgetRuleObject/DeleteDfBudgetRuleObject`;
+
+export const GET_BUDGET_RULE_OBJECT_BY_BUDGET_RULE_ID = `${BASE_URL}/DfBudgetRuleObject/GetDfBudgetRuleObjectsByRuleId`;
