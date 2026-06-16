@@ -323,5 +323,56 @@
         "endDate": "Bitiş Tarihi",
         "search": "Ara",
         "statistics": "İstatistikler"
+    },
+    "dfFormColumns": {
+        "id": "Id",
+        "description": "Form Adı",
+        "isActive": "Aktif Mi?",
+        "isApproval": "Onay Gerekliliği",
+        "isItem": "Kalem Gerekliliği"
+    },
+    "approverRule": {
+        "createRule": "Onay Kural Oluştur",
+        "editRule": "Onay Kural Düzenle",
+        "deleteRule": "Onay Kural Sil",
+        "detailRule": "Onay Kural Detay Listesi",
+        "copyRule": "Onay Kural Kopyala"
+    },
+    "approverRuleDetailColumns": {
+        "approverOrder": "Onay Sırası",
+        "approverName": "Onaylayan Adı",
+        "ruleValue": "Kural Değeri",
+        "equality": "Eşitlik",
+        "ruleField": "Kural Alanı",
+        "approverOType": "Onaylayan Türü",
+        "approverObjId": "Onaylayan Obje Id",
+        "approverStopRSIGN": "Onaylama Durdurma İşareti",
+        "approverOTypeStop": "Onaylayan Türü Durdurma",
+        "approverObjIdStop": "Onaylayan Obje Id Durdurma",
+        "approverOrderType": "Onay Sıra Türü"
+    },
+    "ruleColumns": {
+        "rule.id": "Id",
+        "rule.ruleOrder": "Sıra No",
+        "rule.dfSystemCompanyId": "Firma Id",
+        "rule.objType": "Obje Türü",
+        "rule.objId": "Obje Id",
+        "rule.description": "Açıklama"
+    },
+    "reportColumns": {
+        "date": "Tarih",
+        "paymentType": "Ödeme Türü",
+        "department": "Bölüm",
+        "expenseType": "Masraf Türü",
+        "documentNo": "Belge No",
+        "title": "Unvan",
+        "identityNo": "Kimlik No",
+        "expenseDescription": "Masraf Açıklaması",
+        "fisDetay": "Fiş Detay",
+        "id": "Id",
+        "documentType": "Belge Türü",
+        "seriNo": "Seri No",
+        "advensePayment": "Avans Ödemesi",
+        "sureDeleteParameterValue": "Parametre Değeri silinecektir kabul ediyor musunuz ?"
     }
 }

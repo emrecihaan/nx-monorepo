@@ -84,7 +84,7 @@ export class DynamicFormComponent implements OnInit {
   reportedDate = new Date();
 
   validationModel = null;
-
+  activeTabs: any[] = [];
   constructor(
     private cdRef: ChangeDetectorRef,
     private formService: FormService,
@@ -120,12 +120,12 @@ export class DynamicFormComponent implements OnInit {
     this.editableDynamicColumns = [];
     this.dfFormId = null;
     this.trFormId = null;
-    this.internalForms = [];
-    this.fieldValues = {};
-    this.dynamicColumns = [];
-    this.selectedRows = [];
-    this.disabledFields = {};
-    this.uploadedFileGuid = null;
+    // this.internalForms = [];
+    // this.fieldValues = {};
+    // this.dynamicColumns = [];
+    // this.selectedRows = [];
+    // this.disabledFields = {};
+    // this.uploadedFileGuid = null;
   }
 
   ngOnInit(): void {
@@ -458,12 +458,40 @@ export class DynamicFormComponent implements OnInit {
     return !props.some((p: any) => p.dfPropertyType?.name === 'Is_Visible');
   }
 
-  getFieldWidth(field: any): number {
+  getFieldWidth(field: any): string {
+    let classes = 'col-12'; // Default base class for mobile
+    try {
+      if (field.configData) {
+        const config = JSON.parse(field.configData);
+        const size = config.size || 'md';
+        const width = config.width || 12;
+
+        classes += ` ${size}:col-${width}`;
+
+        if (config.offset !== undefined && config.offset !== null) {
+          classes += ` ${size}:col-offset-${config.offset}`;
+        }
+        if (config.push !== undefined && config.push !== null) {
+          classes += ` ${size}:col-push-${config.push}`;
+        }
+        if (config.pull !== undefined && config.pull !== null) {
+          classes += ` ${size}:col-pull-${config.pull}`;
+        }
+      } else {
+        classes += ' md:col-12';
+      }
+    } catch {
+      classes += ' md:col-12';
+    }
+    return classes;
+  }
+
+  getFieldSpace(field: any): number {
     try {
       const config = JSON.parse(field.configData);
-      return config.width || 12;
+      return config.spacingAfter || 0;
     } catch {
-      return 12;
+      return 0;
     }
   }
 

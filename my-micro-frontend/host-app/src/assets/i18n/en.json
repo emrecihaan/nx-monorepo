@@ -128,5 +128,40 @@
         "requestHandler": "Talep Kimde",
         "evaluation": "Değerlendirme",
         "transferInfo": "Aktarım Bilgisi"
+    },
+    "dfFormColumns": {
+        "id": "Id",
+        "description": "Form Name",
+        "isActive": "Is Active?",
+        "isApproval": "Is Approval",
+        "isItem": "Is Item"
+    },
+    "approverRule": {
+        "createRule": "Create Approval Rule",
+        "editRule": "Edit Approval Rule",
+        "deleteRule": "Delete Approval Rule",
+        "detailRule": "Approval Rule Detail List",
+        "copyRule": "Copy Approval Rule"
+    },
+    "approverRuleDetailColumns": {
+        "approverOrder": "Approver Order",
+        "approverName": "Approver Name",
+        "ruleValue": "Rule Value",
+        "equality": "Equality",
+        "ruleField": "Rule Field",
+        "approverOType": "Approver Type",
+        "approverObjId": "Approver Object Id",
+        "approverStopRSIGN": "Approver Stop RSIGN",
+        "approverOTypeStop": "Approver Type Stop",
+        "approverObjIdStop": "Approver Object Id Stop",
+        "approverOrderType": "Approver Order Type"
+    },
+    "ruleColumns": {
+        "rule.id": "Id",
+        "rule.ruleOrder": "Rule Order",
+        "rule.dfSystemCompanyId": "System Company Id",
+        "rule.objType": "Object Type",
+        "rule.objId": "Object Id",
+        "rule.description": "Description"
     }
 }

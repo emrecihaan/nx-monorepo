@@ -1,0 +1,6 @@
+<h4>Form Listesi</h4>
+<div style="margin-top: 20px;" *ngIf="data">
+    <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
+        (setSelectedData)="setSelectedRow($event)" [selectionMode]="'single'"
+        [columns]="column"></app-datagrid-for-format>
+</div>

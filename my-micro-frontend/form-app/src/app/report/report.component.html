@@ -20,7 +20,7 @@
 
 <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
     [selectedRows]="selectedRows" [keyExpr]="'id'" (setSelectedData)="setSelectedRow($event)"
-    (setSelectedRows)="setSelectedRows($event)" [selectionMode]="'single'" #gridRef
+    (setSelectedRows)="setSelectedRows($event)" [selectionMode]="'multiple'" #gridRef
     [columns]="column"></app-datagrid-for-format>
 
 <p-dialog *ngIf="difference==true" header="Bütçe Kuralı" [modal]="true" [(visible)]="difference"
