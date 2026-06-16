@@ -264,5 +264,21 @@
         "seriNo": "Seri No",
         "advensePayment": "Avans Ödemesi",
         "sureDeleteParameterValue": "Parametre Değeri silinecektir kabul ediyor musunuz ?"
+    },
+    "messageServiceMessages": {
+        "recordAddedSuccessfully": "Kayıt başarıyla eklendi",
+        "recordCannotAdded": "Kayıt eklenemedi",
+        "selectData": "Veri seçiniz",
+        "missingValue": "Missing Value",
+        "selectOneDataDetail": "Select One Data For Detail",
+        "sentForApproval": "Sent For Approval",
+        "recordsFailedSubmit": "Records Failed to Submit for Approval",
+        "selectOneData": "Select One Data",
+        "rejectedData": "Request Rejected",
+        "rejectedDataError": "The Request Could Not Be Rejected",
+        "selectDataFromTable": "Select data from the table",
+        "recordUpdatedSuccessfully": "Record Updated Successfully",
+        "recordDeletedSuccessfully": "Record Deleted Successfully",
+        "recordDeletedFailed": "Record Deleted Failed"
     }
 }

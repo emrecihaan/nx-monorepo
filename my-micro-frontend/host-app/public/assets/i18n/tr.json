@@ -150,7 +150,19 @@
     },
     "messageServiceMessages": {
         "recordAddedSuccessfully": "Kayıt başarıyla eklendi",
-        "recordCannotAdded": "Kayıt eklenemedi"
+        "recordCannotAdded": "Kayıt eklenemedi",
+        "selectData": "Veri seçiniz",
+        "missingValue": "Hata",
+        "selectOneDataDetail": "Detay İçin Tek Kayıt Seçiniz",
+        "sentForApproval": "Onaya Gönderildi",
+        "recordsFailedSubmit": "Onaya Gönderilemedi",
+        "selectOneData": "Tek Kayıt Seçiniz",
+        "rejectedData": "Talep Reddedildi",
+        "rejectedDataError": "Talep Reddedilemedi",
+        "selectDataFromTable": "Tablodan Veri Seçiniz",
+        "recordUpdatedSuccessfully": "Kayıt Güncellendi",
+        "recordDeletedSuccessfully": "Kayıt Silindi",
+        "recordDeletedFailed": "Kayıt Silinemedi"
     },
     "success": "Başarılı",
     "error": "Hata",
