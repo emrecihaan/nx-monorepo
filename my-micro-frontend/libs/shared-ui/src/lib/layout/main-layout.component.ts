@@ -61,6 +61,14 @@ export class MainLayoutComponent {
       else if (segment === 'dynamic-form') label = 'Dinamik Form';
       else if (segment === 'dashboard') label = 'Kontrol Paneli';
       else if (segment === 'expense-group') label = 'Masraf Grubu';
+      else if (segment === 'budgetrule') label = 'Bütçe Kuralı';
+      else if (segment === 'expense-type') label = 'Masraf Türü';
+      else if (segment === 'cost-rule') label = 'Masraf Kuralı';
+      else if (segment === 'parameter-type') label = 'Parametre Kuralı';
+      else if (segment === 'expense-center') label = 'Masraf Yeri';
+      else if (segment === 'expense-request') label = 'Masraf ERP Aktarım';
+      else if (segment === 'form-approver-rule') label = 'Onaycı Kuralları';
+
       else if (segment === 'budgetreportuser' || segment === 'budgetreportorganization') {
         const translated = this.translate.instant('budgetReport.title');
         label = translated !== 'budgetReport.title' ? translated : 'Bütçe Kullanıcı Raporu';

@@ -26,8 +26,8 @@
                     </div>
                     <div class="col">
                         <span class="p-float-label">
-                            <p-calendar id="startDate" formControlName="startDate" dateFormat="dd/mm/yy"
-                                showIcon="true"></p-calendar>
+                            <p-datepicker id="startDate" formControlName="startDate" dateFormat="dd/mm/yy"
+                                showIcon="true"></p-datepicker>
                             <label for="startDate">{{'expenseTypeForm.startDate' | translate}}</label>
                         </span>
                         <small id="startDate" *ngIf="expenseTypeForm.get('startDate')?.invalid && formSubmitted"
@@ -36,8 +36,8 @@
                     </div>
                     <div class="col">
                         <span class="p-float-label">
-                            <p-calendar id="endDate" formControlName="endDate" dateFormat="dd/mm/yy"
-                                showIcon="true"></p-calendar>
+                            <p-datepicker id="endDate" formControlName="endDate" dateFormat="dd/mm/yy"
+                                showIcon="true"></p-datepicker>
                             <label for="endDate">{{'expenseTypeForm.endDate' | translate}}</label>
                         </span>
                         <small id="endDate" *ngIf="expenseTypeForm.get('endDate')?.invalid && formSubmitted"
@@ -64,7 +64,7 @@
                         <span class="p-float-label">
                             <p-select id="status" [options]="statusOptions" formControlName="status" optionLabel="name"
                                 optionValue="id" placeholder="{{'expenseGroup.selectStatus' | translate}}"
-                                [showClear]="true" > 
+                                [showClear]="true">
                                 <!-- [autoDisplayFirst]="false" -->
                             </p-select>
                             <label for="status">{{'expenseGroup.status' | translate}}</label>

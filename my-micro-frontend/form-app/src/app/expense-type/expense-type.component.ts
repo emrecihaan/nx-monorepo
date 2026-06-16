@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
@@ -13,9 +13,10 @@ import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { FormService } from '@my-micro-frontend/shared-core';
 import { AccordionModule } from 'primeng/accordion';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-expense-type',
@@ -36,9 +37,10 @@ import { AccordionModule } from 'primeng/accordion';
     InputTextModule,
     SelectModule,
     AccordionModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+    DatePickerModule
   ],
-  providers: [MessageService],
+  providers: [MessageService, DatePipe],
   templateUrl: './expense-type.component.html',
   styleUrls: ['./expense-type.component.scss']
 })
@@ -55,20 +57,44 @@ export class ExpenseTypeComponent implements OnInit {
     { id: 1, name: 'Aktif' },
     { id: 2, name: 'Pasif' }
   ];
+  items: MenuItem[] = [];
   constructor() { }
 
   private formService = inject(FormService);
   private translateService = inject(TranslateService);
   private messageService = inject(MessageService);
   private datePipe = inject(DatePipe);
+  private fb = inject(FormBuilder);
 
   ngOnInit(): void {
+    this.items = [
+      { label: this.translateService.instant('expenseTypeForm.title') }
+    ];
+    this.expenseTypeForm = this.fb.group({
+      kostv: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: [null, Validators.required],
+      company: [null, Validators.required],
+      text: ['', Validators.required],
+      status: [null, Validators.required]
+    }, { validators: this.dateRangeValidator });
+
+    this.initializeColumns();
   }
 
   setSelectedRow(value: any) {
     this.selectedRow = value;
   }
 
+  dateRangeValidator(group: FormGroup): { [key: string]: any } | null {
+    const startDate = group.get('startDate')?.value;
+    const endDate = group.get('endDate')?.value;
+
+    if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+      return { dateRangeInvalid: true };
+    }
+    return null;
+  }
 
   initializeColumns() {
     this.columns = [

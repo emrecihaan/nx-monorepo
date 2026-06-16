@@ -451,6 +451,7 @@ export class DynamicFormComponent implements OnInit {
         }
       }
     })
+    this.activeTabs = this.forms.map((_, i) => i);
   }
 
   onDynamicChange(controlName: string, event: any) {
