@@ -166,7 +166,7 @@
         "selectCompany": "Select Company",
         "selectStatus": "Select Status",
         "statusReq": "Status Required",
-        "endDateBeforeStartDate": "End Date must be after Start Date.",
+        "endDateBeforeStartDate": "End Date must be after Start Date."
     },
     "budgetReport": {
         "title": "Budget Report",
@@ -189,5 +189,56 @@
         "endDate": "Bitiş Tarihi",
         "search": "Ara",
         "statistics": "İstatistikler"
+    },
+    "dfFormColumns": {
+        "id": "Id",
+        "description": "Form Name",
+        "isActive": "Is Active?",
+        "isApproval": "Is Approval",
+        "isItem": "Is Item"
+    },
+    "approverRule": {
+        "createRule": "Create Approval Rule",
+        "editRule": "Edit Approval Rule",
+        "deleteRule": "Delete Approval Rule",
+        "detailRule": "Approval Rule Detail List",
+        "copyRule": "Copy Approval Rule"
+    },
+    "approverRuleDetailColumns": {
+        "approverOrder": "Approver Order",
+        "approverName": "Approver Name",
+        "ruleValue": "Rule Value",
+        "equality": "Equality",
+        "ruleField": "Rule Field",
+        "approverOType": "Approver Type",
+        "approverObjId": "Approver Object Id",
+        "approverStopRSIGN": "Approver Stop RSIGN",
+        "approverOTypeStop": "Approver Type Stop",
+        "approverObjIdStop": "Approver Object Id Stop",
+        "approverOrderType": "Approver Order Type"
+    },
+    "ruleColumns": {
+        "rule.id": "Id",
+        "rule.ruleOrder": "Rule Order",
+        "rule.dfSystemCompanyId": "System Company Id",
+        "rule.objType": "Object Type",
+        "rule.objId": "Object Id",
+        "rule.description": "Description"
+    },
+    "reportColumns": {
+        "date": "Tarih",
+        "paymentType": "Ödeme Türü",
+        "department": "Bölüm",
+        "expenseType": "Masraf Türü",
+        "documentNo": "Belge No",
+        "title": "Unvan",
+        "identityNo": "Kimlik No",
+        "expenseDescription": "Masraf Açıklaması",
+        "fisDetay": "Fiş Detay",
+        "id": "Id",
+        "documentType": "Belge Türü",
+        "seriNo": "Seri No",
+        "advensePayment": "Avans Ödemesi",
+        "sureDeleteParameterValue": "Parametre Değeri silinecektir kabul ediyor musunuz ?"
     }
 }

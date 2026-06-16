@@ -5,6 +5,8 @@ import { BudgetReportUserComponent } from '../budget-report-user/budget-report-u
 import { BudgetReportOrganizationComponent } from '../budget-report-organization/budget-report-organization.component';
 import { ErpExpenseRequestComponent } from '../erp-expense-request/erp-expense-request.component';
 import { BudgetRuleComponent } from '../budget-rule/budget-rule.component';
+import { FormApproverRuleComponent } from '../form-approver-rule/form-approver-rule.component';
+import { FormApproverRuleDetailComponent } from '../form-approver-rule-detail/form-approver-rule-detail.component';
 
 export const remoteRoutes: Route[] = [
   { path: '', component: RemoteEntry },
@@ -12,5 +14,7 @@ export const remoteRoutes: Route[] = [
   { path: 'budgetreportuser', component: BudgetReportUserComponent },
   { path: 'budgetreportorganization', component: BudgetReportOrganizationComponent },
   { path: 'expense-request', component: ErpExpenseRequestComponent },
-  { path: 'budgetrule', component: BudgetRuleComponent }
+  { path: 'budgetrule', component: BudgetRuleComponent },
+  { path: 'form-approver-rule', component: FormApproverRuleComponent },
+  { path: 'formapproverruledetail/:dfFormId', component: FormApproverRuleDetailComponent }
 ];
