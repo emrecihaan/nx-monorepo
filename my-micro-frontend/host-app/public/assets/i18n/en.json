@@ -145,7 +145,10 @@
         "save": "Save",
         "update": "Update",
         "pdf": "Download PDF",
-        "detail": "Detail"
+        "detail": "Detail",
+        "approve": "Approve",
+        "reject": "Reject",
+        "rejectRequest": "Reject"
     },
     "workFlow": {
         "title": "Workflows",

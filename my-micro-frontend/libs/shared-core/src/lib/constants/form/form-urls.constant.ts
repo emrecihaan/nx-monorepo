@@ -87,3 +87,9 @@ export const UPDATE_BUDGET_RULE_OBJECT = `${BASE_URL}/DfBudgetRuleObject/UpdateD
 export const DELETE_BUDGET_RULE_OBJECT = `${BASE_URL}/DfBudgetRuleObject/DeleteDfBudgetRuleObject`;
 
 export const GET_BUDGET_RULE_OBJECT_BY_BUDGET_RULE_ID = `${BASE_URL}/DfBudgetRuleObject/GetDfBudgetRuleObjectsByRuleId`;
+
+export const APPROVE_FORM = `${BASE_URL}/TrFormApprover/ApproveForm`;
+
+export const GET_APPROVERS_COUNT_BY_STATUSID = `${BASE_URL}/TrFormApprover/getApproversCountByStatusId`;
+
+export const GET_APPROVED_TRFORM_LIST_BY_APPROVERID_AND_STATUSID = `${BASE_URL}/TrForm/getApprovedTrFormsByApproverIdAndStatusId`;
