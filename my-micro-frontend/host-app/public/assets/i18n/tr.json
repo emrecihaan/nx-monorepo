@@ -142,7 +142,10 @@
         "save": "Kaydet",
         "update": "Güncelle",
         "pdf": "PDF İndir",
-        "detail": "Detay"
+        "detail": "Detay",
+        "approve": "Onayla",
+        "reject": "Reddet",
+        "rejectRequest": "Reddet"
     },
     "messageServiceMessages": {
         "recordAddedSuccessfully": "Kayıt başarıyla eklendi",

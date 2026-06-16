@@ -5,6 +5,7 @@ import { BudgetReportUserComponent } from '../budget-report-user/budget-report-u
 import { BudgetReportOrganizationComponent } from '../budget-report-organization/budget-report-organization.component';
 import { ErpExpenseRequestComponent } from '../erp-expense-request/erp-expense-request.component';
 import { BudgetRuleComponent } from '../budget-rule/budget-rule.component';
+import { AdminDashboardComponent } from '../admin-dashboard/admin-dashboard.component';
 
 export const remoteRoutes: Route[] = [
   { path: '', component: RemoteEntry },
@@ -12,5 +13,6 @@ export const remoteRoutes: Route[] = [
   { path: 'budgetreportuser', component: BudgetReportUserComponent },
   { path: 'budgetreportorganization', component: BudgetReportOrganizationComponent },
   { path: 'expense-request', component: ErpExpenseRequestComponent },
-  { path: 'budgetrule', component: BudgetRuleComponent }
+  { path: 'budgetrule', component: BudgetRuleComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent }
 ];
