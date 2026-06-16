@@ -6,9 +6,9 @@
 <form #formDir="ngForm" (ngSubmit)="save(formDir)" *ngIf="!isLoading">
     <p-accordion [value]="activeTabs" [multiple]="true">
         <p-accordion-panel *ngFor="let form of forms; let i = index" [value]="i">
-            <p-accordion-header>{{form.formName}}</p-accordion-header>
+            <p-accordion-header class="bg-blue-50">{{form.formName}}</p-accordion-header>
             <p-accordion-content>
-                <div class="form-wrapper">
+                <div class="form-wrapper pt-4">
                     <div class="grid">
                         <div *ngFor="let field of form.fields" [ngClass]="getFieldWidth(field)"
                             [ngStyle]="{'margin-right': getFieldSpace(field) + 'px'}" class="mb-3">
@@ -121,8 +121,8 @@
                                 <app-datagrid-for-format [Data]="field.rows" [columns]="field.dynamicColumns"
                                     [selectionMode]="field.selectionMode || 'single'"
                                     [selectedData]="field.selectedData || null" [attr.data-code]="field.code"
-                                    [code]="field.code" [height]="300" 
-                                    [rowAdd]="true" [rowUpdate]="true" [rowDelete]="true" #editablegrid>
+                                    [code]="field.code" [height]="300" [rowAdd]="true" [rowUpdate]="true"
+                                    [rowDelete]="true" #editablegrid>
                                 </app-datagrid-for-format>
                             </div>
 

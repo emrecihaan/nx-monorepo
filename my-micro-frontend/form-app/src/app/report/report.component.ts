@@ -152,7 +152,7 @@ export class ReportComponent implements OnInit {
     const selected = typeof selectedKey === 'object' ? selectedKey : this.data.find(d => d.id === selectedKey);
 
     if (selected) {
-      this.router.navigate(['../dynamic-form/0', selected.id], { relativeTo: this.route });
+      this.router.navigate(['app/form-app/dynamic-form/0', selected.id]);
     }
   }
 
@@ -210,8 +210,7 @@ export class ReportComponent implements OnInit {
       this.formService.getUserBudgetRule(this.user?.id || 1, this.selectedForm.id).subscribe((res: any) => {
         if (res.code != "99") {
           if (!res.response || res.response.length === 0) {
-            this.router.navigate(['../dynamic-form', this.selectedForm.id], {
-              relativeTo: this.route,
+            this.router.navigate(['app/form-app/dynamic-form', this.selectedForm.id], {
               state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }
             });
             return;
@@ -228,8 +227,7 @@ export class ReportComponent implements OnInit {
             }
             else {
               if (this.difference == false) {
-                this.router.navigate(['../dynamic-form', this.selectedForm.id], {
-                  relativeTo: this.route,
+                this.router.navigate(['app/form-app/dynamic-form', this.selectedForm.id], {
                   state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }
                 });
               }
@@ -239,8 +237,7 @@ export class ReportComponent implements OnInit {
       });
     }
     else {
-      this.router.navigate(['../dynamic-form', this.selectedForm.id], {
-        relativeTo: this.route,
+      this.router.navigate(['app/form-app/dynamic-form', this.selectedForm.id], {
         state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }
       });
     }
@@ -334,7 +331,6 @@ export class ReportComponent implements OnInit {
           const [y, m, d] = value.split('-').map(Number);
           date = new Date(Date.UTC(y, m - 1, d))
           this.router.navigate(['app/form-app/dynamic-form', formDetail.reportedLineFormId], {
-            relativeTo: this.route,
             state: { reportedDate: date }
           });
         }
@@ -398,8 +394,7 @@ export class ReportComponent implements OnInit {
       const selectedDataObjects = this.selectedRows.map((key: any) =>
         typeof key === 'object' ? key : this.data.find(d => d.id === key)
       ).filter((d: any) => d !== undefined);
-      this.router.navigate(['../dynamic-form', this.selectedForm.id], {
-        relativeTo: this.route,
+      this.router.navigate(['app/form-app/dynamic-form', this.selectedForm.id], {
         state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }
       });
     }
