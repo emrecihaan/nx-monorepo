@@ -1,16 +1,13 @@
 <p-toast></p-toast>
 <div class="dashboard-container">
-    <div class="dashboard-grid">
-        <div class="card stat-card" *ngFor="let item of subMenuList; let i = index;"
-            [ngClass]="{
+    <div class="dashboard-grid" style="margin-left: 20px;">
+        <div class="card stat-card" *ngFor="let item of subMenuList; let i = index;" [ngClass]="{
                 'stat-card-warning': i === 1,
                 'stat-card-danger': i === 2,
                 'stat-card-success': i === 3,
                 'stat-card-primary': i !== 1 && i !== 2 && i !== 3,
                 'selected-card': selectedCardId === item.id
-            }"
-            (click)="getFormListWithStatusIdAndUserId(item.id,this.user.id)"
-            style="cursor: pointer;">
+            }" (click)="getFormListWithStatusIdAndUserId(item.id,this.user.id)" style="cursor: pointer;">
             <div class="stat-content">
                 <div class="stat-icon">
                     <i [class]="item.icon"></i>

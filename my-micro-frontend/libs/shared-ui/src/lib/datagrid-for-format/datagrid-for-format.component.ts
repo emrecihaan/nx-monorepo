@@ -282,7 +282,12 @@ export class DatagridForFormatComponent implements OnInit {
     }
 
     onSelectionChanged(e: any) {
-        // Selection change handler
+        if (e && e.selectedRowKeys) {
+            this.selectedRows = e.selectedRowKeys;
+            this.setSelectedRows.emit(this.selectedRows);
+            this.selectedData = e.selectedRowsData ? e.selectedRowsData[0] : null;
+            this.setSelectedData.emit(this.selectedData);
+        }
     }
 
     onRowUpdated(e: any) {
@@ -294,7 +299,13 @@ export class DatagridForFormatComponent implements OnInit {
     }
 
     onEditingStart(e: any) {
-        // Editing start handler
+        if (!this.dataGrid || !this.dataGrid.instance) return;
+        const rowIndex = this.dataGrid.instance.getRowIndexByKey(e.key);
+        const rowCount = this.Data ? this.Data.length : 0;
+
+        if (rowIndex === rowCount - 1 && this.rowAdd) {
+            this.dataGrid.instance.addRow();
+        }
     }
 
     onClickRow(e: any) {

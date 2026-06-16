@@ -128,20 +128,19 @@ export class ReportComponent implements OnInit {
   }
 
   createReport() {
-    if (!this.selectedRows || this.selectedRows.length === 0) {
+    debugger;
+    if (this.selectedRows == null || this.selectedRows.length == 0) {
       return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen en az bir kayıt seçiniz!" });
     }
 
     if (this.selectedForm == null) {
       return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen Form seçiniz!" });
     }
-
-    // Seçili anahtarlardan gerçek nesneleri bulalım
-    const selectedDataObjects = this.selectedRows.map(key =>
+    const selectedDataObjects = this.selectedRows.map((key: any) =>
       typeof key === 'object' ? key : this.data.find(d => d.id === key)
-    ).filter(d => d !== undefined);
+    ).filter((d: any) => d !== undefined);
 
-    this.selectedAmounts = selectedDataObjects.reduce((total, item) => total + (item.amount || 0), 0);
+    this.selectedAmounts = selectedDataObjects.reduce((total: any, item: any) => total + (item.amount || 0), 0);
     this.getBudgetRules();
   }
 
@@ -201,9 +200,23 @@ export class ReportComponent implements OnInit {
   getBudgetRules() {
     let difference = false;
     const formDetail = this.formListALL.find(f => f.id === this.selectedForm.id);
+
+    // Seçili anahtarlardan gerçek nesneleri bulalım
+    const selectedDataObjects = this.selectedRows.map((key: any) =>
+      typeof key === 'object' ? key : this.data.find(d => d.id === key)
+    ).filter((d: any) => d !== undefined);
+
     if (formDetail && formDetail.isBudgetControl == true) {
       this.formService.getUserBudgetRule(this.user?.id || 1, this.selectedForm.id).subscribe((res: any) => {
         if (res.code != "99") {
+          if (!res.response || res.response.length === 0) {
+            this.router.navigate(['../dynamic-form', this.selectedForm.id], {
+              relativeTo: this.route,
+              state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }
+            });
+            return;
+          }
+
           for (const element of res.response) {
             this.amountRule = element.limitAmount;
             this.getConsumptionAmount(this.selectedForm.id, element.startDate, element.endDate);
@@ -215,8 +228,9 @@ export class ReportComponent implements OnInit {
             }
             else {
               if (this.difference == false) {
-                this.router.navigate(['app/form-app/dynamic-form', this.selectedForm.id], {
-                  state: { selectedRows: this.selectedRows, overAmount: this.overAmount }
+                this.router.navigate(['../dynamic-form', this.selectedForm.id], {
+                  relativeTo: this.route,
+                  state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }
                 });
               }
             }
@@ -225,8 +239,9 @@ export class ReportComponent implements OnInit {
       });
     }
     else {
-      this.router.navigate(['app/form-app/dynamic-form', this.selectedForm.id], {
-        state: { selectedRows: this.selectedRows, overAmount: this.overAmount }
+      this.router.navigate(['../dynamic-form', this.selectedForm.id], {
+        relativeTo: this.route,
+        state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }
       });
     }
   }
@@ -380,8 +395,12 @@ export class ReportComponent implements OnInit {
 
   createdReport() {
     if (this.selectedForm) {
-      this.router.navigate(['app/form-app/dynamic-form', this.selectedForm.id], {
-        state: { selectedRows: this.selectedRows, overAmount: this.overAmount }
+      const selectedDataObjects = this.selectedRows.map((key: any) =>
+        typeof key === 'object' ? key : this.data.find(d => d.id === key)
+      ).filter((d: any) => d !== undefined);
+      this.router.navigate(['../dynamic-form', this.selectedForm.id], {
+        relativeTo: this.route,
+        state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }
       });
     }
   }

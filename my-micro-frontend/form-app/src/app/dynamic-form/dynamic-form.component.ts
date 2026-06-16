@@ -138,15 +138,24 @@ export class DynamicFormComponent implements OnInit {
       if (this.trFormId == null) {
         this.formService.getDfFormById(this.dfFormId).subscribe({
           next: (res: any) => {
-            this.dfForm = res.response.dfForm;
-            this.validationModel = res.response[0].dfFormFieldValidation;
+            console.log(res);
+            try {
+              if (res.response && res.response.length > 0) {
+                this.dfForm = res.response[0].dfForm;
+                this.validationModel = res.response[0].dfFormFieldValidation;
 
-            res.response.forEach((formItem: any) => {
-              this.createDynamicForm(formItem);
-            });
-            this.buttonIsVisible = true;
-            this.isLoading = false;
-            this.cdRef.detectChanges();
+                res.response.forEach((formItem: any) => {
+                  this.createDynamicForm(formItem);
+                });
+              }
+              this.buttonIsVisible = true;
+              console.log("Final forms array:", this.forms);
+            } catch (err) {
+              console.error("Error creating dynamic form:", err);
+            } finally {
+              this.isLoading = false;
+              this.cdRef.detectChanges();
+            }
           },
           error: () => {
             this.isLoading = false;
@@ -284,6 +293,9 @@ export class DynamicFormComponent implements OnInit {
           this.editableDynamicColumns = parsed?.data?.values || [];
         } else {
           if (!newField.rows) newField.rows = [];
+          if (this.selectedRows && this.selectedRows.length > 0) {
+            newField.rows = [...this.selectedRows];
+          }
 
           if (field.btcDfFormFieldsRowDto && Array.isArray(field.btcDfFormFieldsRowDto) && field.btcDfFormFieldsRowDto.length > 0) {
             if (!newField.dynamicColumns) newField.dynamicColumns = [];
@@ -355,6 +367,7 @@ export class DynamicFormComponent implements OnInit {
 
           newField.dynamicColumns.push(this.dynamicColumns);
           newField.dynamicColumns = newField.dynamicColumns.flat();
+          this.fieldValues[field.id] = this.selectedRows;
         }
       }
 
@@ -364,7 +377,7 @@ export class DynamicFormComponent implements OnInit {
           newField.parentRelatedField = field.parentRelatedField;
           if (field.apiUrl && field.apiUrl.trim() !== "") {
             let queryParams = new HttpParams();
-            if (field.importValues != null || field.importValues != undefined || field.importValues.trim() !== '') {
+            if (field.importValues != null && field.importValues !== undefined && field.importValues.trim() !== '') {
               let unescaped = field.importValues.replace(/^"|"$/g, '');
               let jsonImportValues = JSON.parse(unescaped);
               let count = 0;
@@ -376,11 +389,30 @@ export class DynamicFormComponent implements OnInit {
                 count++;
               }
             }
-            this.formService.getFieldDataByUrlWithParams(field.apiUrl, queryParams).subscribe((res: any) => {
-              let parsed: any = res?.response;
-              if (typeof parsed === 'string') parsed = JSON.parse(parsed);
-              newField.options = parsed || [];
-              this.cdRef.detectChanges();
+            this.formService.getFieldDataByUrlWithParams(field.apiUrl, queryParams).subscribe({
+              next: (res: any) => {
+                let parsed: any = res?.response;
+                if (typeof parsed === 'string') parsed = JSON.parse(parsed);
+                newField.options = parsed || [];
+
+                if ((!newField.options || newField.options.length === 0) && field.definedData) {
+                  let defParsed: any = field.definedData;
+                  if (typeof defParsed === 'string') defParsed = JSON.parse(defParsed);
+                  if (typeof defParsed === 'string') defParsed = JSON.parse(defParsed);
+                  newField.options = defParsed?.data?.values || [];
+                }
+                this.cdRef.detectChanges();
+              },
+              error: (err: any) => {
+                console.error("API error for DropDown options:", err);
+                if (field.definedData) {
+                  let defParsed: any = field.definedData;
+                  if (typeof defParsed === 'string') defParsed = JSON.parse(defParsed);
+                  if (typeof defParsed === 'string') defParsed = JSON.parse(defParsed);
+                  newField.options = defParsed?.data?.values || [];
+                  this.cdRef.detectChanges();
+                }
+              }
             });
           } else if (field.definedData) {
             let parsed: any = field.definedData;
@@ -395,10 +427,12 @@ export class DynamicFormComponent implements OnInit {
 
       if (this.isVisible(newField)) {
         let form: any;
+        const targetDfForm = newField.dfForm || data.dfForm;
+
         if (newField.rowFormId == 0) {
-          form = this.forms.find(f => f.id === newField.dfForm.id);
+          form = this.forms.find((f: any) => f.id === targetDfForm.id);
           if (!form) {
-            form = { id: newField.dfForm.id, formName: data.dfForm.description, fields: [] };
+            form = { id: targetDfForm.id, formName: data.dfForm.description, fields: [] };
             this.forms.push(form);
           }
           form.fields.push(newField);
@@ -406,9 +440,9 @@ export class DynamicFormComponent implements OnInit {
         }
 
         if (newField.rowFormId != 0 && newField.type !== "Form") {
-          form = this.forms.find(f => f.id === newField.dfForm.id);
+          form = this.forms.find((f: any) => f.id === targetDfForm.id);
           if (!form) {
-            form = { id: newField.dfForm.id, formName: data.dfForm.description, fields: [] };
+            form = { id: targetDfForm.id, formName: data.dfForm.description, fields: [] };
             this.internalForms.push(form);
             this.forms.push(form);
           }

@@ -145,7 +145,8 @@
         "detail": "Detay",
         "approve": "Onayla",
         "reject": "Reddet",
-        "rejectRequest": "Reddet"
+        "rejectRequest": "Reddet",
+        "cancel": "İptal"
     },
     "messageServiceMessages": {
         "recordAddedSuccessfully": "Kayıt başarıyla eklendi",
@@ -323,6 +324,19 @@
         "endDate": "Bitiş Tarihi",
         "search": "Ara",
         "statistics": "İstatistikler"
+    },
+    "rejectReason": "Reddetme Sebebi",
+    "COST_RULE": {
+        "TITLE": "Masraf Kural Listesi",
+        "createAnExpenseRule": "Masraf Kural Oluştur",
+        "editAnExpenseRule": "Masraf Kural Düzenle",
+        "deleteAnExpenseRule": "Masraf Kural Sil",
+        "detailAnExpenseRule": "Masraf Kural Detay Listesi",
+        "ruleName": "Kural Adı",
+        "dfSystemCompanyId": "Firma Id",
+        "sureDelete": "Masraf Kural ve buna bağlı olarak tüm obje detayları silinecektir kabul ediyor musunuz ?",
+        "ruleNameReq": "Kural Adı zorunlu",
+        "companyIdReq": "Firma Id zorunlu"
     },
     "dfFormColumns": {
         "id": "Id",

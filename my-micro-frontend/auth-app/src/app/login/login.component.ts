@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
 
         this.loading = true;
 
-        this.loginService.login(this.username, this.password, 1).subscribe({
+        this.loginService.login(this.username, this.password, 2010).subscribe({
             next: (response) => {
                 this.loading = false;
                 if (response && response.code === '00' && response.response) {
