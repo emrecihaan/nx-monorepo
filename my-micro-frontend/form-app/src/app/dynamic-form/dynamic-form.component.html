@@ -4,14 +4,14 @@
 </div>
 
 <form #formDir="ngForm" (ngSubmit)="save(formDir)" *ngIf="!isLoading">
-    <p-accordion [value]="0">
+    <p-accordion [value]="activeTabs" [multiple]="true">
         <p-accordion-panel *ngFor="let form of forms; let i = index" [value]="i">
             <p-accordion-header>{{form.formName}}</p-accordion-header>
             <p-accordion-content>
                 <div class="form-wrapper">
                     <div class="grid">
-                        <div *ngFor="let field of form.fields" [ngClass]="'col-12 md:col-' + (getFieldWidth(field) || 12)"
-                            class="mb-3">
+                        <div *ngFor="let field of form.fields" [ngClass]="getFieldWidth(field)"
+                            [ngStyle]="{'margin-right': getFieldSpace(field) + 'px'}" class="mb-3">
                             <!-- Dropdown -->
                             <div *ngIf="field.type === 'DropDown'">
                                 <p-select [options]="field.options" [(ngModel)]="fieldValues[field.id]"
@@ -25,7 +25,8 @@
                                     class="p-error block">
                                     {{field.name}} {{'fieldError' | translate}}
                                 </small>
-                                <small *ngIf="formDir.submitted && hasBackendValidationError(field)" class="p-error block">
+                                <small *ngIf="formDir.submitted && hasBackendValidationError(field)"
+                                    class="p-error block">
                                     {{ getBackendValidationMessage(field) }}
                                 </small>
                             </div>
@@ -35,7 +36,8 @@
                                 <div>
                                     <p-floatlabel>
                                         <input type="number" step="any" name="field_{{field.id}}" pInputText
-                                            [(ngModel)]="fieldValues[field.id]" [disabled]="isDisabled(field)" [style]="{ width: '100%' }" />
+                                            [(ngModel)]="fieldValues[field.id]" [disabled]="isDisabled(field)"
+                                            [style]="{ width: '100%' }" />
                                         <label for="email"> {{field.name}}</label>
                                     </p-floatlabel>
                                     <small
@@ -51,7 +53,8 @@
                                 <div>
                                     <p-floatlabel>
                                         <input type="text" name="field_{{field.id}}" pInputText
-                                            [(ngModel)]="fieldValues[field.id]" [disabled]="isDisabled(field)" [style]="{ width: '100%' }" />
+                                            [(ngModel)]="fieldValues[field.id]" [disabled]="isDisabled(field)"
+                                            [style]="{ width: '100%' }" />
                                         <label for="email"> {{field.name}}</label>
                                     </p-floatlabel>
                                     <small
@@ -66,7 +69,8 @@
                             <div *ngIf="field.type === 'PhoneNumber'">
                                 <p-floatlabel>
                                     <p-inputMask mask="(999) 999-99-99" [(ngModel)]="fieldValues[field.id]"
-                                        name="field_{{field.id}}" [disabled]="isDisabled(field)" [style]="{ width: '100%' }">
+                                        name="field_{{field.id}}" [disabled]="isDisabled(field)"
+                                        [style]="{ width: '100%' }">
                                     </p-inputMask>
                                     <label for="email"> {{field.name}}</label>
                                 </p-floatlabel>
@@ -76,8 +80,8 @@
                             <div *ngIf="field.type === 'Date'">
                                 <p-floatlabel>
                                     <p-datepicker name="field_{{field.id}}" [(ngModel)]="fieldValues[field.id]"
-                                        dateFormat="dd.mm.yy" [showClear]="true"
-                                        [disabled]="isDisabled(field)" [style]="{ width: '100%' }"></p-datepicker>
+                                        dateFormat="dd.mm.yy" [showClear]="true" [disabled]="isDisabled(field)"
+                                        [style]="{ width: '100%' }"></p-datepicker>
                                     <label for="float-label">{{field.name}}</label>
                                 </p-floatlabel>
                             </div>
@@ -98,9 +102,9 @@
                             <div *ngIf="field.type === 'CheckBox'">
                                 <label class="form-label d-block">{{ field.name }}</label>
                                 <div *ngFor="let option of field.options || []" class="form-check">
-                                    <input class="form-check-input multiple-checkbox" type="checkbox" [value]="option.value"
-                                        name="field_{{field.id}}" id="'field_' + field.id + '_' + option.value"
-                                        [disabled]="isDisabled(field)" />
+                                    <input class="form-check-input multiple-checkbox" type="checkbox"
+                                        [value]="option.value" name="field_{{field.id}}"
+                                        id="'field_' + field.id + '_' + option.value" [disabled]="isDisabled(field)" />
                                     <label class="form-check-label" [for]="'field_' + field.id + '_' + option.value">{{
                                         option.label }}</label>
                                 </div>
@@ -125,11 +129,9 @@
                             <div *ngIf="field.type === 'FileUpload'">
                                 <div class="col">
                                     <p-fileUpload mode="basic" chooseLabel="{{'button.fileUpload' | translate}}"
-                                        chooseIcon="pi pi-upload" name="demo[]"
-                                        accept="image/*"
+                                        chooseIcon="pi pi-upload" name="demo[]" accept="image/*"
                                         (onSelect)="onFileSelect($event,field)" maxFileSize="1000000"
-                                        [disabled]="isDisabled(field)"
-                                        #fileUpload>
+                                        [disabled]="isDisabled(field)" #fileUpload>
                                     </p-fileUpload>
                                 </div>
                             </div>
@@ -142,7 +144,8 @@
 
     <div class="grid mt-1 ml-2">
         <div class="col-12">
-            <button type="submit" pButton label="{{'button.save' | translate}}" *ngIf="buttonIsVisible" class="w-full md:w-auto"></button>
+            <button type="submit" pButton label="{{'button.save' | translate}}" *ngIf="buttonIsVisible"
+                class="w-full md:w-auto"></button>
         </div>
     </div>
 </form>

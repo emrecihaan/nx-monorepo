@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, inject, ViewChild, ChangeDetec
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { FormService, GridTranslateService } from '@my-micro-frontend/shared-core';
+import { FormService, GeneralSystemService, GridTranslateService } from '@my-micro-frontend/shared-core';
 import { DatagridForFormatComponent } from '@my-micro-frontend/shared-ui';
 import { MessageService } from 'primeng/api';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
@@ -76,7 +76,8 @@ export class ReportComponent implements OnInit {
     private messageService: MessageService,
     private translateService: TranslateService,
     public gridTranslate: GridTranslateService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef,
+    public generalService: GeneralSystemService) {
     this.getUser();
   }
   ngOnInit(): void {
@@ -312,9 +313,11 @@ export class ReportComponent implements OnInit {
   }
 
   getUser() {
-    // Note: GeneralSystemService removed as it is absent in target project. 
-    // Defaulting to null or dummy if needed.
-    this.user = { id: 1 };
+    return this.generalService.getUserRedis().subscribe(async (res: any) => {
+      if (res.code !== "99") {
+        this.user = res.response;
+      }
+    });
   }
 
   createBill() {
@@ -330,7 +333,7 @@ export class ReportComponent implements OnInit {
         if (value) {
           const [y, m, d] = value.split('-').map(Number);
           date = new Date(Date.UTC(y, m - 1, d))
-          this.router.navigate(['../dynamic-form', formDetail.reportedLineFormId], {
+          this.router.navigate(['app/form-app/dynamic-form', formDetail.reportedLineFormId], {
             relativeTo: this.route,
             state: { reportedDate: date }
           });
@@ -392,11 +395,9 @@ export class ReportComponent implements OnInit {
 
   createdReport() {
     if (this.selectedForm) {
-      // Seçili anahtarlardan gerçek nesneleri bulalım
       const selectedDataObjects = this.selectedRows.map((key: any) =>
         typeof key === 'object' ? key : this.data.find(d => d.id === key)
       ).filter((d: any) => d !== undefined);
-
       this.router.navigate(['../dynamic-form', this.selectedForm.id], {
         relativeTo: this.route,
         state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }

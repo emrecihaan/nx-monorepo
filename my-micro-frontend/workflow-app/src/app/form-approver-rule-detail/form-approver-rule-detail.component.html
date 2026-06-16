@@ -1,0 +1,299 @@
+<h4>Onay Kural Listesi</h4>
+
+<p-toolbar styleClass="mt-2">
+    <div class="p-toolbar-group-left flex-wrap-container">
+        <button type="button" pButton label="{{'approverRule.createRule' | translate}}" icon="pi pi-check"
+            (click)="showCreateRule()" class="p-button-success ml-2"></button>
+
+        <button type="button" pButton label="{{'approverRule.editRule' | translate}}" icon="pi pi-pencil"
+            (click)="showEditRule()" class="p-button-help ml-2"></button>
+
+        <button type="button" pButton label="{{'approverRule.deleteRule' | translate}}" icon="pi pi-trash"
+            (click)="showDeleteRule()" class="p-button-danger ml-2"></button>
+
+        <button type="button" pButton label="{{'approverRule.copyRule' | translate}}" icon="pi pi-copy"
+            (click)="copyRule()" class="p-button-info ml-2"></button>
+
+        <button type="button" pButton label="{{'approverRule.detailRule' | translate}}" icon="pi pi-save"
+            (click)="showDetail()" class="p-button-warning ml-2"></button>
+    </div>
+</p-toolbar>
+
+<div style="margin-top: 20px;" *ngIf="data">
+    <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
+        (setSelectedData)="setSelectedRow($event)" [selectionMode]="'single'"
+        [columns]="column"></app-datagrid-for-format>
+</div>
+
+<p-dialog *ngIf="showEditModal==true&&selectedRow!=null" header="Onay Kural Detay" [modal]="true"
+    [(visible)]="showEditModal" [style]="{ width: '65rem',height:'75rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <app-datagrid-for-format *ngIf="selectedRow" [Data]="ruleDetails" [customizeOptions]="customizeGridDetail"
+            [selectedData]="selectedRowDetail" (setSelectedData)="setSelectedRowDetail($event)"
+            [selectionMode]="'single'" [columns]="detailColumn"></app-datagrid-for-format>
+    </div>
+
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="Oluştur" icon="pi pi-check" (click)="showCreateRuleDetailModal = true"
+            class="p-button-success ml-2"></button>
+        <button type="button" pButton label="Güncelle" icon="pi pi-erase" (click)="openUpdateRuleDetailModal()"
+            class="ml-2 p-button-warning"></button>
+        <button type="button" pButton label="Sil" icon="pi pi-erase" (click)="showDelete()"
+            class="ml-2 ml-2 p-button-danger"></button>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="showCreateRuleDetailModal==true" header="Onay Kural Detay Oluşturma" [modal]="true"
+    [(visible)]="showCreateRuleDetailModal" [style]="{ width: '65rem',height:'75rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <label for="name">Kural Alanı</label>
+            <input id="name" type="text" pInputText [(ngModel)]="newRuleDetail.RuleField" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Eşitlik (=,>,<,>=,<=) </label>
+                        <input id="label" type="text" pInputText [(ngModel)]="newRuleDetail.Equality" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Değer</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRuleDetail.RuleValue" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Sırası</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRuleDetail.ApproverOrder" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Adı</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRuleDetail.ApproverName" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Obje Tipi</label>
+            <p-select [options]="approverOTypeList" optionLabel="name" [(ngModel)]="selectedApproverOType"
+                [filter]="true" filterBy="name"></p-select>
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Obje ID</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRuleDetail.ApproverObjId" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Kesme Noktası Türü Yukarı veya Aşağı (A,B)</label>
+            <p-select [options]="ApproverStopRSIGNList" optionLabel="name" [(ngModel)]="selectedApproverStopRSIGN"
+                [filter]="true" filterBy="name"></p-select>
+
+            <!-- <input id="label" type="text" pInputText [(ngModel)]="newRuleDetail.ApproverStopRSIGN" /> -->
+        </div>
+
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Kesme Obje Türü</label>
+            <p-select [options]="approverOTypeList" optionLabel="name" [(ngModel)]="selectedApproverOTypeStop"
+                [filter]="true" filterBy="name"></p-select>
+            <!-- <input id="label" type="text" pInputText [(ngModel)]="newRuleDetail.ApproverOTypeStop" /> -->
+        </div>
+
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Kesme Obje ID</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRuleDetail.ApproverObjIdStop" />
+        </div>
+
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Kesme Sırası (InOrder,)</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRuleDetail.ApproverOrderType" />
+        </div>
+
+    </div>
+
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="Kaydet" icon="pi pi-check" (click)="create()" class="p-button-success ml-2"
+            [disabled]="disable"></button>
+    </div>
+
+</p-dialog>
+
+<p-dialog *ngIf="showUpdateRuleDetailModal==true &&selectedRowDetail!=null" header="Onay Kural Detay Güncelleme"
+    [modal]="true" [(visible)]="showUpdateRuleDetailModal" [style]="{ width: '65rem',height:'75rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <label for="name">Kural Alanı</label>
+            <input id="name" type="text" pInputText [(ngModel)]="updateRuleDetail.RuleField" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Eşitlik (=,>,<,>=,<=) </label>
+                        <input id="label" type="text" pInputText [(ngModel)]="updateRuleDetail.Equality" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Değer </label>
+            <input id="label" type="text" pInputText [(ngModel)]="updateRuleDetail.RuleValue" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Sırası</label>
+            <input id="label" type="text" pInputText [(ngModel)]="updateRuleDetail.ApproverOrder" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Adı</label>
+            <input id="label" type="text" pInputText [(ngModel)]="updateRuleDetail.ApproverName" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Obje Tipi</label>
+            <p-select [options]="approverOTypeList" optionLabel="name" [(ngModel)]="selectedApproverOType"
+                [filter]="true" filterBy="name"></p-select>
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Obje ID</label>
+            <input id="label" type="text" pInputText [(ngModel)]="updateRuleDetail.ApproverObjId" />
+
+            <!-- <input id="label" type="text" pInputText [(ngModel)]="selectedRowDetail.approverObjId" /> -->
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Kesme Noktası Türü Yukarı veya Aşağı (A,B)</label>
+            <p-select [options]="ApproverStopRSIGNList" optionLabel="name" [(ngModel)]="selectedApproverStopRSIGN"
+                [filter]="true" filterBy="name"></p-select>
+            <!-- <input id="label" type="text" pInputText [(ngModel)]="selectedRowDetail.approverStopRSIGN" /> -->
+        </div>
+
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Kesme Obje Türü</label>
+            <p-select [options]="approverOTypeList" optionLabel="name" [(ngModel)]="selectedApproverOTypeStop"
+                [filter]="true" filterBy="name"></p-select>
+            <!-- <input id="label" type="text" pInputText [(ngModel)]="selectedRowDetail.approverOTypeStop" /> -->
+        </div>
+
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Kesme Obje ID</label>
+            <input id="label" type="text" pInputText [(ngModel)]="updateRuleDetail.ApproverObjIdStop" />
+        </div>
+
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Onaylayıcı Kesme Sırası (InOrder,)</label>
+            <input id="label" type="text" pInputText [(ngModel)]="updateRuleDetail.ApproverOrderType" />
+        </div>
+
+    </div>
+
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="Kaydet" icon="pi pi-check" (click)="update()" class="p-button-success ml-2"
+            [disabled]="disable"></button>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="showDeleteRuleDetailModal==true" header="Onay Kural Detay Silme" [modal]="true"
+    [(visible)]="showDeleteRuleDetailModal" [style]="{ width: '45rem',height:'15rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <p style="font-weight: 800;">Onay Kural Detayı silinecektir kabul ediyor musunuz
+                ?</p>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="İptal" icon="pi pi-times" class="p-button-danger "
+            (click)="showDeleteRuleDetailModal=false"></button>
+        <button type="button" pButton label="Evet" icon="pi pi-check" (click)="delete()" class="p-button-success ml-2"
+            [disabled]="disable"></button>
+    </div>
+
+</p-dialog>
+
+<p-dialog *ngIf="showCreateRuleModal==true" header="Onay Kural Oluşturma" [modal]="true"
+    [(visible)]="showCreateRuleModal" [style]="{ width: '65rem',height:'75rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <label for="name">Kural Sırası</label>
+            <input id="name" type="text" pInputText [(ngModel)]="newRule.RuleOrder" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Firma Id</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRule.DfSystemCompanyId" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="title">Form</label>
+            <p-select [options]="formList" optionLabel="name" [(ngModel)]="selectedForm" [filter]="true" filterBy="name"
+                [disabled]="true"></p-select>
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="title">ObjType</label>
+            <p-select [options]="approverRuleOTypeList" optionLabel="name" [(ngModel)]="selectedApproverRuleOTypeList"
+                [filter]="true" filterBy="name"></p-select>
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">ObjId</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRule.ObjId" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Açıklama</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRule.Description" />
+        </div>
+    </div>
+
+    <div class="mt-8 flex justify-content-end">
+        <!-- <button type="button" pButton label="Kapat" icon="pi pi-times" (click)="showEditModal=false"></button> -->
+        <button type="button" pButton label="Kaydet" icon="pi pi-check" (click)="createRule()"
+            class="p-button-success ml-2" [disabled]="disable"></button>
+    </div>
+
+</p-dialog>
+
+<p-dialog *ngIf="showEditRuleModal==true" header="Onay Kural Düzenleme" [modal]="true" [(visible)]="showEditRuleModal"
+    [style]="{ width: '65rem',height:'75rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <label for="name">Kural Sırası</label>
+            <input id="name" type="text" pInputText [(ngModel)]="newRule.RuleOrder" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Firma Id</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRule.DfSystemCompanyId" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="title">Form</label>
+            <p-select *ngIf="selectedForm" [options]="formList" optionLabel="name" [(ngModel)]="selectedForm"
+                [filter]="true" filterBy="name" [disabled]="true"></p-select>
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="title">ObjType</label>
+            <p-select [options]="approverRuleOTypeList" optionLabel="name" [(ngModel)]="selectedApproverRuleOTypeList"
+                [filter]="true" filterBy="name"></p-select>
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">ObjId</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRule.ObjId" />
+        </div>
+        <div class="p-field p-col-12 p-md-6 mt-5">
+            <label for="label">Açıklama</label>
+            <input id="label" type="text" pInputText [(ngModel)]="newRule.Description" />
+        </div>
+    </div>
+
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="Kaydet" icon="pi pi-check" (click)="updateRule()"
+            class="p-button-success ml-2" [disabled]="disable"></button>
+    </div>
+
+</p-dialog>
+
+<p-dialog *ngIf="showDeleteRuleModal==true" header="Onay Kural Silme" [modal]="true" [(visible)]="showDeleteRuleModal"
+    [style]="{ width: '65rem',height:'25rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+            <p style="font-weight: 800;">Onay Kural silinecektir kabul ediyor musunuz
+                ?</p>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="İptal" icon="pi pi-times" class="p-button-danger "
+            (click)="showDeleteRuleModal=false"></button>
+        <button type="button" pButton label="Evet" icon="pi pi-check" (click)="deleteRule()"
+            class="p-button-success ml-2" [disabled]="disable"></button>
+    </div>
+
+</p-dialog>

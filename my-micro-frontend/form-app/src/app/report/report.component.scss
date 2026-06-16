@@ -6,8 +6,8 @@
 
 .top-bar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   margin-bottom: 1rem;
   gap: 1rem;
 }
@@ -15,12 +15,14 @@
 .filters-left {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  flex: 1;
+  width: 100%;
 }
 
 .actions-right {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
@@ -56,7 +58,10 @@
 
 ::ng-deep {
   .p-select {
-    width: 350px !important;
+    width: 100% !important;
+    max-width: 350px !important;
+    min-width: 150px !important;
+    flex: 1 1 auto !important;
     height: 35px !important;
     background: #ffffff !important;
     border: 1px solid #d1d5db !important;
