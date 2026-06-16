@@ -148,7 +148,8 @@
         "detail": "Detail",
         "approve": "Approve",
         "reject": "Reject",
-        "rejectRequest": "Reject"
+        "rejectRequest": "Reject",
+        "cancel": "Cancel"
     },
     "workFlow": {
         "title": "Workflows",
@@ -199,5 +200,18 @@
         "endDate": "Bitiş Tarihi",
         "search": "Ara",
         "statistics": "İstatistikler"
+    },
+    "rejectReason": "Reject Reason",
+    "COST_RULE": {
+        "TITLE": "Cost Rule List",
+        "createAnExpenseRule": "Create Expense Rule",
+        "editAnExpenseRule": "Edit Expense Rule",
+        "deleteAnExpenseRule": "Delete Expense Rule",
+        "detailAnExpenseRule": "Expense Rule Detail List",
+        "ruleName": "Rule Name",
+        "dfSystemCompanyId": "Company Id",
+        "sureDelete": "Expense Rule and all its object details will be deleted. Do you accept?",
+        "ruleNameReq": "Rule Name is required",
+        "companyIdReq": "Company Id is required"
     }
 }

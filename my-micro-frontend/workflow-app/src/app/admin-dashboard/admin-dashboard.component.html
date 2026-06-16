@@ -1,14 +1,11 @@
 <div class="dashboard-container">
     <div class="dashboard-grid">
-        <div class="card stat-card" *ngFor="let item of subMenuList; let i = index;"
-            [ngClass]="{
+        <div class="card stat-card" *ngFor="let item of subMenuList; let i = index;" [ngClass]="{
                 'stat-card-warning': i === 0,
                 'stat-card-danger': i === 1,
                 'stat-card-success': i === 2,
                 'selected-card': selectedCardId === item.id
-            }"
-            (click)="getFormList(item.id)"
-            style="cursor: pointer;">
+            }" (click)="getFormList(item.id)" style="cursor: pointer;">
             <div class="stat-content">
                 <div class="stat-icon">
                     <i [class]="item.icon"></i>
@@ -44,7 +41,7 @@
     <div class="custom-modal">
         <span class="close-button" (click)="closeDialog()">×</span>
         <p class="float-input"><b>{{'rejectReason' | translate}}</b></p>
-        <textarea id="float-input" rows="10" cols="40" pInputTextarea [autoResize]="true"
+        <textarea id="float-input" rows="10" cols="30" pInputTextarea [autoResize]="true"
             [(ngModel)]="value"></textarea>
         <div class="grid mt-5">
             <div class="col">

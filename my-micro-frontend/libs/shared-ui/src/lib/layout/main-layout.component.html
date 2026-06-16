@@ -1,4 +1,5 @@
-<div class="layout-wrapper" [class.sidebar-collapsed]="sidebarCollapsed" [class.dark-theme]="isDarkTheme" [class.no-sidebar]="!appSelectionService.selectedApp()">
+<div class="layout-wrapper" [class.sidebar-collapsed]="sidebarCollapsed" [class.dark-theme]="isDarkTheme"
+  [class.no-sidebar]="!appSelectionService.selectedApp()">
   <lib-toast></lib-toast>
 
   @if (appSelectionService.selectedApp()) {
@@ -45,18 +46,19 @@
 
       <div class="topbar-right">
         @if (appSelectionService.selectedApp()) {
-        <p-button label="Proje Değiştir" icon="pi pi-th-large" [text]="true" [rounded]="true" (onClick)="changeProject()" severity="secondary" class="mr-2"></p-button>
+        <p-button label="Proje Değiştir" icon="pi pi-th-large" [text]="true" [rounded]="true"
+          (onClick)="changeProject()" severity="secondary" class="mr-2"></p-button>
         }
 
         <p-button [icon]="isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'" [text]="true" [rounded]="true"
           (onClick)="toggleTheme()" severity="secondary"></p-button>
-
+        <!-- 
         <div class="lang-switcher">
           <p-button label="TR" [text]="true" [rounded]="true" (onClick)="switchLanguage('tr')"
             [severity]="currentLang === 'tr' ? 'info' : 'secondary'" [class.active]="currentLang === 'tr'"></p-button>
           <p-button label="EN" [text]="true" [rounded]="true" (onClick)="switchLanguage('en')"
             [severity]="currentLang === 'en' ? 'info' : 'secondary'" [class.active]="currentLang === 'en'"></p-button>
-        </div>
+        </div> -->
 
         <p-button icon="pi pi-bell" [text]="true" [rounded]="true" severity="secondary" badge="3"
           badgeSeverity="danger"></p-button>

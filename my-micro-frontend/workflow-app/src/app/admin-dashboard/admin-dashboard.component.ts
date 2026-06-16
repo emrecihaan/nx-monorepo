@@ -307,7 +307,7 @@ export class AdminDashboardComponent implements OnInit {
     }
     if (this.selectedRows.length != 0) {
       this.selectedRows.map((selectedRow) => {
-        this.router.navigate(['/app/form-app/dynamic-form', 0, selectedRow.id]);
+        this.router.navigate(['/app/form-app/dynamic-form', 0, selectedRow.formId]);
       })
     }
     else {
