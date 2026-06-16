@@ -62,8 +62,13 @@
         "EXPORT_ALL": "Tüm Verileri Excele Aktar",
         "EXPORT_SELECTED": "Seçili verileri Excele Aktar"
     },
+    "WELCOME": "Hoşgeldiniz",
+    "sendApprove": "Onaya Gönder",
+    "requestsPendingCorrection": "Düzeltme Bekleyen Talepler",
+    "requestsPendingApproval": "Onay Bekleyen Talepler",
+    "rejectedRequests": "Reddedilen Talepler",
+    "approvedRequests": "Onaylanan Talepler",
     "LOGIN": {
-        "WELCOME": "Hoş Geldiniz",
         "SUBTITLE": "Devam etmek için giriş yapınız",
         "USERNAME": "Kullanıcı Adı",
         "PASSWORD": "Şifre",
@@ -81,6 +86,7 @@
         "add": "Ekle",
         "delete": "Sil",
         "update": "Güncelle",
+        "pdf": "PDF İndir",
         "createReport": "Rapor Oluştur",
         "createBill": "Fiş Oluştur",
         "search": "Ara",

@@ -24,3 +24,4 @@ export const GET_COST_RULE_OBJECTS_BY_RULEFILTERID = `${BASE_URL}/GetCostRuleObj
 export const CREATE_COST_RULE_OBJECT = `${BASE_URL}/CreateCostRuleObject`;
 export const UPDATE_COST_RULE_OBJECT = `${BASE_URL}/UpdateCostRuleObject`;
 export const DELETE_COST_RULE_OBJECT = `${BASE_URL}/DeleteCostRuleObject`;
+

@@ -1,4 +1,10 @@
 {
+    "WELCOME": "Welcome",
+    "sendApprove": "Send for Approval",
+    "requestsPendingCorrection": "Requests Pending Correction",
+    "requestsPendingApproval": "Requests Pending Approval",
+    "rejectedRequests": "Rejected Requests",
+    "approvedRequests": "Approved Requests",
     "USER": {
         "TITLE": "User Panel",
         "FORM": {
@@ -81,6 +87,7 @@
         "add": "Create",
         "delete": "Delete",
         "update": "Update",
+        "pdf": "Download PDF",
         "createReport": "Create Report",
         "createBill": "Create Bill",
         "search": "Search",

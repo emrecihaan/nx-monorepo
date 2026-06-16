@@ -1,97 +1,43 @@
+<p-toast></p-toast>
 <div class="dashboard-container">
-    <h1 class="dashboard-title">{{ 'DASHBOARD.TITLE' | translate }}</h1>
-
-    <!-- Statistics Cards -->
-    <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3">
-            <div class="card stat-card stat-card-primary">
-                <div class="stat-content">
-                    <div class="stat-icon">
-                        <i class="pi pi-users"></i>
-                    </div>
-                    <div class="stat-details">
-                        <span class="stat-value">1,234</span>
-                        <span class="stat-label">{{ 'DASHBOARD.TOTAL_USERS' | translate }}</span>
-                    </div>
+    <div class="dashboard-grid">
+        <div class="card stat-card" *ngFor="let item of subMenuList; let i = index;"
+            [ngClass]="{
+                'stat-card-warning': i === 1,
+                'stat-card-danger': i === 2,
+                'stat-card-success': i === 3,
+                'stat-card-primary': i !== 1 && i !== 2 && i !== 3,
+                'selected-card': selectedCardId === item.id
+            }"
+            (click)="getFormListWithStatusIdAndUserId(item.id,this.user.id)"
+            style="cursor: pointer;">
+            <div class="stat-content">
+                <div class="stat-icon">
+                    <i [class]="item.icon"></i>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-12 md:col-6 lg:col-3">
-            <div class="card stat-card stat-card-success">
-                <div class="stat-content">
-                    <div class="stat-icon">
-                        <i class="pi pi-chart-line"></i>
-                    </div>
-                    <div class="stat-details">
-                        <span class="stat-value">567</span>
-                        <span class="stat-label">{{ 'DASHBOARD.ACTIVE_SESSIONS' | translate }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 md:col-6 lg:col-3">
-            <div class="card stat-card stat-card-warning">
-                <div class="stat-content">
-                    <div class="stat-icon">
-                        <i class="pi pi-shopping-cart"></i>
-                    </div>
-                    <div class="stat-details">
-                        <span class="stat-value">89</span>
-                        <span class="stat-label">{{ 'DASHBOARD.PENDING_ORDERS' | translate }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 md:col-6 lg:col-3">
-            <div class="card stat-card stat-card-danger">
-                <div class="stat-content">
-                    <div class="stat-icon">
-                        <i class="pi pi-dollar"></i>
-                    </div>
-                    <div class="stat-details">
-                        <span class="stat-value">$45.2K</span>
-                        <span class="stat-label">{{ 'DASHBOARD.REVENUE' | translate }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Info Section -->
-    <div class="grid mt-4">
-        <div class="col-12 lg:col-8">
-            <div class="card">
-                <div class="card-header">
-                    <h3>{{ 'DASHBOARD.USER_ACTIVITY' | translate }}</h3>
-                </div>
-                <div class="chart-placeholder">
-                    <i class="pi pi-chart-bar"></i>
-                    <p>Grafik özelliği PrimeNG kaldırıldığı için devre dışı bırakıldı.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 lg:col-4">
-            <div class="card">
-                <div class="card-header">
-                    <h3>{{ 'DASHBOARD.RECENT_ACTIVITY' | translate }}</h3>
-                </div>
-                <div class="activity-list">
-                    <div class="activity-item" *ngFor="let activity of recentActivities">
-                        <div class="activity-icon" [style.background-color]="activity.color">
-                            <i class="pi" [ngClass]="activity.icon"></i>
-                        </div>
-                        <div class="activity-details">
-                            <div class="activity-user">{{ activity.user }}</div>
-                            <div class="activity-action">{{ activity.action }}</div>
-                            <div class="activity-time">{{ activity.time }}</div>
-                        </div>
-                    </div>
+                <div class="stat-details">
+                    <span class="stat-value">{{ item.number || 0 }}</span>
+                    <span class="stat-label">{{ item.name | translate }}</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<p-toolbar styleClass="mt-5">
+    <div class="my-2">
+        <button *ngIf="selectedCardId == 1" pButton pRipple label="{{'sendApprove' | translate}}" icon="pi pi-plus"
+            (click)="sendApprove()" class="p-button-success mr-2"></button>
+        <button pButton pRipple label="{{'button.update' | translate}}" icon="pi pi-pencil" class="p-button-info"
+            (click)="goDetail()"></button>
+        <button pButton pRipple label="{{'button.pdf' | translate}}" icon="pi pi-file-pdf" class="p-button-danger ml-2"
+            (click)="downloadPdf()"></button>
+    </div>
+</p-toolbar>
+<p-panel styleClass="mt-2">
+    <div *ngIf="data">
+        <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [columns]="column"
+            [detailColumns]="detailColumn" [selectedData]="selectedRow" (setSelectedRows)="setSelectedRows($event)"
+            [selectionMode]="'multipleButOneColumn'" [detailHeader]="detailHeader"></app-datagrid-for-format>
+    </div>
+</p-panel>

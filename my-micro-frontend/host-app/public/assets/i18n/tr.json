@@ -1,5 +1,10 @@
 {
     "WELCOME": "Hoşgeldiniz",
+    "sendApprove": "Onaya Gönder",
+    "requestsPendingCorrection": "Düzeltme Bekleyen Talepler",
+    "requestsPendingApproval": "Onay Bekleyen Talepler",
+    "rejectedRequests": "Reddedilen Talepler",
+    "approvedRequests": "Onaylanan Talepler",
     "DASHBOARD": {
         "TITLE": "Kontrol Paneli",
         "TOTAL_USERS": "Toplam Kullanıcı",
@@ -135,6 +140,8 @@
     },
     "button": {
         "save": "Kaydet",
+        "update": "Güncelle",
+        "pdf": "PDF İndir",
         "detail": "Detay"
     },
     "messageServiceMessages": {

@@ -32,3 +32,4 @@ export * from './lib/constants/constants/system-api-urls.constant';
 export * from './lib/services/form/form.service';
 
 export * from './lib/services/app-selection.service';
+export * from './lib/services/base/app.config.service';

@@ -1,5 +1,10 @@
 {
     "WELCOME": "Welcome",
+    "sendApprove": "Send for Approval",
+    "requestsPendingCorrection": "Requests Pending Correction",
+    "requestsPendingApproval": "Requests Pending Approval",
+    "rejectedRequests": "Rejected Requests",
+    "approvedRequests": "Approved Requests",
     "DASHBOARD": {
         "TITLE": "Dashboard",
         "TOTAL_USERS": "Total Users",
@@ -138,6 +143,8 @@
     },
     "button": {
         "save": "Save",
+        "update": "Update",
+        "pdf": "Download PDF",
         "detail": "Detail"
     },
     "workFlow": {
@@ -166,7 +173,7 @@
         "selectCompany": "Select Company",
         "selectStatus": "Select Status",
         "statusReq": "Status Required",
-        "endDateBeforeStartDate": "End Date must be after Start Date.",
+        "endDateBeforeStartDate": "End Date must be after Start Date."
     },
     "budgetReport": {
         "title": "Budget Report",
