@@ -25,7 +25,7 @@ export class API {
             live: ""
         },
         cost: {
-            local: "https://localhost:44309/api/DfCostRule",
+            local: "https://localhost:44300/api/form",
             test: "http://172.28.161.186:8115/api/DfCostRule",
             live: "/api8091/api/DfCostRule"
         },

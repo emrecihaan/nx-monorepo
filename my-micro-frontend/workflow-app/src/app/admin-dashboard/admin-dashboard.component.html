@@ -1,0 +1,62 @@
+<div class="dashboard-container">
+    <div class="dashboard-grid">
+        <div class="card stat-card" *ngFor="let item of subMenuList; let i = index;"
+            [ngClass]="{
+                'stat-card-warning': i === 0,
+                'stat-card-danger': i === 1,
+                'stat-card-success': i === 2,
+                'selected-card': selectedCardId === item.id
+            }"
+            (click)="getFormList(item.id)"
+            style="cursor: pointer;">
+            <div class="stat-content">
+                <div class="stat-icon">
+                    <i [class]="item.icon"></i>
+                </div>
+                <div class="stat-details">
+                    <span class="stat-value">{{ item.number || 0 }}</span>
+                    <span class="stat-label">{{ item.name }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-toolbar styleClass="mt-5">
+    <div class="my-2">
+        <button pButton pRipple label="{{'button.approve' | translate}}" icon="pi pi-plus" class="p-button-success mr-2"
+            (click)="approve()"></button>
+        <button *ngIf="selectedStatusId == 2" pButton pRipple label="{{'button.reject' | translate}}" icon="pi pi-trash"
+            class="p-button-danger mr-2" (click)="rejectDialog()"></button>
+        <button pButton pRipple label="{{'button.detail' | translate}}" icon="pi pi-save"
+            class="p-button-info p-button mr-2" (click)="detail()"></button>
+    </div>
+</p-toolbar>
+
+<div style="margin-top: 20px;" *ngIf="data">
+    <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
+        (setSelectedData)="setSelectedRow($event)" (setSelectedRows)="setSelectedRows($event)"
+        [selectionMode]="'multipleButOneColumn'" [columns]="column" [detailHeader]="detailHeader"
+        [detailColumns]="detailColumn"></app-datagrid-for-format>
+</div>
+
+<div class="custom-modal-backdrop" *ngIf="visibleRejectDialog">
+    <div class="custom-modal">
+        <span class="close-button" (click)="closeDialog()">×</span>
+        <p class="float-input"><b>{{'rejectReason' | translate}}</b></p>
+        <textarea id="float-input" rows="10" cols="40" pInputTextarea [autoResize]="true"
+            [(ngModel)]="value"></textarea>
+        <div class="grid mt-5">
+            <div class="col">
+                <button pButton pRipple label="{{'button.cancel' | translate}}" class="p-button-success mr-5"
+                    (click)="cancel()"></button>
+            </div>
+            <div class="col">
+                <button pButton pRipple label="{{'button.rejectRequest' | translate}}" class="p-button-danger"
+                    (click)="reject()"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-toast></p-toast>

@@ -85,7 +85,7 @@ export class MenuComponent implements OnInit {
   }
 
   translateStaticMenu() {
-    this.staticMenuItems = this.rawStaticMenuItems.map(item => ({
+    this.staticMenuItems = (this.rawStaticMenuItems || []).map(item => ({
       ...item,
       label: this.translate.instant(item.label)
     }));

@@ -62,6 +62,10 @@ export const GET_EXPENSE_REQUEST_FORMS = `${BASE_URL}/TrForm/GetExpenseRequestFo
 
 export const SEND_SAP = `${BASE_URL}/TrForm/sendSAP`;
 
+export const GET_FORM_COUNT_BY_USERID = `${BASE_URL}/TrForm/getFormCountByUserId`;
+export const GET_FORM_LIST_BY_STATUS_ID_AND_USER_ID = `${BASE_URL}/TrForm/getFormListByStatusIdAndUserId`;
+export const SEND_APPROVE = `${BASE_URL}/TrForm/sendApprove`;
+
 export const GET_ORGANIZATION_LIST_FOR_DROPDOWN = `${BASE_URL}/TrForm/getOrganizationListForDropdown`;
 
 export const GET_ORGANIZATION_TRFORM_REPORT = `${BASE_URL}/TrForm/GetOrganizationTrFormReport`;
@@ -84,6 +88,7 @@ export const DELETE_BUDGET_RULE_OBJECT = `${BASE_URL}/DfBudgetRuleObject/DeleteD
 
 export const GET_BUDGET_RULE_OBJECT_BY_BUDGET_RULE_ID = `${BASE_URL}/DfBudgetRuleObject/GetDfBudgetRuleObjectsByRuleId`;
 
+
 //DfFormApproveRules
 export const COPY_FORM_APPROVE_RULES = `${BASE_URL}/DfFormApproveRules/CopyDfFormApproveRule`;
 
@@ -102,3 +107,10 @@ export const CREATE_FORM_APPROVE_RULES = `${BASE_URL}/DfFormApproveRules/CreateR
 export const UPDATE_FORM_APPROVE_RULES = `${BASE_URL}/DfFormApproveRules/UpdateRule`;
 
 export const DELETE_FORM_APPROVE_RULES = `${BASE_URL}/DfFormApproveRules/DeleteRule`;
+
+export const APPROVE_FORM = `${BASE_URL}/TrFormApprover/ApproveForm`;
+
+export const GET_APPROVERS_COUNT_BY_STATUSID = `${BASE_URL}/TrFormApprover/getApproversCountByStatusId`;
+
+export const GET_APPROVED_TRFORM_LIST_BY_APPROVERID_AND_STATUSID = `${BASE_URL}/TrForm/getApprovedTrFormsByApproverIdAndStatusId`;
+
