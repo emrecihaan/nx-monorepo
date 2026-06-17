@@ -6,7 +6,7 @@
 <form #formDir="ngForm" (ngSubmit)="save(formDir)" *ngIf="!isLoading">
     <p-accordion [value]="activeTabs" [multiple]="true">
         <p-accordion-panel *ngFor="let form of forms; let i = index" [value]="i">
-            <p-accordion-header class="bg-blue-50">{{form.formName}}</p-accordion-header>
+            <p-accordion-header [ngClass]="isDark ? 'header-dark' : 'header-light'">{{form.formName}}</p-accordion-header>
             <p-accordion-content>
                 <div class="form-wrapper pt-4">
                     <div class="grid">

@@ -149,7 +149,9 @@
         "approve": "Approve",
         "reject": "Reject",
         "rejectRequest": "Reject",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "create": "Create",
+        "delete": "Delete"
     },
     "workFlow": {
         "title": "Workflows",
@@ -280,5 +282,29 @@
         "recordUpdatedSuccessfully": "Record Updated Successfully",
         "recordDeletedSuccessfully": "Record Deleted Successfully",
         "recordDeletedFailed": "Record Deleted Failed"
+    },
+    "costRuleFilter": {
+        "title": "Expense Rule Filter List",
+        "createAnExpenseRule": "Create Expense Rule Filter",
+        "updateAnExpenseRule": "Update Expense Rule Filter",
+        "editAnExpenseRule": "Edit Expense Rule Filter",
+        "deleteAnExpenseRule": "Delete Expense Rule Filter",
+        "detailAnExpenseRule": "Expense Rule Filter Details",
+        "ruleName": "Rule Name",
+        "dfSystemCompanyId": "Company ID",
+        "sureDelete": "The expense rule filter will be deleted. Do you want to proceed?",
+        "ruleNameReq": "Rule Name is required",
+        "companyIdReq": "Company ID is required",
+        "copyAnExpenseRule": "Copy Expense Rule",
+        "expenseRuleDetail": "Expense Rule Detail",
+        "expenseRuleObject": "Expense Rule Object",
+        "copyWarn": "Please select an expense rule to copy.",
+        "copyingContent": "Rule copied, content being transferred...",
+        "copyFinished": "The copying process is complete."
+    },
+    "costRuleFilterDetailColumns": {
+        "id": "Id",
+        "objId": "Obje Id",
+        "objType": "Obje Type"
     }
 }

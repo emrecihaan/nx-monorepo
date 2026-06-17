@@ -109,9 +109,8 @@
 
         .p-inputtext,
         .p-select {
-            background: #ffffff !important;
-            /* Always white */
-            border: 1px solid #e2e8f0 !important;
+            background: var(--surface-0) !important;
+            border: 1px solid var(--surface-200) !important;
             border-radius: var(--radius-md) !important;
             font-size: 0.8125rem !important;
             color: var(--text-primary) !important;
@@ -122,19 +121,17 @@
             /* Forces same height */
 
             &::placeholder {
-                color: #94a3b8;
+                color: var(--text-tertiary);
             }
 
             &:focus,
             &.p-focus {
                 border-color: var(--primary-500) !important;
-                background: #ffffff !important;
-                /* Keep white on focus */
+                background: var(--surface-0) !important;
             }
 
             &:hover {
-                background: #ffffff !important;
-                /* Keep white on hover */
+                background: var(--surface-0) !important;
             }
         }
 
@@ -266,27 +263,24 @@
         }
 
         .p-datatable-thead>tr>th {
-            background: #f1f5f9 !important;
-            /* Light gray header */
-            color: #475569 !important;
+            background: var(--surface-50) !important;
+            color: var(--text-secondary) !important;
             font-size: 0.75rem !important;
             font-weight: 700 !important;
             text-transform: uppercase !important;
             letter-spacing: 0.05em !important;
             padding: 1rem 1.5rem !important;
-            border-bottom: 1px solid #e2e8f0 !important;
+            border-bottom: 1px solid var(--surface-200) !important;
         }
 
         .p-datatable-tbody>tr {
             background: transparent !important;
-            border-bottom: 1px solid #f1f5f9 !important;
+            border-bottom: 1px solid var(--surface-200) !important;
 
             &>td {
                 padding: 0.75rem 1.5rem !important;
-                /* Reduced cell padding */
-                color: #1e293b !important;
+                color: var(--text-primary) !important;
                 font-size: 0.8125rem !important;
-                /* Reduced cell font size */
                 vertical-align: middle;
 
                 strong {
@@ -295,13 +289,13 @@
             }
 
             &:hover {
-                background: #f8fafc !important;
+                background: var(--surface-50) !important;
             }
         }
 
         .p-paginator {
-            background: #ffffff !important;
-            border-top: 1px solid #e2e8f0 !important;
+            background: var(--surface-0) !important;
+            border-top: 1px solid var(--surface-200) !important;
             padding: 0.75rem !important;
             border-bottom-left-radius: var(--radius-lg);
             border-bottom-right-radius: var(--radius-lg);
@@ -311,15 +305,15 @@
                 height: 2.25rem;
                 border-radius: 6px;
                 font-size: 0.8125rem;
-                color: #64748b;
+                color: var(--text-secondary);
 
                 &.p-highlight {
-                    background: #3b82f6 !important;
+                    background: var(--primary-500) !important;
                     color: #ffffff !important;
                 }
 
                 &:not(.p-highlight):hover {
-                    background: #f1f5f9 !important;
+                    background: var(--surface-100) !important;
                 }
             }
 
@@ -330,16 +324,16 @@
                 min-width: 2.25rem;
                 height: 2.25rem;
                 border-radius: 6px;
-                color: #64748b;
+                color: var(--text-secondary);
 
                 &:hover {
-                    background: #f1f5f9 !important;
+                    background: var(--surface-100) !important;
                 }
             }
 
             .p-paginator-current {
                 font-size: 0.8125rem;
-                color: #64748b;
+                color: var(--text-secondary);
                 margin-left: auto;
             }
         }
@@ -371,8 +365,8 @@
 }
 
 .role-badge {
-    background: #f1f5f9;
-    color: #475569;
+    background: var(--surface-100);
+    color: var(--text-secondary);
     padding: 0.25rem 0.625rem;
     border-radius: 6px;
     font-size: 0.75rem;

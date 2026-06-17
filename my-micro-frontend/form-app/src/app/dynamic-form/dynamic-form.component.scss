@@ -5,6 +5,7 @@
 }
 
 .form-wrapper {
+
     input:not([type="checkbox"]):not([type="radio"]),
     p-select,
     p-datepicker,
@@ -17,7 +18,8 @@
 }
 
 ::ng-deep {
-    .p-datepicker, 
+
+    .p-datepicker,
     .p-datepicker-input,
     .p-select,
     .p-inputtext,
@@ -28,8 +30,10 @@
     .p-floatlabel {
         width: 100%;
         display: block;
-        
-        input, p-datepicker, p-select {
+
+        input,
+        p-datepicker,
+        p-select {
             width: 100% !important;
         }
     }
@@ -43,4 +47,18 @@
     min-height: 300px;
     gap: 1rem;
     color: var(--text-muted, #64748b);
+}
+
+::ng-deep .header-light,
+::ng-deep .header-light .p-accordion-header-link, 
+::ng-deep .header-light .p-accordion-header-action {
+    background-color: #eff6ff !important;
+    color: #1e293b !important;
+}
+
+::ng-deep .header-dark,
+::ng-deep .header-dark .p-accordion-header-link, 
+::ng-deep .header-dark .p-accordion-header-action {
+    background-color: var(--surface-100) !important;
+    color: var(--text-primary) !important;
 }
