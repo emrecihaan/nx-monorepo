@@ -85,12 +85,14 @@ export class DynamicFormComponent implements OnInit {
 
   validationModel = null;
   activeTabs: any[] = [];
+  isDark: boolean = false;
+  private themeObserver!: MutationObserver;
+
   constructor(
     private cdRef: ChangeDetectorRef,
     private formService: FormService,
     private messageService: MessageService,
     private translateService: TranslateService,
-    // Note: Replaced GeneralSystemService with dynamic resolution or removed if unused
     private route: ActivatedRoute,
     private router: Router,
     private generalService: GeneralSystemService
@@ -113,6 +115,12 @@ export class DynamicFormComponent implements OnInit {
     }, 1000);
   }
 
+  ngOnDestroy() {
+    if (this.themeObserver) {
+      this.themeObserver.disconnect();
+    }
+  }
+
   resetFormState(): void {
     this.forms = [];
     this.formName = '';
@@ -129,6 +137,17 @@ export class DynamicFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    this.themeObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-theme') {
+          this.isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          this.cdRef.detectChanges();
+        }
+      });
+    });
+    this.themeObserver.observe(document.documentElement, { attributes: true });
+
     this.route.paramMap.subscribe(params => {
       this.resetFormState();
       this.isLoading = true;

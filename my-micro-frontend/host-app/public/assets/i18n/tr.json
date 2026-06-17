@@ -146,7 +146,9 @@
         "approve": "Onayla",
         "reject": "Reddet",
         "rejectRequest": "Reddet",
-        "cancel": "İptal"
+        "cancel": "İptal",
+        "create": "Kaydet",
+        "delete": "Sil"
     },
     "messageServiceMessages": {
         "recordAddedSuccessfully": "Kayıt başarıyla eklendi",
@@ -400,5 +402,29 @@
         "seriNo": "Seri No",
         "advensePayment": "Avans Ödemesi",
         "sureDeleteParameterValue": "Parametre Değeri silinecektir kabul ediyor musunuz ?"
+    },
+    "costRuleFilter": {
+        "title": "Masraf Kural Listesi",
+        "createAnExpenseRule": "Masraf Kural Filtre Oluştur",
+        "updateAnExpenseRule": "Masraf Kural Filtre Düzenle",
+        "editAnExpenseRule": "Masraf Kural Filtre Düzenle",
+        "deleteAnExpenseRule": "Masraf Kural Filtre Sil",
+        "detailAnExpenseRule": "Masraf Kural Filtre Detay",
+        "ruleName": "Kural Adı",
+        "dfSystemCompanyId": "Firma Id",
+        "sureDelete": "Masraf Kural Filtresi silinecektir kabul ediyor  musunuz?",
+        "ruleNameReq": "Kural Adı zorunlu",
+        "companyIdReq": "Firma Id zorunlu",
+        "copyAnExpenseRule": "Masraf Kural Kopyala",
+        "expenseRuleDetail": "Masraf Kural Detayı",
+        "expenseRuleObject": "Masraf Kural Objesi",
+        "copyWarn": "Lütfen kopyalamak için bir masraf kuralı seçiniz.",
+        "copyingContent": "Kural kopyalandı, içerikler aktarılıyor...",
+        "copyFinished": "Kopyalama işlemi tamamlandı."
+    },
+    "costRuleFilterDetailColumns": {
+        "id": "Id",
+        "objId": "Obje Id",
+        "objType": "Obje Tipi"
     }
 }
