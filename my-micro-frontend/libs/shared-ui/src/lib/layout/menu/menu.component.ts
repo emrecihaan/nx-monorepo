@@ -141,6 +141,23 @@ export class MenuComponent implements OnInit {
     }
     this.model = modelList;
     this.updateMenuItems();
+
+    if (this.router.url.includes('/app/dashboard')) {
+      if (this.model.length > 0) {
+        const firstPage = this.model[0];
+        let targetLink = firstPage.routerLink;
+
+        if (firstPage.items && firstPage.items.length > 0) {
+          targetLink = firstPage.items[0].routerLink;
+        }
+
+        if (targetLink) {
+          this.router.navigate(targetLink);
+        }
+      } else {
+        this.router.navigate(['/app/dashboard']);
+      }
+    }
   }
 
   toggleSubMenu(item: MenuItem) {
