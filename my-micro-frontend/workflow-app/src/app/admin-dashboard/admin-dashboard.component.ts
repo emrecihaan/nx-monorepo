@@ -63,29 +63,29 @@ export class AdminDashboardComponent implements OnInit {
   detailColumn = [
     {
       dataField: "approverName",
-      caption: "approverName",
+      caption: "Onaycı Adı",
     },
     {
       dataField: "proxyOwnerName",
-      caption: "Original Approver",
+      caption: "Yetkili",
     },
     {
       dataField: "createdDate",
-      caption: "createdDate",
+      caption: "Oluşturma Tarihi",
     },
     {
       dataField: "dfFormStatusName",
-      caption: "dfFormStatusName",
+      caption: "Durum",
     },
 
     {
       dataField: "rejectReason",
-      caption: "rejectReason",
+      caption: "Reddetme Nedeni",
     },
 
     {
       dataField: "trFormId",
-      caption: "trFormId",
+      caption: "FormId",
     },
   ];
   subMenuList: any[] = [];
@@ -99,7 +99,7 @@ export class AdminDashboardComponent implements OnInit {
   userId: any;
   selectedStatusId = 0;
   selectedCardId: number = 2;
-  detailHeader: string = "adminDashoardDataDetail";
+  detailHeader: string = "Detay Verileri";
 
   constructor(
     public formService: FormService,
