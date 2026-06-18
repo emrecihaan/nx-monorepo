@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseHttpService } from '../base-http.service';
-import { GET_ROLE_BY_USER_ID, GET_USER_BY_NAME, GET_USER_REDIS, GET_USERS } from '../../constants/constants/system-api-urls.constant';
+import { GET_ALL_USER_LIST, GET_ROLE_BY_USER_ID, GET_USER_BY_NAME, GET_USER_REDIS, GET_USERS } from '../../constants/constants/system-api-urls.constant';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +23,9 @@ export class SystemService {
 
   getRoleByUserId(userId: any) {
     return this.http.get<any>(GET_ROLE_BY_USER_ID, { userId })
+  }
+
+  getUserList() {
+    return this.http.get<any>(GET_ALL_USER_LIST);
   }
 }
