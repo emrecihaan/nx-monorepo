@@ -114,3 +114,30 @@ export const GET_APPROVERS_COUNT_BY_STATUSID = `${BASE_URL}/TrFormApprover/getAp
 
 export const GET_APPROVED_TRFORM_LIST_BY_APPROVERID_AND_STATUSID = `${BASE_URL}/TrForm/getApprovedTrFormsByApproverIdAndStatusId`;
 
+export const GET_ORGANIZATION_LIST = `${BASE_URL}/TrForm/getOrganizationList`;
+
+export const GET_PEOPLE_LIST_BY_ORGANIZATIONID = `${BASE_URL}/TrForm/getPeopleListByOrganizationId`;
+
+export const GET_EMPLOYEE_BY_PERNR = `${BASE_URL}/TrForm/getPersonByPERNR`;
+
+export const UPDATE_EMPLOYEE_ASSIGNMENT = `${BASE_URL}/TrForm/UpdateEmployeeAssignment`;
+
+export const GET_TITLE_LIST = `${BASE_URL}/TrForm/getTitleList`;
+
+export const GET_POSITON_LIST = `${BASE_URL}/TrForm/getPositionList`;
+
+export const UPDATE_EMPLOYEE_POSITION = `${BASE_URL}/TrForm/AddPersonToPosition`;
+
+export const GET_ASSIGNMENT_USER_LINK = `${BASE_URL}/TrForm/GetEmployeeAssignment`;
+
+export const CREATE_EMPLOYEE_ASSIGNMENT = `${BASE_URL}/TrForm/CreateEmployeeAssignment`;
+
+export const CREATE_EMPLOYEE_ASSIGNMENT_ENTITY = `${BASE_URL}/TrForm/CreateEmployeeAssignmentEntity`;
+
+export const GET_EX_USER_LIST = `${BASE_URL}/TrForm/getExPeopleList`;
+
+export const CREATE_ORG_RELATION_ENTITY = `${BASE_URL}/TrForm/CreateOrgEntity`;
+
+export const DELETE_ORG_RELATION_ENTITY = `${BASE_URL}/TrForm/DeleteOrgEntity`;
+
+export const GET_PEOPLE_LIST_BY_ORGANIZATION_ID = `${BASE_URL}/TrForm/getPeopleListByOrgeh`;

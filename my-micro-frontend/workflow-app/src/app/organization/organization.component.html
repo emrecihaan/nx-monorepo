@@ -1,0 +1,211 @@
+<div class="p-3 pb-0">
+    <h2>Organizasyon Sayfası</h2>
+    <p *ngIf="!files || files.length === 0">Organizasyon şeması yükleniyor veya veri bulunamadı...</p>
+</div>
+<div class="grid col-12 m-0" style="height: calc(100vh - 150px);">
+    <div class="col-12 md:col-3 p-3 flex flex-column h-full">
+        <div *ngIf="files && files.length>0" class="card flex-grow-1 overflow-auto bg-white border-round shadow-1 p-3">
+            <!-- <h4 class="mt-0 mb-3 text-700">Ağaç Görünümü</h4> -->
+            <p-tree [value]="files" class="w-full" selectionMode="single" [(selection)]="selectedTeam"
+                (onNodeSelect)="nodeSelect($event)">
+            </p-tree>
+        </div>
+    </div>
+    <div class="col-12 md:col-9 p-3 h-full">
+        <div class="card h-full flex flex-column bg-white border-round shadow-1 p-3 relative" style="overflow: auto;">
+            <div class="flex justify-content-end mb-3 sticky top-0 z-1" style="background: rgba(255, 255, 255, 0.9);">
+                <button *ngIf="selectedTeam!=null" type="button" pButton label="Pozisyon Ekle" icon="pi pi-plus"
+                    (click)="addPositionModal()" class="p-button-success"></button>
+            </div>
+            <div class="flex-grow-1 org-chart-wrapper" style="min-width: 800px; min-height: 400px;">
+                <p-organizationChart *ngIf="data && data.length > 0" [value]="data" selectionMode="single"
+                    [(selection)]="selectedOrganization" (onNodeSelect)="organizationSelect($event)" class="w-full">
+                    <ng-template let-node pTemplate="default">
+                        <div class="p-3 text-center node-box border-round shadow-1 transition-all transition-duration-200"
+                            [ngClass]="{
+                         'person-node': node.data?.includes('PERS') === true,
+                         'position-node': node.data?.includes('POZ') === true,
+                         'sapkali-node': node.label?.includes('Sapkal') === true
+                     }">
+                            <div class="font-bold mb-2">{{ node.data?.name }}</div>
+                            <div class="text-sm">{{ node.label }}</div>
+                        </div>
+                    </ng-template>
+                </p-organizationChart>
+                <div *ngIf="!data || data.length === 0"
+                    class="flex align-items-center justify-content-center h-full text-500">
+                    <p><i class="pi pi-info-circle mr-2"></i> Lütfen soldaki ağaçtan bir departman/birim seçiniz.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog *ngIf="showEditModal==true&&selectedOrganization!=null" header="Personel Detay" [modal]="true"
+    [(visible)]="showEditModal" [style]="{ width: '55rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [maximizable]="false">
+    <div class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-6">
+            <label for="name" class="font-bold mb-2 block">Ad Soyad</label>
+            <input id="name" type="text" pInputText [(ngModel)]="selectedOrganization.name" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="pernr" class="font-bold mb-2 block">Personel No</label>
+            <input id="pernr" type="text" pInputText [(ngModel)]="selectedOrganization.pernr" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="plans" class="font-bold mb-2 block">Plans</label>
+            <input id="plans" type="text" pInputText [(ngModel)]="selectedOrganization.plans" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="begda" class="font-bold mb-2 block">Başlangıç Tarihi</label>
+            <input id="begda" type="date" pInputText [(ngModel)]="selectedOrganization.begda" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="endda" class="font-bold mb-2 block">Bitiş Tarihi</label>
+            <input id="endda" type="date" pInputText [(ngModel)]="selectedOrganization.endda" class="w-full" />
+        </div>
+        <div *ngIf="selectedTitle!=null" class="field col-12 md:col-6">
+            <label for="unvan" class="font-bold mb-2 block">Unvan</label>
+            <p-select *ngIf="selectedTitle!=null" [options]="titleList" optionLabel="name" [(ngModel)]="selectedTitle"
+                [filter]="true" filterBy="name" class="w-full"></p-select>
+        </div>
+        <div *ngIf="selectedPosition!=null" class="field col-12 md:col-6">
+            <label for="pozisyon" class="font-bold mb-2 block">Pozisyon</label>
+            <p-select *ngIf="selectedPosition!=null" [options]="positionList" optionLabel="name"
+                [(ngModel)]="selectedPosition" [filter]="true" filterBy="name" class="w-full"></p-select>
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="userSelect" class="font-bold mb-2 block">Kullanıcı Seç</label>
+            <p-select [options]="userList" optionLabel="name" [(ngModel)]="selectedUser" [filter]="true" filterBy="name"
+                class="w-full"></p-select>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="Kaydet" icon="pi pi-plus" (click)="save()"
+            class="p-button-success ml-2"></button>
+        <button type="button" pButton label="İşten Çıkış" icon="pi pi-trash" (click)="leaving()"
+            class="ml-2 p-button-warning"></button>
+        <button type="button" pButton label="Kullanıcı Ata" icon="pi pi-plus" (click)="addAssignmentLink()"
+            class="ml-2 ml-2 p-button-help"></button>
+        <button type="button" pButton label="Pozisyondan Çıkar" icon="pi pi-trash" (click)="outOfPosition()"
+            class="ml-2 ml-2 p-button-help"></button>
+    </div>
+</p-dialog>
+
+
+<p-dialog *ngIf="showPositionEditModal==true" header="Detay" [modal]="true" [(visible)]="showPositionEditModal"
+    [style]="{ width: '45rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false">
+    <div class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-6">
+            <label for="posName" class="font-bold mb-2 block">Pozisyon</label>
+            <input id="posName" type="text" pInputText [(ngModel)]="selectedEditPosition.label" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="subUser" class="font-bold mb-2 block">Personel</label>
+            <p-select [options]="subUserList" optionLabel="name" [(ngModel)]="selectedSubUser" [filter]="true"
+                filterBy="name" placeholder="Personel Seçiniz" class="w-full">
+            </p-select>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="Kaydet" icon="pi pi-plus" class="ml-2"
+            (click)="addPersonToPosition()"></button>
+        <button type="button" pButton label="Yeni Personel Ekle" icon="pi pi-plus" class="ml-2  p-button-help"
+            (click)="newPersonModalShow()"></button>
+        <button type="button" pButton label="Pozisyonu Sil" icon="pi pi-trash" class="ml-2  p-button-danger"
+            (click)="deletePosition()"></button>
+        <button type="button" pButton label="İşten Çıkan Personel Ekle" icon="pi pi-plus" class="ml-2  p-button-warning"
+            (click)="addPositionExPersonModalShow()"></button>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="newPersonModal==true" header="Personel Oluştur" [modal]="true" [(visible)]="newPersonModal"
+    [style]="{ width: '55rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false">
+    <div class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-6">
+            <label for="newName" class="font-bold mb-2 block">Ad Soyad</label>
+            <input id="newName" type="text" pInputText [(ngModel)]="newPersonData.name" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="newPernr" class="font-bold mb-2 block">Personel No</label>
+            <input id="newPernr" type="text" pInputText [(ngModel)]="newPersonData.pernr" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="newPlans" class="font-bold mb-2 block">Plans</label>
+            <input id="newPlans" type="text" pInputText [(ngModel)]="newPersonData.plans" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="newBegda" class="font-bold mb-2 block">Başlangıç Tarihi</label>
+            <input id="newBegda" type="date" pInputText [(ngModel)]="createBegda" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="newEndda" class="font-bold mb-2 block">Bitiş Tarihi</label>
+            <input id="newEndda" type="date" pInputText [(ngModel)]="createEndda" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="newUnvan" class="font-bold mb-2 block">Unvan</label>
+            <p-select [options]="titleList" optionLabel="name" [(ngModel)]="selectedTitle" [filter]="true"
+                filterBy="name" class="w-full"></p-select>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="Kaydet" icon="pi pi-plus" (click)="create()"
+            class="p-button-success ml-2"></button>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="addPositionModalShow==true" header="Pozisyon Oluştur" [modal]="true" [(visible)]="addPositionModalShow"
+    [style]="{ width: '55rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false">
+
+    <div class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-6">
+            <label for="posNewName" class="font-bold mb-2 block">Pozisyon Adı</label>
+            <input id="posNewName" type="text" pInputText [(ngModel)]="newPositionData.name" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="posObjid" class="font-bold mb-2 block">OBJID</label>
+            <input id="posObjid" type="text" pInputText [(ngModel)]="newPositionData.objid" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="posBegda" class="font-bold mb-2 block">Başlangıç Tarihi</label>
+            <input id="posBegda" type="date" pInputText [(ngModel)]="createBegda" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="posEndda" class="font-bold mb-2 block">Bitiş Tarihi</label>
+            <input id="posEndda" type="date" pInputText [(ngModel)]="createEndda" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6 flex align-items-end">
+            <div class="flex align-items-center mb-2">
+                <p-checkbox [(ngModel)]="newPositionData.isSapkali" [binary]="true" inputId="isSapkali"></p-checkbox>
+                <label for="isSapkali" class="font-bold ml-2">Şapkalı Pozisyon mu?</label>
+            </div>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="Kaydet" icon="pi pi-plus" (click)="createPosition()"
+            class="p-button-success ml-2"></button>
+    </div>
+</p-dialog>
+
+<p-dialog *ngIf="exPersonModalShow==true" header="Detay" [modal]="true" [(visible)]="exPersonModalShow"
+    [style]="{ width: '45rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="false">
+    <div class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-6">
+            <label for="exPosName" class="font-bold mb-2 block">Pozisyon</label>
+            <input id="exPosName" type="text" pInputText [(ngModel)]="selectedEditPosition.label" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="exPersonel" class="font-bold mb-2 block">Personel</label>
+            <p-select [options]="userListEx" optionLabel="name" [(ngModel)]="selectedUserEx" [filter]="true"
+                filterBy="name" placeholder="Personel Seçiniz" class="w-full">
+            </p-select>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-content-end">
+        <button type="button" pButton label="Kaydet" icon="pi pi-plus" class="ml-2"
+            (click)="addPersonToPositionEx()"></button>
+    </div>
+</p-dialog>
+
+<p-toast></p-toast>
