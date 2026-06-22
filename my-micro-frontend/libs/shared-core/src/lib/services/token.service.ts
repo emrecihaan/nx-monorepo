@@ -13,7 +13,6 @@ export class TokenService {
     }
 
     setToken(token: string): void {
-        debugger;
         localStorage.setItem(this.TOKEN_KEY, token);
     }
 

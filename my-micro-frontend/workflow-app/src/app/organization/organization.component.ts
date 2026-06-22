@@ -16,15 +16,15 @@ import { ToastModule } from 'primeng/toast';
   selector: 'app-organization',
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    TreeModule, 
-    OrganizationChartModule, 
-    DialogModule, 
-    InputTextModule, 
-    SelectModule, 
-    ButtonModule, 
-    CheckboxModule, 
+    CommonModule,
+    FormsModule,
+    TreeModule,
+    OrganizationChartModule,
+    DialogModule,
+    InputTextModule,
+    SelectModule,
+    ButtonModule,
+    CheckboxModule,
     ToastModule
   ],
   providers: [MessageService],
@@ -72,7 +72,7 @@ export class OrganizationComponent implements OnInit {
   exPersonModalShow = false;
   userListEx: any[] = [];
   selectedUserEx: any = null;
-  
+
   constructor(
     public formService: FormService,
     public userService: SystemService,
@@ -117,7 +117,7 @@ export class OrganizationComponent implements OnInit {
       this.cdr.detectChanges();
     });
   }
-  
+
   getOrganizationPeopleList(node: any) {
     return this.formService.getPeopleListByOrganizationId(node?.key).subscribe((res: any) => {
       this.data = [];
@@ -322,8 +322,8 @@ export class OrganizationComponent implements OnInit {
 
   create() {
     var employee = {
-      ...this.newPersonData, 
-      stell: this.selectedTitle?.id, 
+      ...this.newPersonData,
+      stell: this.selectedTitle?.id,
       endda: this.createEndda ? new Date(this.createEndda).toISOString() : null,
       begda: this.createBegda ? new Date(this.createBegda).toISOString() : null
     };
@@ -347,10 +347,32 @@ export class OrganizationComponent implements OnInit {
   }
 
   createPosition() {
+    if (!this.newPositionData.name || !this.newPositionData.objid || !this.createBegda || !this.createEndda) {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Uyarı",
+        detail: "Lütfen Tüm Alanları Doldurunuz.",
+      });
+      return;
+    }
+
+    const begdaDate = new Date(this.createBegda);
+    const enddaDate = new Date(this.createEndda);
+
+    if (begdaDate > enddaDate) {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Uyarı",
+        detail: "Başlangıç Tarihi Bitiş Tarihinden Büyük Olamaz.",
+      });
+      return;
+    }
+
     var position = {
-      ...this.newPositionData, 
+      ...this.newPositionData,
+      objid: this.newPositionData.objid ? this.newPositionData.objid.toString() : '',
       begda: this.createBegda ? new Date(this.createBegda).toISOString() : null,
-      endda: this.createEndda ? new Date(this.createEndda).toISOString() : null, 
+      endda: this.createEndda ? new Date(this.createEndda).toISOString() : null,
       orgeh: this.selectedTeam?.key || ''
     };
     return this.formService.createOrgEntity(position).subscribe((res: any) => {
@@ -358,7 +380,7 @@ export class OrganizationComponent implements OnInit {
         this.messageService.add({
           severity: "success",
           summary: "Başarılı",
-          detail: "Pozisyon ekleme işlemi başarıyla gerçekleştirildi.",
+          detail: "Pozisyon Ekleme İşlemi Başarıyla Gerçekleştirildi.",
         });
         this.addPositionModalShow = false;
         this.getOrganizationPeopleList(this.selectedTeam);
@@ -377,7 +399,7 @@ export class OrganizationComponent implements OnInit {
         this.messageService.add({
           severity: "error",
           summary: "Hata",
-          detail: "Pozisyon Ekleme İşlemi Gerçekleştirilemedi",
+          detail: res.message ? res.message : "Pozisyon Ekleme İşlemi Gerçekleştirilemedi",
         });
       }
     });
