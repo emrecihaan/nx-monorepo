@@ -4,7 +4,8 @@
 </div>
 <div class="grid col-12 m-0" style="height: calc(100vh - 150px);">
     <div class="col-12 md:col-3 p-3 flex flex-column h-full">
-        <div *ngIf="files && files.length>0" class="card flex-grow-1 overflow-auto surface-card border-round shadow-1 p-3">
+        <div *ngIf="files && files.length>0"
+            class="card flex-grow-1 overflow-auto surface-card border-round shadow-1 p-3">
             <!-- <h4 class="mt-0 mb-3 text-700">Ağaç Görünümü</h4> -->
             <p-tree [value]="files" class="w-full" selectionMode="single" [(selection)]="selectedTeam"
                 (onNodeSelect)="nodeSelect($event)">
@@ -12,7 +13,8 @@
         </div>
     </div>
     <div class="col-12 md:col-9 p-3 h-full">
-        <div class="card h-full flex flex-column surface-card border-round shadow-1 p-3 relative" style="overflow: auto;">
+        <div class="card h-full flex flex-column surface-card border-round shadow-1 p-3 relative"
+            style="overflow: auto;">
             <div class="flex justify-content-end mb-3 sticky top-0 z-1" style="background: var(--surface-card);">
                 <button *ngIf="selectedTeam!=null" type="button" pButton label="Pozisyon Ekle" icon="pi pi-plus"
                     (click)="addPositionModal()" class="p-button-success"></button>
@@ -81,15 +83,23 @@
                 class="w-full"></p-select>
         </div>
     </div>
-    <div class="mt-8 flex justify-content-end">
-        <button type="button" pButton label="Kaydet" icon="pi pi-plus" (click)="save()"
-            class="p-button-success ml-2"></button>
-        <button type="button" pButton label="İşten Çıkış" icon="pi pi-trash" (click)="leaving()"
-            class="ml-2 p-button-warning"></button>
-        <button type="button" pButton label="Kullanıcı Ata" icon="pi pi-plus" (click)="addAssignmentLink()"
-            class="ml-2 ml-2 p-button-help"></button>
-        <button type="button" pButton label="Pozisyondan Çıkar" icon="pi pi-trash" (click)="outOfPosition()"
-            class="ml-2 ml-2 p-button-help"></button>
+    <div class="mt-4 formgrid grid">
+        <div class="field col-6 md:col-3">
+            <button type="button" pButton label="Kaydet" icon="pi pi-check" (click)="save()"
+                class="p-button-success p-button-sm w-full" style="white-space: nowrap;"></button>
+        </div>
+        <div class="field col-6 md:col-3">
+            <button type="button" pButton label="İşten Çıkış" icon="pi pi-sign-out" (click)="leaving()"
+                class="p-button-warning p-button-sm w-full" style="white-space: nowrap;"></button>
+        </div>
+        <div class="field col-6 md:col-3">
+            <button type="button" pButton label="Kullanıcı Ata" icon="pi pi-user-plus" (click)="addAssignmentLink()"
+                class="p-button-help p-button-sm w-full" style="white-space: nowrap;"></button>
+        </div>
+        <div class="field col-6 md:col-3">
+            <button type="button" pButton label="Pozisyondan Çıkar" icon="pi pi-trash" (click)="outOfPosition()"
+                class="p-button-danger p-button-sm w-full" style="white-space: nowrap;"></button>
+        </div>
     </div>
 </p-dialog>
 
@@ -108,15 +118,23 @@
             </p-select>
         </div>
     </div>
-    <div class="mt-8 flex justify-content-end">
-        <button type="button" pButton label="Kaydet" icon="pi pi-plus" class="ml-2"
-            (click)="addPersonToPosition()"></button>
-        <button type="button" pButton label="Yeni Personel Ekle" icon="pi pi-plus" class="ml-2  p-button-help"
-            (click)="newPersonModalShow()"></button>
-        <button type="button" pButton label="Pozisyonu Sil" icon="pi pi-trash" class="ml-2  p-button-danger"
-            (click)="deletePosition()"></button>
-        <button type="button" pButton label="İşten Çıkan Personel Ekle" icon="pi pi-plus" class="ml-2  p-button-warning"
-            (click)="addPositionExPersonModalShow()"></button>
+    <div class="mt-4 formgrid grid">
+        <div class="field col-6 md:col-3">
+            <button type="button" pButton label="Kaydet" icon="pi pi-check" class="p-button-success p-button-sm w-full" style="white-space: nowrap;"
+                (click)="addPersonToPosition()"></button>
+        </div>
+        <div class="field col-6 md:col-3">
+            <button type="button" pButton label="Yeni Personel Ekle" icon="pi pi-user-plus" class="p-button-help p-button-sm w-full" style="white-space: nowrap;"
+                (click)="newPersonModalShow()"></button>
+        </div>
+        <div class="field col-6 md:col-3">
+            <button type="button" pButton label="Pozisyonu Sil" icon="pi pi-trash" class="p-button-danger p-button-sm w-full" style="white-space: nowrap;"
+                (click)="deletePosition()"></button>
+        </div>
+        <div class="field col-6 md:col-3">
+            <button type="button" pButton label="İşten Çıkan Personel" icon="pi pi-history" class="p-button-warning p-button-sm w-full" style="white-space: nowrap;"
+                (click)="addPositionExPersonModalShow()"></button>
+        </div>
     </div>
 </p-dialog>
 
@@ -165,7 +183,7 @@
         </div>
         <div class="field col-12 md:col-6">
             <label for="posObjid" class="font-bold mb-2 block">OBJID</label>
-            <input id="posObjid" type="text" pInputText [(ngModel)]="newPositionData.objid" class="w-full" />
+            <input id="posObjid" type="number" pInputText [(ngModel)]="newPositionData.objid" class="w-full" />
         </div>
         <div class="field col-12 md:col-6">
             <label for="posBegda" class="font-bold mb-2 block">Başlangıç Tarihi</label>
