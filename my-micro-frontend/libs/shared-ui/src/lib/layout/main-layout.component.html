@@ -19,11 +19,11 @@
 
     @if (!sidebarCollapsed) {
     <div class="sidebar-footer">
-      <div class="user-card">
-        <div class="user-avatar-circle">AD</div>
+      <div class="user-card" *ngIf="user">
+        <div class="user-avatar-circle">{{ user.userName?.substring(0, 1) }}{{ user.userSurname?.substring(0, 1) }}</div>
         <div class="user-info">
-          <span class="user-name">Admin User</span>
-          <span class="user-role">Administrator</span>
+          <span class="user-name">{{ user.userName }} {{ user.userSurname }}</span>
+          <span class="user-role">{{ user.titleName || 'Kullanıcı' }}</span>
         </div>
       </div>
     </div>
@@ -60,11 +60,10 @@
             [severity]="currentLang === 'en' ? 'info' : 'secondary'" [class.active]="currentLang === 'en'"></p-button>
         </div> -->
 
-        <p-button icon="pi pi-bell" [text]="true" [rounded]="true" severity="secondary" badge="3"
-          badgeSeverity="danger"></p-button>
 
-        <div class="profile-item">
-          <div class="profile-avatar-circle">U</div>
+
+        <div class="profile-item" *ngIf="user">
+          <div class="profile-avatar-circle">{{ user.userName?.substring(0, 1) }}{{ user.userSurname?.substring(0, 1) }}</div>
         </div>
 
         <p-button icon="pi pi-sign-out" [text]="true" [rounded]="true" (onClick)="logout()" pTooltip="Logout"
