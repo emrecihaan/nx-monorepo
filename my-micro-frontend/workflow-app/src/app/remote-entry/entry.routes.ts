@@ -10,6 +10,7 @@ import { FormApproverRuleComponent } from '../form-approver-rule/form-approver-r
 import { FormApproverRuleDetailComponent } from '../form-approver-rule-detail/form-approver-rule-detail.component';
 
 import { AdminDashboardComponent } from '../admin-dashboard/admin-dashboard.component';
+import { OrganizationComponent } from '../organization/organization.component';
 
 
 export const remoteRoutes: Route[] = [
@@ -21,8 +22,7 @@ export const remoteRoutes: Route[] = [
   { path: 'budgetrule', component: BudgetRuleComponent },
   { path: 'form-approver-rule', component: FormApproverRuleComponent },
   { path: 'formapproverruledetail/:dfFormId', component: FormApproverRuleDetailComponent },
-  
-
-  { path: 'admin-dashboard', component: AdminDashboardComponent }
+  { path: 'admin-dashboard', component: AdminDashboardComponent },
+  { path: 'organization', component: OrganizationComponent }
 
 ];

@@ -45,6 +45,22 @@
                     </p-floatlabel>
                 </div>
 
+                <div class="form-field">
+                    <div class="captcha-wrapper" style="display: flex; align-items: center; margin-bottom: 15px; background: #fafafa; border-radius: 8px; border: 1px solid var(--surface-200); overflow: hidden;">
+                        <div style="flex-grow: 1; display: flex;">
+                            <canvas #captchaCanvas width="350" height="75" style="cursor: pointer; width: 100%; height: auto; display: block;" (click)="generateCaptcha()" title="Kodu Yenile"></canvas>
+                        </div>
+                        <div style="padding: 0 10px; border-left: 1px solid var(--surface-200);">
+                            <p-button icon="pi pi-refresh" styleClass="p-button-rounded p-button-text p-button-secondary" (onClick)="generateCaptcha()" pTooltip="Kodu Yenile" tooltipPosition="top"></p-button>
+                        </div>
+                    </div>
+                    <p-floatlabel>
+                        <input pInputText id="captcha" type="text" [(ngModel)]="captchaInput" class="w-full"
+                            (keydown.enter)="login()" />
+                        <label for="captcha">Güvenlik Kodu</label>
+                    </p-floatlabel>
+                </div>
+
                 <div class="form-actions">
                     <p-button [label]="'LOGIN.BUTTON' | translate" [loading]="loading" icon="pi pi-sign-in"
                         styleClass="w-full" (onClick)="login()"></p-button>

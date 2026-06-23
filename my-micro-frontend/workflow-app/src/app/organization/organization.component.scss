@@ -1,0 +1,94 @@
+.form {
+    display: flex;
+}
+
+::ng-deep .form>div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+::ng-deep .dx-treeview-item {
+    box-sizing: border-box;
+}
+
+::ng-deep .drive-header {
+    min-height: auto;
+    padding: 0;
+    cursor: default;
+    margin-bottom: 10px;
+}
+
+::ng-deep .drive-panel {
+    padding: 20px 30px;
+    font-size: 115%;
+    font-weight: bold;
+    border-right: 1px solid rgba(165, 165, 165, 0.4);
+    height: 100%;
+}
+
+::ng-deep .drive-panel:last-of-type {
+    border-right: none;
+}
+
+/* KART TASARIMLARI */
+.node-box {
+    border: 2px solid transparent;
+    cursor: pointer;
+    min-width: 150px;
+    color: var(--text-color);
+}
+
+.node-box:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.person-node {
+    background: rgba(76, 175, 80, 0.1); /* Pastel Yeşil */
+    border-left: 4px solid #4caf50 !important;
+}
+
+.position-node {
+    background: rgba(33, 150, 243, 0.1); /* Pastel Mavi */
+    border-left: 4px solid #2196f3 !important;
+}
+
+.sapkali-node {
+    background: rgba(255, 152, 0, 0.1); /* Pastel Turuncu */
+    border-left: 4px solid #ff9800 !important;
+}
+
+/* SEÇİM (HIGHLIGHT) DURUMU */
+::ng-deep .p-organizationchart-node-content.p-highlight .node-box {
+    border: 2px solid #3b82f6 !important;
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4) !important;
+    transform: scale(1.05);
+}
+
+/* CHART ALANI ARKA PLANI VE SCROLL */
+.org-chart-wrapper {
+    background-image: radial-gradient(var(--surface-border) 2px, transparent 2px);
+    background-size: 20px 20px;
+    background-color: var(--surface-ground);
+    border-radius: 8px;
+    padding: 2rem;
+    overflow: auto;
+}
+
+/* CUSTOM SCROLLBARS FOR BETTER UX */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

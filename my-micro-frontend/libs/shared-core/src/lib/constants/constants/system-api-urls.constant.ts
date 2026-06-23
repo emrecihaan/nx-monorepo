@@ -10,3 +10,4 @@ export const SAVE_SYSTEM_LANGUAGE_FOR_USER = `${BASE_URL}/User/SaveSystemLanguag
 export const GET_PROJECT_DETAIL_BY_ROLE_ID = `${BASE_URL}/Project/GetProjectDetailByRoleId`;
 
 export const GET_PAGE_CATEGORY_BY_USER_ID = `${BASE_URL}/Application/GetPageCategoryByUserId`;
+export const GET_ALL_USER_LIST = `${BASE_URL}/User/getAllUser`;
