@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormService, GeneralSystemService, GridTranslateService } from '@my-micro-frontend/shared-core';
 import { MessageService } from 'primeng/api';
@@ -107,7 +107,8 @@ export class AdminDashboardComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     public translateService: TranslateService,
-    private gridTranslate: GridTranslateService
+    private gridTranslate: GridTranslateService,
+    private cdr: ChangeDetectorRef
   ) {
     const lang = localStorage.getItem('languageKey') || 'tr';
     this.translateService.setDefaultLang(lang);
@@ -143,12 +144,13 @@ export class AdminDashboardComponent implements OnInit {
         },
       ]
       this.getFormList(2);
-
+      this.cdr.detectChanges();
     }, 2000);
     setTimeout(() => {
       this.customizeGrid = (columns: any[]) => {
         this.gridTranslate.traslateColumns("adminDashboardColumns", columns);
       }
+      this.cdr.detectChanges();
     }, 1000);
   }
 
@@ -169,9 +171,11 @@ export class AdminDashboardComponent implements OnInit {
               };
             });
             console.log(this.data)
+            this.cdr.detectChanges();
           }
         })
       }
+      this.cdr.detectChanges();
     })
   }
 
@@ -186,6 +190,7 @@ export class AdminDashboardComponent implements OnInit {
           }
         }
         this.subMenuList = list;
+        this.cdr.detectChanges();
       }
     })
   }

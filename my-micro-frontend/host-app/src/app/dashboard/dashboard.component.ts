@@ -115,8 +115,33 @@ export class DashboardComponent implements OnInit {
         public generalService: GeneralSystemService,
         public translateService: TranslateService,
         private router: Router,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private cdr: ChangeDetectorRef
     ) {
+
+        this.breadcrumbService.setItems([
+            { label: 'Dashboard', routerLink: ['/'] }
+        ]);
+
+
+        this.config = this.configService.config;
+        this.subscription = this.configService.configUpdate$.subscribe(config => {
+            this.config = config;
+            this.updateChartOptions();
+        });
+        //this.getFormList();
+    }
+
+
+    colorFunc(item: any) {
+        if (item.isActive == true) {
+            return 'orange'
+        }
+        return '#00325D'
+    }
+
+
+    ngOnInit() {
 
         setTimeout(() => {
             this.subMenuList = [
@@ -154,32 +179,8 @@ export class DashboardComponent implements OnInit {
                 },
             ];
             this.getUser();
-
+            this.cdr.detectChanges();
         }, 1000);
-
-        this.breadcrumbService.setItems([
-            { label: 'Dashboard', routerLink: ['/'] }
-        ]);
-
-
-        this.config = this.configService.config;
-        this.subscription = this.configService.configUpdate$.subscribe(config => {
-            this.config = config;
-            this.updateChartOptions();
-        });
-        //this.getFormList();
-    }
-
-
-    colorFunc(item: any) {
-        if (item.isActive == true) {
-            return 'orange'
-        }
-        return '#00325D'
-    }
-
-
-    ngOnInit() {
 
         setTimeout(() => {
             const storedLanguage = localStorage.getItem('languageKey');
@@ -187,6 +188,7 @@ export class DashboardComponent implements OnInit {
             this.customizeGrid = (columns: any[]) => {
                 this.gridTranslate.traslateColumns("formListColumns", columns);
             }
+            this.cdr.detectChanges();
         }, 1000);
 
     }
@@ -295,6 +297,7 @@ export class DashboardComponent implements OnInit {
 
                 }
                 this.subMenuList = list;
+                this.cdr.detectChanges();
             }
         })
     }
@@ -308,6 +311,7 @@ export class DashboardComponent implements OnInit {
                     // this.getFormListByUserId(this.user.id);
                     this.getFormListWithStatusIdAndUserId(SubMenuIdList.RequestsPendingApproval, this.user.id);
                 }
+                this.cdr.detectChanges();
             }
         })
     }
@@ -325,6 +329,7 @@ export class DashboardComponent implements OnInit {
                         createdDate: formattedDate
                     }
                 })
+                this.cdr.detectChanges();
             }
         })
     }
