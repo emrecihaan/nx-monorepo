@@ -12,6 +12,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { AccordionModule } from 'primeng/accordion';
 
 
 @Component({
@@ -28,7 +29,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ToastModule,
     FloatLabelModule,
     InputTextModule,
-    DatagridForFormatComponent
+    DatagridForFormatComponent,
+    AccordionModule
   ],
   providers: [MessageService],
   templateUrl: './report.component.html',
@@ -46,10 +48,29 @@ export class ReportComponent implements OnInit {
   }]
   selectedIdsJson: any;
 
-  @Output() selectionChanged = new EventEmitter<any[]>();
+  displayTravelDialog: boolean = false;
+  displaySelectedExpensesDialog: boolean = false;
+  travelList: any[] = [
+    { label: 'Ankara Ziyareti', value: 1, dateRange: '10 May 2026 - 12 May 2026', reqNo: 'TRV-2026-00124', description: 'Ankara\'daki müşteri ziyareti ve toplantı' },
+    { label: 'İstanbul Eğitimi', value: 2, dateRange: '15 Jun 2026 - 18 Jun 2026', reqNo: 'TRV-2026-00125', description: 'Genel müdürlükte teknik eğitim' },
+    { label: 'İzmir Fuarı', value: 3, dateRange: '20 Sep 2026 - 25 Sep 2026', reqNo: 'TRV-2026-00126', description: 'Uluslararası ticaret fuarı katılımı' }
+  ];
+  selectedTravel: any = null;
+
+  get selectedExpenses(): any[] {
+    if (!this.selectedRows) return [];
+    return this.selectedRows.map((key: any) =>
+      typeof key === 'object' ? key : this.data.find(d => d.id === key)
+    ).filter((d: any) => d !== undefined);
+  }
 
   selectedAmounts = 0;
   oldAmounts = 0;
+
+  get selectedTotalAmount(): number {
+    if (!this.selectedExpenses) return 0;
+    return this.selectedExpenses.reduce((sum, row) => sum + (Number(row.fiyat) || 0), 0);
+  }
   amountRule = 0;
   difference = false;
 
@@ -69,6 +90,85 @@ export class ReportComponent implements OnInit {
   overAmount = 0;
   periodListAll: any;
 
+  expenseTypeCellTemplate(container: any, options: any) {
+    const value = options.value ? options.value.trim() : '';
+    let svgIcon = '';
+    let badgeClass = '';
+
+    switch (value) {
+      case 'Konaklama':
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg>`;
+        badgeClass = 'badge-konaklama';
+        break;
+      case 'Ulaşım':
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a2 2 0 0 0-1.6-.8H9.3a2 2 0 0 0-1.6.8L5 11l-5.16.86a1 1 0 0 0-.84.99V16h3m10 0a2 2 0 1 1-4 0m4 0a2 2 0 1 0-4 0m-7 0a2 2 0 1 1-4 0m4 0a2 2 0 1 0-4 0"/></svg>`;
+        badgeClass = 'badge-ulasim';
+        break;
+      case 'Yemek':
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`;
+        badgeClass = 'badge-yemek';
+        break;
+      case 'Diğer':
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/></svg>`;
+        badgeClass = 'badge-diger';
+        break;
+      default:
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+        badgeClass = 'badge-default';
+        break;
+    }
+
+    const div = document.createElement('div');
+    div.className = `expense-badge ${badgeClass}`;
+    div.innerHTML = `<span class="badge-icon">${svgIcon}</span><span class="badge-text">${value}</span>`;
+    container.appendChild(div);
+  }
+
+  statusCellTemplate(container: any, options: any) {
+    const statusId = Number(options.value);
+    let text = '';
+    let badgeClass = '';
+
+    switch (statusId) {
+      case 1:
+        text = 'Düzeltme Bekleyen';
+        badgeClass = 'status-duzeltme';
+        break;
+      case 2:
+        text = 'Onay Bekleyen';
+        badgeClass = 'status-onay';
+        break;
+      case 3:
+        text = 'Onaylanan';
+        badgeClass = 'status-onaylanan';
+        break;
+      case 4:
+        text = 'Reddedilen';
+        badgeClass = 'status-reddedilen';
+        break;
+      default:
+        text = options.value || 'Bilinmiyor';
+        badgeClass = 'status-default';
+        break;
+    }
+
+    const div = document.createElement('div');
+    div.className = `status-badge ${badgeClass}`;
+    div.innerText = text;
+    container.appendChild(div);
+  }
+
+  activeCellTemplate(container: any, options: any) {
+    const isActive = options.value;
+    const text = isActive ? 'Aktif' : 'Pasif';
+    const badgeClass = isActive ? 'status-aktif' : 'status-pasif';
+
+    const div = document.createElement('div');
+    div.className = `status-badge ${badgeClass}`;
+    div.innerText = text;
+    container.appendChild(div);
+  }
+
   constructor(
     public formService: FormService,
     private router: Router,
@@ -79,6 +179,49 @@ export class ReportComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     public generalService: GeneralSystemService) {
     this.getUser();
+
+    this.customizeGrid = (columns: any[]) => {
+      const orderedColumns = [
+        'id',
+        'date',
+        'expenseDescription',
+        'expenseType',
+        'fiyat',
+        'dfFormStatusId',
+        'isActive'
+      ];
+
+      columns.forEach(col => {
+        const index = orderedColumns.indexOf(col.dataField);
+        if (index > -1) {
+          col.visibleIndex = index;
+        }
+
+        if (col.dataField === 'expenseType') {
+          col.cellTemplate = this.expenseTypeCellTemplate.bind(this);
+        }
+        if (col.dataField === 'dfFormStatusId') {
+          col.caption = 'Durum';
+          col.cellTemplate = this.statusCellTemplate.bind(this);
+        }
+        if (col.dataField === 'isActive') {
+          col.caption = 'Durum ';
+          col.cellTemplate = this.activeCellTemplate.bind(this);
+        }
+        if (col.dataField === 'fiyat' || col.dataField === 'grossAmount' || col.dataField === 'totalAmount') {
+          col.caption = 'Tutar';
+        }
+        if (col.dataField === 'fisDetay') {
+          col.visible = false;
+        }
+        if (col.dataField === 'date') {
+          col.dataType = 'date';
+          col.format = 'dd.MM.yyyy';
+        }
+
+        col.alignment = 'left';
+      });
+    };
   }
   ngOnInit(): void {
 
@@ -106,6 +249,10 @@ export class ReportComponent implements OnInit {
           const parsed = JSON.parse(field.formValues);
           const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
           formValues.id = field.id || index;
+          formValues.dfFormStatusId = field.dfFormStatusId;
+          formValues.isActive = field.isActive !== undefined ? field.isActive : (field.dfForm ? field.dfForm.isActive : null);
+          formValues.fiyat = formValues.fiyat || field.grossAmount || field.totalAmount;
+
           Object.keys(formValues).forEach(key => {
             if (!addedColumns.has(key)) {
               tempColumns.push({
@@ -369,6 +516,10 @@ export class ReportComponent implements OnInit {
             const parsed = JSON.parse(field.formValues);
             const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
             formValues.id = field.id;
+            formValues.dfFormStatusId = field.dfFormStatusId;
+            formValues.isActive = field.isActive !== undefined ? field.isActive : (field.dfForm ? field.dfForm.isActive : null);
+            formValues.fiyat = formValues.fiyat || field.grossAmount || field.totalAmount;
+
             Object.keys(formValues).forEach(key => {
               if (!addedColumns.has(key)) {
                 tempColumns.push({
@@ -398,5 +549,26 @@ export class ReportComponent implements OnInit {
         state: { selectedRows: selectedDataObjects, overAmount: this.overAmount }
       });
     }
+  }
+
+  travelAssignment() { 
+    if (this.selectedRows && this.selectedRows.length > 0) {
+      this.selectedTravel = this.travelList[0];
+      this.displayTravelDialog = true;
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Lütfen en az bir masraf fişi seçiniz.' });
+    }
+  }
+
+  associateTravel() {
+    if (!this.selectedTravel) {
+      this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Lütfen ilişkilendirmek için bir seyahat seçin.' });
+      return;
+    }
+    
+    // Simulate assignment
+    this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: `${this.selectedRows.length} adet masraf, ${this.selectedTravel.label} ile ilişkilendirildi.` });
+    this.displayTravelDialog = false;
+    this.selectedRows = [];
   }
 }
