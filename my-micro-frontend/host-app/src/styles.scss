@@ -284,3 +284,12 @@ html {
 *:after {
   box-sizing: inherit;
 }
+
+/* Google Translate Overrides */
+.skiptranslate > iframe.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+

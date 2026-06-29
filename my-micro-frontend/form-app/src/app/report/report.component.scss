@@ -57,7 +57,7 @@
   color: #fff !important;
 }
 
-::ng-deep {
+:host ::ng-deep {
   .p-select {
     width: 100% !important;
     max-width: 100% !important;

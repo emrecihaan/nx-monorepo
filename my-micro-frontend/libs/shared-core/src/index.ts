@@ -33,3 +33,5 @@ export * from './lib/services/form/form.service';
 
 export * from './lib/services/app-selection.service';
 export * from './lib/services/base/app.config.service';
+export * from './lib/services/loading.service';
+export * from './lib/interceptors/loading.interceptor';

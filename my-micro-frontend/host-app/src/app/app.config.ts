@@ -10,6 +10,7 @@ import {
   provideDevExtreme,
   authInterceptor,
   errorInterceptor,
+  loadingInterceptor,
 } from '@my-micro-frontend/shared-core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { providePrimeNG } from 'primeng/config';
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(appRoutes, withHashLocation()),
-    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor, loadingInterceptor])),
     provideSharedTranslation(),
     provideDevExtreme(),
     provideAnimations(),

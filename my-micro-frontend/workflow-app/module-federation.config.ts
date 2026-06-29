@@ -13,7 +13,7 @@ const config: ModuleFederationConfig = {
       libraryName.startsWith('@ngx-translate/') ||
       libraryName === 'primeng' ||
       libraryName.startsWith('primeng/') ||
-      libraryName.startsWith('@primeng/themes');
+      libraryName.startsWith('@primeng/themes') || libraryName === '@my-micro-frontend/shared-core';
 
     if (isCore) {
       return {

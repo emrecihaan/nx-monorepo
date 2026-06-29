@@ -111,12 +111,16 @@
     max-height: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
+    background-color: #f1f5f9;
+    border-radius: 8px;
 
     &.expanded {
         max-height: 3000px;
         /* Large enough for many items */
         opacity: 1;
+        margin-top: 0.25rem;
         margin-bottom: 0.5rem;
+        padding: 0.5rem 0;
     }
 }
 
@@ -150,6 +154,10 @@
 
 /* Dark Mode Support */
 :host-context(.dark-theme) {
+    .sub-menu {
+        background-color: #1e293b;
+    }
+
     .nav-item {
         color: #94a3b8;
 
