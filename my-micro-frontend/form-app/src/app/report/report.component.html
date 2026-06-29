@@ -1,11 +1,23 @@
 <div class="top-bar animate-fade-in">
     <div class="filters-left">
-        <p-select [options]="formList" optionLabel="name" [(ngModel)]="selectedForm" [filter]="true" filterBy="name"
-            (onChange)="changeSelectedForm($event)" placeholder="Form"></p-select>
-        <p-select [options]="periodList" optionLabel="name" [(ngModel)]="selectedPeriod" [filter]="true" filterBy="name"
-            placeholder="Dönem"></p-select>
-        <p-select [options]="currencyList" optionLabel="name" [(ngModel)]="selectedCurrency" [filter]="true"
-            filterBy="name" placeholder="Para Birimi"></p-select>
+        <p-select [options]="formList" optionLabel="name" dataKey="id" [(ngModel)]="selectedForm" [filter]="true"
+            filterBy="name" (onChange)="changeSelectedForm($event)" placeholder="Form">
+            <ng-template pTemplate="selectedItem" let-selectedOption>
+                <span [innerHTML]="selectedOption.name"></span>
+            </ng-template>
+        </p-select>
+        <p-select [options]="periodList" optionLabel="name" dataKey="id" [(ngModel)]="selectedPeriod" [filter]="true" filterBy="name"
+            placeholder="Dönem">
+            <ng-template pTemplate="selectedItem" let-selectedOption>
+                <span [innerHTML]="selectedOption.name"></span>
+            </ng-template>
+        </p-select>
+        <p-select [options]="currencyList" optionLabel="name" dataKey="id" [(ngModel)]="selectedCurrency" [filter]="true"
+            filterBy="name" placeholder="Para Birimi">
+            <ng-template pTemplate="selectedItem" let-selectedOption>
+                <span [innerHTML]="selectedOption.name"></span>
+            </ng-template>
+        </p-select>
         <button pButton label="Ara" class="btn-ara" (click)="searchReports()" icon="pi pi-search"></button>
     </div>
 

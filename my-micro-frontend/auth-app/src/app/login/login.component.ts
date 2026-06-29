@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -13,7 +13,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, FloatLabelModule, ToastModule, TranslateModule],
+    imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, FloatLabelModule, ToastModule, TranslateModule, RouterModule],
     providers: [MessageService],
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
@@ -64,14 +64,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
         if (!ctx) return;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         ctx.fillStyle = '#fafafa'; // Very light gray/white background
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         const lineColors = ['#a7d2cb', '#f4a261', '#e76f51', '#2a9d8f', '#e9c46a', '#c8b6ff', '#b5e48c'];
         const textColors = ['#264653', '#2a9d8f', '#85182a', '#5f0f40', '#312244', '#003049', '#4b5320', '#4a3b32', '#3c096c', '#001d3d'];
 
-        for(let i=0; i<4; i++) {
+        for (let i = 0; i < 4; i++) {
             ctx.beginPath();
             ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
             ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        
+
         const padding = 30; // Sol ve sağdan boşluk
         const availableWidth = canvas.width - (padding * 2);
         const spacing = availableWidth / (this.captchaText.length - 1);
@@ -92,10 +92,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
             const fontSize = Math.floor(Math.random() * 8 + 32); // 32 to 40px
             ctx.font = `normal ${fontSize}px Arial, sans-serif`;
             ctx.fillStyle = textColors[Math.floor(Math.random() * textColors.length)];
-            
+
             const x = padding + (i * spacing);
             const y = canvas.height / 2;
-            
+
             ctx.translate(x, y + (Math.random() * 6 - 3));
             const rotation = (Math.random() - 0.5) * 0.5; // -0.25 to 0.25 rad
             ctx.rotate(rotation);
@@ -134,7 +134,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         }
 
         if (this.captchaInput.toLowerCase() !== this.captchaText.toLowerCase()) {
-             this.messageService.add({
+            this.messageService.add({
                 severity: 'warn',
                 summary: 'Hata',
                 detail: 'Güvenlik kodunu hatalı girdiniz.',

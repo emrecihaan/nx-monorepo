@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuComponent } from './menu/menu.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -10,21 +10,31 @@ import { TokenService, BreadcrumbService, AppSelectionService, GeneralSystemServ
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { LoadingComponent } from '../loading/loading.component';
+import { SelectModule } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'lib-main-layout',
   standalone: true,
-  imports: [RouterModule, MenuComponent, TranslateModule, ToastComponent, ButtonModule, TooltipModule, BreadcrumbModule, CommonModule],
+  imports: [RouterModule, MenuComponent, TranslateModule, ToastComponent, ButtonModule, TooltipModule, BreadcrumbModule, CommonModule, LoadingComponent, SelectModule, FormsModule],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss'
 })
-export class MainLayoutComponent implements OnInit {
+export class MainLayoutComponent implements OnInit, AfterViewInit {
   currentLang = 'tr';
   sidebarVisible = true;
   sidebarCollapsed = false;
   isDarkTheme = false;
   breadcrumbItems: any[] = [];
   user: any = null;
+
+  languages = [
+    { code: 'tr', flag: '🇹🇷', name: 'Türkçe' },
+    { code: 'en', flag: '🇬🇧', name: 'English' },
+    { code: 'es', flag: '🇪🇸', name: 'Español' }
+  ];
+  selectedLang = this.languages[0];
 
   constructor(
     private translate: TranslateService,
@@ -57,6 +67,65 @@ export class MainLayoutComponent implements OnInit {
         this.user = res.response;
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.initGoogleTranslate();
+  }
+
+  private initGoogleTranslate() {
+    const initFn = () => {
+      const el = document.getElementById('google_translate_element');
+      if (el && (window as any).google && (window as any).google.translate) {
+        el.innerHTML = ''; // Clear previous instances
+        new (window as any).google.translate.TranslateElement({
+          pageLanguage: 'tr',
+          includedLanguages: 'tr,en,es',
+          layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+
+        // Aygıt çerezini oku ve mevcut dili seçili göster
+        this.syncLanguageSelection();
+      }
+    };
+
+    if (!window.document.getElementById('google-translate-script')) {
+      (window as any).googleTranslateElementInit = initFn;
+
+      const script = document.createElement('script');
+      script.id = 'google-translate-script';
+      script.type = 'text/javascript';
+      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      document.body.appendChild(script);
+    } else {
+      setTimeout(initFn, 300);
+    }
+  }
+
+  syncLanguageSelection() {
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('googtrans='));
+    if (cookie) {
+      const val = cookie.split('=')[1]; // e.g. /tr/en
+      const code = val.split('/')[2];
+      const found = this.languages.find(l => l.code === code);
+      if (found) this.selectedLang = found;
+    }
+  }
+
+  onLanguageChange(event: any) {
+    const langCode = event.value ? event.value.code : event;
+    
+    // Google Translate için cookie ayarlıyoruz
+    // Format: googtrans=/orijinal_dil/hedef_dil
+    const cookieString = `/tr/${langCode === 'tr' ? 'tr' : langCode}`;
+    
+    // Hem kök domain hem de path için çerezleri ayarlıyoruz
+    document.cookie = `googtrans=${cookieString}; path=/`;
+    document.cookie = `googtrans=${cookieString}; path=/; domain=${location.hostname}`;
+    
+    // Sayfayı yenileyerek çevirinin kusursuz uygulanmasını sağlıyoruz
+    window.location.reload();
   }
 
   updateBreadcrumbs() {

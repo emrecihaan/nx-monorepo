@@ -20,7 +20,8 @@
     @if (!sidebarCollapsed) {
     <div class="sidebar-footer">
       <div class="user-card" *ngIf="user">
-        <div class="user-avatar-circle">{{ user.userName?.substring(0, 1) }}{{ user.userSurname?.substring(0, 1) }}</div>
+        <div class="user-avatar-circle">{{ user.userName?.substring(0, 1) }}{{ user.userSurname?.substring(0, 1) }}
+        </div>
         <div class="user-info">
           <span class="user-name">{{ user.userName }} {{ user.userSurname }}</span>
           <span class="user-role">{{ user.titleName || 'Kullanıcı' }}</span>
@@ -52,13 +53,26 @@
 
         <p-button [icon]="isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'" [text]="true" [rounded]="true"
           (onClick)="toggleTheme()" severity="secondary"></p-button>
-        <!-- 
-        <div class="lang-switcher">
-          <p-button label="TR" [text]="true" [rounded]="true" (onClick)="switchLanguage('tr')"
-            [severity]="currentLang === 'tr' ? 'info' : 'secondary'" [class.active]="currentLang === 'tr'"></p-button>
-          <p-button label="EN" [text]="true" [rounded]="true" (onClick)="switchLanguage('en')"
-            [severity]="currentLang === 'en' ? 'info' : 'secondary'" [class.active]="currentLang === 'en'"></p-button>
-        </div> -->
+        <div class="lang-switcher-wrapper">
+          <p-select [options]="languages" [(ngModel)]="selectedLang" optionLabel="name"
+            (onChange)="onLanguageChange($event)"
+            [style]="{ 'background': 'transparent', 'border': 'none', 'box-shadow': 'none' }">
+            <ng-template pTemplate="selectedItem">
+              <div *ngIf="selectedLang" style="display: flex; align-items: center;">
+                <img
+                  [src]="'https://flagcdn.com/108x81/' + (selectedLang.code === 'en' ? 'gb' : selectedLang.code) + '.png'"
+                  [alt]="selectedLang.name" style="width: 24px; border-radius: 2px;" />
+              </div>
+            </ng-template>
+            <ng-template let-lang pTemplate="item">
+              <div style="display: flex; align-items: center; justify-content: center;">
+                <img [src]="'https://flagcdn.com/108x81/' + (lang.code === 'en' ? 'gb' : lang.code) + '.png'"
+                  [alt]="lang.name" style="width: 24px; border-radius: 2px;" />
+              </div>
+            </ng-template>
+          </p-select>
+          <div id="google_translate_element" style="display: none;"></div>
+        </div>
 
         <!-- <p-button icon="pi pi-bell" [text]="true" [rounded]="true" severity="secondary" badge="3"
           badgeSeverity="danger"></p-button> -->
@@ -66,7 +80,8 @@
 
 
         <div class="profile-item" *ngIf="user">
-          <div class="profile-avatar-circle">{{ user.userName?.substring(0, 1) }}{{ user.userSurname?.substring(0, 1) }}</div>
+          <div class="profile-avatar-circle">{{ user.userName?.substring(0, 1) }}{{ user.userSurname?.substring(0, 1) }}
+          </div>
         </div>
 
         <p-button icon="pi pi-sign-out" [text]="true" [rounded]="true" (onClick)="logout()" pTooltip="Logout"
@@ -83,3 +98,5 @@
     </footer>
   </div>
 </div>
+
+<lib-loading></lib-loading>
