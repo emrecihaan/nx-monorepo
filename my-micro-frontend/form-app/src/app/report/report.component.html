@@ -1,39 +1,185 @@
-<div class="top-bar animate-fade-in">
-    <div class="filters-left">
-        <p-select [options]="formList" optionLabel="name" dataKey="id" [(ngModel)]="selectedForm" [filter]="true"
-            filterBy="name" (onChange)="changeSelectedForm($event)" placeholder="Form">
-            <ng-template pTemplate="selectedItem" let-selectedOption>
-                <span [innerHTML]="selectedOption.name"></span>
-            </ng-template>
-        </p-select>
-        <p-select [options]="periodList" optionLabel="name" dataKey="id" [(ngModel)]="selectedPeriod" [filter]="true" filterBy="name"
-            placeholder="Dönem">
-            <ng-template pTemplate="selectedItem" let-selectedOption>
-                <span [innerHTML]="selectedOption.name"></span>
-            </ng-template>
-        </p-select>
-        <p-select [options]="currencyList" optionLabel="name" dataKey="id" [(ngModel)]="selectedCurrency" [filter]="true"
-            filterBy="name" placeholder="Para Birimi">
-            <ng-template pTemplate="selectedItem" let-selectedOption>
-                <span [innerHTML]="selectedOption.name"></span>
-            </ng-template>
-        </p-select>
-        <button pButton label="Ara" class="btn-ara" (click)="searchReports()" icon="pi pi-search"></button>
+
+<div
+    class="surface-card p-3 shadow-1 border-round mb-4 flex flex-column lg:flex-row justify-content-between align-items-center gap-3">
+    <div class="flex align-items-center gap-2 flex-wrap">
+        <div class="flex align-items-center surface-ground border-round p-1 border-1 surface-border">
+            <div class="flex align-items-center text-color-secondary font-medium px-2 white-space-nowrap">
+                <i class="pi pi-filter mr-2"></i>Filtreler
+            </div>
+            <p-select [options]="formList" optionLabel="name" [(ngModel)]="selectedForm" [filter]="true" filterBy="name"
+                (onChange)="changeSelectedForm($event)" placeholder="Form Seçin" [style]="{ width: '80rem' }"
+                class="mr-1"></p-select>
+            <p-select [options]="periodList" optionLabel="name" [(ngModel)]="selectedPeriod" [filter]="true"
+                filterBy="name" placeholder="Dönem" [style]="{ width: '20rem' }" class="mr-1"></p-select>
+            <p-select [options]="currencyList" optionLabel="name" [(ngModel)]="selectedCurrency" [filter]="true"
+                filterBy="name" placeholder="Birim" [style]="{ width: '15rem' }" class="mr-1"></p-select>
+            <button pButton pRipple label="Ara" icon="pi pi-search" class="p-button-primary px-5 font-bold"
+                style="width: 12rem;" (click)="searchReports()"></button>
+        </div>
     </div>
 
-    <div class="actions-right">
-        <button pButton label="Fiş Oluştur" class="btn-fis" (click)="createBill()" icon="pi pi-folder-plus"></button>
-        <button pButton label="Sil" class="btn-sil" (click)="deleteField()" icon="pi pi-trash"></button>
-        <button pButton label="Güncelle" class="btn-guncelle" (click)="updateField()" icon="pi pi-sync"></button>
-        <button pButton label="Rapor Oluştur" class="btn-rapor" (click)="createReport()"
-            icon="pi pi-file-export"></button>
+    <div class="flex align-items-center gap-2 flex-wrap">
+        <button pButton pRipple label="Fiş Oluştur" icon="pi pi-folder-plus" class="p-button-success"
+            (click)="createBill()"></button>
+        <button pButton pRipple label="Güncelle" icon="pi pi-sync" class="p-button-info"
+            (click)="updateField()"></button>
+        <button pButton pRipple label="Sil" icon="pi pi-trash" class="p-button-danger" (click)="deleteField()"></button>
+        <div class="border-left-1 surface-border h-2rem mx-1 hidden lg:block"></div>
+        <button pButton pRipple label="Rapor Oluştur" icon="pi pi-file-export" class="p-button-secondary"
+            (click)="createReport()"></button>
+        <button pButton pRipple
+            [label]="selectedRows.length > 0 ? 'Seyahat Atama (' + selectedRows.length + ')' : 'Seyahat Atama'"
+            icon="pi pi-car"
+            style="background-color: #8b5cf6 !important; border-color: #8b5cf6 !important; color: white !important;"
+            (click)="travelAssignment()"></button>
     </div>
 </div>
 
+
 <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
     [selectedRows]="selectedRows" [keyExpr]="'id'" (setSelectedData)="setSelectedRow($event)"
-    (setSelectedRows)="setSelectedRows($event)" [selectionMode]="'multiple'" #gridRef
-    [columns]="column"></app-datagrid-for-format>
+    (setSelectedRows)="setSelectedRows($event)" [selectionMode]="'multiple'" #gridRef [columns]="column" [pageSize]="5"
+    [height]="'auto'"></app-datagrid-for-format>
+
+<div class="grid mt-4" *ngIf="data && data.length > 0">
+    <div class="col-4">
+        <div class="surface-card p-3 shadow-2 border-round h-full" style="height: 550px;">
+            <div class="flex justify-content-between align-items-center mb-3">
+                <h3 class="m-0 font-bold text-color">Seyahatlerim</h3>
+                <a href="javascript:void(0)" class="text-primary font-medium text-sm no-underline">Tümü</a>
+            </div>
+            <div *ngFor="let travel of travelList"
+                class="flex align-items-center mb-3 p-3 border-round hover:surface-hover transition-colors cursor-pointer border-1 surface-border">
+                <div class="flex align-items-center justify-content-center bg-primary-reverse border-round mr-4"
+                    style="width: 48px; height: 48px;">
+                    <i class="pi pi-briefcase text-primary text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="font-bold text-color mb-1 text-lg">{{travel.label}}</div>
+                    <div class="text-color-secondary">{{travel.dateRange}}</div>
+                </div>
+                <div>
+                    <span class="status-badge status-aktif"
+                        style="font-size: 0.85rem; padding: 0.4rem 0.6rem">Onaylandı</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4">
+        <div *ngIf="displayTravelDialog" class="surface-card shadow-6 border-round p-0 flex flex-column"
+            style="height: 550px; transform: translateY(-30px); position: relative; z-index: 100; overflow: hidden;">
+            <div class="flex justify-content-between align-items-center p-3 border-bottom-1 surface-border">
+                <h3 class="m-0 font-bold text-color" style="font-size: 1.1rem;">Seyahate İlişkilendir</h3>
+                <button pButton pRipple icon="pi pi-times"
+                    class="p-button-rounded p-button-text p-button-plain w-2rem h-2rem"
+                    (click)="displayTravelDialog = false"></button>
+            </div>
+
+            <div class="p-4 flex-1">
+                <div class="travel-info-box mb-3">
+                    <i class="pi pi-info-circle mr-2" style="font-size: 1.2rem;"></i>
+                    <span>{{selectedRows.length}} adet masraf seçtiniz. Lütfen ilişkilendirmek istediğiniz seyahati
+                        seçin.</span>
+                </div>
+
+                <div class="field mb-3">
+                    <label class="block font-medium mb-2 text-color">Seyahat <span class="text-red-500">*</span></label>
+                    <p-select [options]="travelList" [(ngModel)]="selectedTravel" optionLabel="label"
+                        placeholder="Seyahat Seçin" style="width: 100%;" appendTo="body"></p-select>
+                </div>
+
+                <div class="travel-detail-box mb-2" *ngIf="selectedTravel">
+                    <h4 class="mb-3 mt-0 font-bold text-color">Seyahat Bilgileri</h4>
+                    <div class="flex align-items-center mb-2">
+                        <span class="font-semibold text-color" style="width: 100px;">Tarih Aralığı</span>
+                        <span class="text-color-secondary">: {{selectedTravel.dateRange}}</span>
+                    </div>
+                    <div class="flex align-items-center mb-2">
+                        <span class="font-semibold text-color" style="width: 100px;">Talep No</span>
+                        <span class="text-color-secondary">: {{selectedTravel.reqNo}}</span>
+                    </div>
+                    <div class="flex align-items-start">
+                        <span class="font-semibold text-color" style="width: 100px;">Açıklama</span>
+                        <span class="text-color-secondary" style="flex: 1">: {{selectedTravel.description}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 border-top-1 surface-border border-round-bottom flex justify-content-between mt-auto">
+                <button pButton pRipple label="İptal" class="p-button-outlined p-button-secondary w-5"
+                    (click)="displayTravelDialog = false"></button>
+                <button pButton pRipple label="İlişkilendir" class="p-button-primary w-6" icon="pi pi-link"
+                    (click)="associateTravel()"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4">
+        <div class="surface-card p-4 shadow-2 border-round flex flex-column h-full" style="height: 550px;">
+            <h3 class="m-0 mb-4 font-bold text-color">Seçili Masraflar ({{selectedRows.length}})</h3>
+
+            <div class="flex-1 overflow-auto pr-2">
+                <div *ngFor="let row of selectedExpenses | slice:0:3"
+                    class="border-round border-1 surface-border p-3 mb-3 surface-ground flex justify-content-between align-items-center">
+                    <div class="flex align-items-center mr-2 overflow-hidden">
+                        <span class="text-color-secondary mr-2 flex-shrink-0">•</span>
+                        <span
+                            class="font-medium text-color line-height-2 white-space-nowrap overflow-hidden text-overflow-ellipsis">{{row.documentNo
+                            || row.id}} - {{row.expenseDescription}}</span>
+                    </div>
+                    <span class="font-bold text-color white-space-nowrap flex-shrink-0">{{row.fiyat | number:'1.2-2'}}
+                        TL</span>
+                </div>
+                <div *ngIf="selectedRows.length === 0" class="text-color-secondary text-center mt-4">
+                    Henüz masraf seçilmedi.
+                </div>
+
+                <div *ngIf="selectedRows.length > 3" class="mt-3 text-center">
+                    <button pButton pRipple type="button" label="+ {{selectedRows.length - 3}} Daha Fazla Göster"
+                        class="p-button-outlined p-button-sm p-button-secondary w-full"
+                        (click)="displaySelectedExpensesDialog = true"></button>
+                </div>
+            </div>
+
+            <div class="mt-auto pt-3 border-top-1 surface-border">
+                <div class="flex justify-content-between align-items-center">
+                    <span class="font-bold text-color text-lg">Toplam Tutar</span>
+                    <span class="font-bold text-color text-xl">{{selectedTotalAmount | number:'1.2-2'}} TL</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<p-dialog header="Seçili Masraflar Detayı" [(visible)]="displaySelectedExpensesDialog" [modal]="true"
+    [style]="{width: selectedRows.length >= 9 ? '1000px' : '700px'}" [draggable]="false" [resizable]="false">
+    <div class="grid mt-2">
+        <div *ngFor="let row of selectedExpenses" [ngClass]="selectedRows.length >= 9 ? 'col-4' : 'col-6'">
+            <div
+                class="surface-card p-3 shadow-1 border-round border-1 surface-border h-full flex flex-column justify-content-center">
+                <div class="flex justify-content-between align-items-center">
+                    <div class="flex align-items-center mr-2 overflow-hidden">
+                        <span class="text-color-secondary mr-2 flex-shrink-0">•</span>
+                        <span
+                            class="font-medium text-color line-height-2 white-space-nowrap overflow-hidden text-overflow-ellipsis">{{row.documentNo
+                            || row.id}} - {{row.expenseDescription}}</span>
+                    </div>
+                    <span class="font-bold text-color white-space-nowrap flex-shrink-0">{{row.fiyat | number:'1.2-2'}}
+                        TL</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end align-items-center w-full pt-3 mt-3 border-top-1 surface-border">
+            <span class="font-bold text-color-secondary text-lg mr-4">Toplam Tutar:</span>
+            <span class="font-bold text-color text-xl">{{selectedTotalAmount | number:'1.2-2'}} TL</span>
+        </div>
+    </ng-template>
+</p-dialog>
 
 <p-dialog *ngIf="difference==true" header="Bütçe Kuralı" [modal]="true" [(visible)]="difference"
     [style]="{ width: '65rem',height:'25rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
