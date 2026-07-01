@@ -473,10 +473,19 @@ export class ReportComponent implements OnInit {
       }
       if (this.selectedPeriod.id != null) {
         const periodItem = this.periodListAll.find((p: any) => p.id == this.selectedPeriod.id);
-        const value = periodItem?.value;
+        let value = periodItem?.value;
+        if (!value && periodItem?.displayName) {
+          const monthMap: any = { 'Ocak': '01', 'Şubat': '02', 'Mart': '03', 'Nisan': '04', 'Mayıs': '05', 'Haziran': '06', 'Temmuz': '07', 'Ağustos': '08', 'Eylül': '09', 'Ekim': '10', 'Kasım': '11', 'Aralık': '12' };
+          const mStr = monthMap[periodItem.displayName];
+          if (mStr) value = `${new Date().getFullYear()}-${mStr}-01`;
+        }
+
         if (value) {
-          const [y, m, d] = value.split('-').map(Number);
-          date = new Date(Date.UTC(y, m - 1, d))
+          const parts = value.split('-');
+          const y = Number(parts[0]);
+          const m = Number(parts[1]);
+          const d = parts.length > 2 ? Number(parts[2]) : 1;
+          date = new Date(y, m - 1, d);
           this.router.navigate(['app/form-app/dynamic-form', formDetail.reportedLineFormId], {
             state: { reportedDate: date }
           });
@@ -499,15 +508,31 @@ export class ReportComponent implements OnInit {
       let date = null;
       if (this.selectedPeriod && this.selectedPeriod.id != null) {
         const periodItem = this.periodListAll.find((p: any) => p.id == this.selectedPeriod.id);
-        const value = periodItem?.value;
+        let value = periodItem?.value;
+        if (!value && periodItem?.displayName) {
+          const monthMap: any = { 'Ocak': '01', 'Şubat': '02', 'Mart': '03', 'Nisan': '04', 'Mayıs': '05', 'Haziran': '06', 'Temmuz': '07', 'Ağustos': '08', 'Eylül': '09', 'Ekim': '10', 'Kasım': '11', 'Aralık': '12' };
+          const mStr = monthMap[periodItem.displayName];
+          if (mStr) value = `${new Date().getFullYear()}-${mStr}-01`;
+        }
+
         if (value) {
-          const [y, m, d] = value.split('-').map(Number);
-          date = new Date(Date.UTC(y, m - 1, d)).toISOString();
+          const parts = value.split('-');
+          const y = Number(parts[0]);
+          const m = Number(parts[1]);
+          const d = parts.length > 2 ? Number(parts[2]) : 1;
+          date = `${y}-${m.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
         }
       }
 
       this.formService.getReportByFormId(formDetail.reportedLineFormId, date).subscribe((res: any) => {
         if (res.code != "99") {
+          if (res.response.length == 0) {
+            return this.messageService.add({
+              severity: 'warn',
+              summary: 'Hata',
+              detail: "Seçtiğiniz kriterlere uygun rapor bulunamadı."
+            });
+          }
           const addedColumns = new Set<string>();
           const tempColumns: any[] = [];
           const tempData: any[] = [];
@@ -551,24 +576,78 @@ export class ReportComponent implements OnInit {
     }
   }
 
-  travelAssignment() { 
+  travelAssignment() {
     if (this.selectedRows && this.selectedRows.length > 0) {
-      this.selectedTravel = this.travelList[0];
+      this.formService.getFormListByDfFormIdAndUserId(10004, this.user.id).subscribe((res: any) => {
+        if (res.code != "99") {
+          this.travelList = res.response.map((item: any) => {
+            let formattedDate = "";
+            if (item.createdDate) {
+              const dateObj = new Date(item.createdDate);
+              formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
+            }
+
+            return {
+              label: `Talep No: ${item.id} - Tarih: ${formattedDate}`,
+              value: item.id,
+              dateRange: formattedDate,
+              reqNo: item.id.toString(),
+              description: item.description || 'Seyahat Formu'
+            };
+          });
+
+          this.selectedTravel = null;
+        }
+      });
       this.displayTravelDialog = true;
     } else {
-      this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Lütfen en az bir masraf fişi seçiniz.' });
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Uyarı',
+        detail: 'Lütfen en az bir masraf fişi seçiniz.'
+      });
     }
   }
 
   associateTravel() {
     if (!this.selectedTravel) {
-      this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Lütfen ilişkilendirmek için bir seyahat seçin.' });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Hata',
+        detail: 'Lütfen ilişkilendirmek için bir seyahat seçin.'
+      });
       return;
     }
-    
-    // Simulate assignment
-    this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: `${this.selectedRows.length} adet masraf, ${this.selectedTravel.label} ile ilişkilendirildi.` });
-    this.displayTravelDialog = false;
-    this.selectedRows = [];
+
+    const model = this.selectedRows.map(row => {
+      const rowId = typeof row === 'object' ? row.id : row;
+      return {
+        expenseReceiptId: rowId,
+        trFormId: this.selectedTravel.value
+      };
+    });
+
+    this.formService.createTrFormLink(model).subscribe({
+      next: (res: any) => {
+        if (res.code === "200") {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Başarılı',
+            detail: `${this.selectedRows.length} adet masraf, 
+              ${this.selectedTravel.label} ile ilişkilendirildi.`
+          });
+          this.displayTravelDialog = false;
+          this.selectedRows = [];
+        }
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Hata',
+          detail: `${this.selectedRows.length} adet masraf, 
+              ${this.selectedTravel.label} ile ilişkilendirilemedi.`
+        });
+      }
+    });
   }
 }

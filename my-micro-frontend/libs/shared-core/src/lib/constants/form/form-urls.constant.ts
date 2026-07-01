@@ -141,3 +141,5 @@ export const CREATE_ORG_RELATION_ENTITY = `${BASE_URL}/TrForm/CreateOrgEntity`;
 export const DELETE_ORG_RELATION_ENTITY = `${BASE_URL}/TrForm/DeleteOrgEntity`;
 
 export const GET_PEOPLE_LIST_BY_ORGANIZATION_ID = `${BASE_URL}/TrForm/getPeopleListByOrgeh`;
+
+export const CREATE_TR_FORM_LINK = `${BASE_URL}/TrForm/CreateTrFormLink`;
