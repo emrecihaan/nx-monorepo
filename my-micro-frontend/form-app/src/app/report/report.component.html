@@ -42,7 +42,7 @@
     [height]="'auto'"></app-datagrid-for-format>
 
 <div class="grid mt-4" *ngIf="data && data.length > 0">
-    <div class="col-4">
+    <div class="col-6">
         <div class="surface-card p-3 shadow-2 border-round h-full" style="height: 550px;">
             <div class="flex justify-content-between align-items-center mb-3">
                 <h3 class="m-0 font-bold text-color">Seyahatlerim</h3>
@@ -66,56 +66,7 @@
         </div>
     </div>
 
-    <div class="col-4">
-        <div *ngIf="displayTravelDialog" class="surface-card shadow-6 border-round p-0 flex flex-column"
-            style="height: 550px; transform: translateY(-30px); position: relative; z-index: 100; overflow: hidden;">
-            <div class="flex justify-content-between align-items-center p-3 border-bottom-1 surface-border">
-                <h3 class="m-0 font-bold text-color" style="font-size: 1.1rem;">Seyahate İlişkilendir</h3>
-                <button pButton pRipple icon="pi pi-times"
-                    class="p-button-rounded p-button-text p-button-plain w-2rem h-2rem"
-                    (click)="displayTravelDialog = false"></button>
-            </div>
-
-            <div class="p-4 flex-1">
-                <div class="travel-info-box mb-3">
-                    <i class="pi pi-info-circle mr-2" style="font-size: 1.2rem;"></i>
-                    <span>{{selectedRows.length}} adet masraf seçtiniz. Lütfen ilişkilendirmek istediğiniz seyahati
-                        seçin.</span>
-                </div>
-
-                <div class="field mb-3">
-                    <label class="block font-medium mb-2 text-color">Seyahat <span class="text-red-500">*</span></label>
-                    <p-select [options]="travelList" [(ngModel)]="selectedTravel" optionLabel="label"
-                        placeholder="Seyahat Seçin" style="width: 100%;" appendTo="body"></p-select>
-                </div>
-
-                <div class="travel-detail-box mb-2" *ngIf="selectedTravel">
-                    <h4 class="mb-3 mt-0 font-bold text-color">Seyahat Bilgileri</h4>
-                    <div class="flex align-items-center mb-2">
-                        <span class="font-semibold text-color" style="width: 100px;">Tarih Aralığı</span>
-                        <span class="text-color-secondary">: {{selectedTravel.dateRange}}</span>
-                    </div>
-                    <div class="flex align-items-center mb-2">
-                        <span class="font-semibold text-color" style="width: 100px;">Talep No</span>
-                        <span class="text-color-secondary">: {{selectedTravel.reqNo}}</span>
-                    </div>
-                    <div class="flex align-items-start">
-                        <span class="font-semibold text-color" style="width: 100px;">Açıklama</span>
-                        <span class="text-color-secondary" style="flex: 1">: {{selectedTravel.description}}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-3 border-top-1 surface-border border-round-bottom flex justify-content-between mt-auto">
-                <button pButton pRipple label="İptal" class="p-button-outlined p-button-secondary w-5"
-                    (click)="displayTravelDialog = false"></button>
-                <button pButton pRipple label="İlişkilendir" class="p-button-primary w-6" icon="pi pi-link"
-                    (click)="associateTravel()"></button>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-4">
+    <div class="col-6">
         <div class="surface-card p-4 shadow-2 border-round flex flex-column h-full" style="height: 550px;">
             <h3 class="m-0 mb-4 font-bold text-color">Seçili Masraflar ({{selectedRows.length}})</h3>
 
@@ -151,6 +102,41 @@
         </div>
     </div>
 </div>
+
+<p-dialog header="Seyahate İlişkilendir" [(visible)]="displayTravelDialog" [modal]="true" [style]="{width: '500px'}" [draggable]="false" [resizable]="false">
+    <div class="p-2">
+        <div class="travel-info-box mb-3">
+            <i class="pi pi-info-circle mr-2" style="font-size: 1.2rem;"></i>
+            <span>{{selectedRows.length}} adet masraf seçtiniz. Lütfen ilişkilendirmek istediğiniz seyahati seçin.</span>
+        </div>
+
+        <div class="field mb-3">
+            <label class="block font-medium mb-2 text-color">Seyahat <span class="text-red-500">*</span></label>
+            <p-select [options]="travelList" [(ngModel)]="selectedTravel" optionLabel="label"
+                placeholder="Seyahat Seçin" style="width: 100%;" appendTo="body"></p-select>
+        </div>
+
+        <div class="travel-detail-box mb-2" *ngIf="selectedTravel">
+            <h4 class="mb-3 mt-0 font-bold text-color">Seyahat Bilgileri</h4>
+            <div class="flex align-items-center mb-2">
+                <span class="font-semibold text-color" style="width: 100px;">Tarih Aralığı</span>
+                <span class="text-color-secondary">: {{selectedTravel.dateRange}}</span>
+            </div>
+            <div class="flex align-items-center mb-2">
+                <span class="font-semibold text-color" style="width: 100px;">Talep No</span>
+                <span class="text-color-secondary">: {{selectedTravel.reqNo}}</span>
+            </div>
+            <div class="flex align-items-start">
+                <span class="font-semibold text-color" style="width: 100px;">Açıklama</span>
+                <span class="text-color-secondary" style="flex: 1">: {{selectedTravel.description}}</span>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="İptal" class="p-button-outlined p-button-secondary" (click)="displayTravelDialog = false"></button>
+        <button pButton pRipple label="İlişkilendir" class="p-button-primary" icon="pi pi-link" (click)="associateTravel()"></button>
+    </ng-template>
+</p-dialog>
 
 
 
