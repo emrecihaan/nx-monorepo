@@ -50,11 +50,7 @@ export class ReportComponent implements OnInit {
 
   displayTravelDialog: boolean = false;
   displaySelectedExpensesDialog: boolean = false;
-  travelList: any[] = [
-    { label: 'Ankara Ziyareti', value: 1, dateRange: '10 May 2026 - 12 May 2026', reqNo: 'TRV-2026-00124', description: 'Ankara\'daki müşteri ziyareti ve toplantı' },
-    { label: 'İstanbul Eğitimi', value: 2, dateRange: '15 Jun 2026 - 18 Jun 2026', reqNo: 'TRV-2026-00125', description: 'Genel müdürlükte teknik eğitim' },
-    { label: 'İzmir Fuarı', value: 3, dateRange: '20 Sep 2026 - 25 Sep 2026', reqNo: 'TRV-2026-00126', description: 'Uluslararası ticaret fuarı katılımı' }
-  ];
+  travelList: any[] = [];
   selectedTravel: any = null;
 
   get selectedExpenses(): any[] {
@@ -342,6 +338,31 @@ export class ReportComponent implements OnInit {
 
   setSelectedRows(selected: any[]) {
     this.selectedRows = selected;
+    if (this.selectedRows && this.selectedRows.length > 0) {
+      if (this.user && this.user.id) {
+        this.formService.getFormListByDfFormIdAndUserId(10004, this.user.id).subscribe((res: any) => {
+          if (res.code != "99") {
+            this.travelList = res.response.map((item: any) => {
+              let formattedDate = "";
+              if (item.createdDate) {
+                const dateObj = new Date(item.createdDate);
+                formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
+              }
+
+              return {
+                label: `Talep No: ${item.id} - Tarih: ${formattedDate}`,
+                value: item.id,
+                dateRange: formattedDate,
+                reqNo: item.id.toString(),
+                description: item.description || 'Seyahat Formu'
+              };
+            });
+          }
+        });
+      }
+    } else {
+      this.travelList = [];
+    }
   }
 
   getBudgetRules() {
@@ -578,27 +599,7 @@ export class ReportComponent implements OnInit {
 
   travelAssignment() {
     if (this.selectedRows && this.selectedRows.length > 0) {
-      this.formService.getFormListByDfFormIdAndUserId(10004, this.user.id).subscribe((res: any) => {
-        if (res.code != "99") {
-          this.travelList = res.response.map((item: any) => {
-            let formattedDate = "";
-            if (item.createdDate) {
-              const dateObj = new Date(item.createdDate);
-              formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
-            }
-
-            return {
-              label: `Talep No: ${item.id} - Tarih: ${formattedDate}`,
-              value: item.id,
-              dateRange: formattedDate,
-              reqNo: item.id.toString(),
-              description: item.description || 'Seyahat Formu'
-            };
-          });
-
-          this.selectedTravel = null;
-        }
-      });
+      this.selectedTravel = null;
       this.displayTravelDialog = true;
     } else {
       this.messageService.add({
@@ -622,6 +623,7 @@ export class ReportComponent implements OnInit {
     const model = this.selectedRows.map(row => {
       const rowId = typeof row === 'object' ? row.id : row;
       return {
+        type: 1,
         expenseReceiptId: rowId,
         trFormId: this.selectedTravel.value
       };
@@ -638,6 +640,12 @@ export class ReportComponent implements OnInit {
           });
           this.displayTravelDialog = false;
           this.selectedRows = [];
+        } else if (res.code === "400") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Uyarı',
+            detail: res.message || "İlişkilendirme işlemi sırasında bir uyarı oluştu."
+          });
         }
       },
       error: (err) => {
