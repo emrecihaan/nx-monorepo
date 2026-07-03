@@ -1,36 +1,37 @@
 
 <div
     class="surface-card p-3 shadow-1 border-round mb-4 flex flex-column lg:flex-row justify-content-between align-items-center gap-3">
-    <div class="flex align-items-center gap-2 flex-wrap">
-        <div class="flex align-items-center surface-ground border-round p-1 border-1 surface-border">
-            <div class="flex align-items-center text-color-secondary font-medium px-2 white-space-nowrap">
+    <div class="flex flex-column md:flex-row align-items-center gap-2 w-full lg:w-auto">
+        <div class="flex flex-column md:flex-row align-items-center surface-ground border-round p-1 border-1 surface-border w-full">
+            <div class="flex align-items-center text-color-secondary font-medium px-2 py-2 md:py-0 white-space-nowrap">
                 <i class="pi pi-filter mr-2"></i>Filtreler
             </div>
             <p-select [options]="formList" optionLabel="name" [(ngModel)]="selectedForm" [filter]="true" filterBy="name"
-                (onChange)="changeSelectedForm($event)" placeholder="Form Seçin" [style]="{ width: '80rem' }"
-                class="mr-1"></p-select>
+                (onChange)="changeSelectedForm($event)" placeholder="Form Seçin" 
+                class="w-full md:w-20rem mr-1 mb-2 md:mb-0"></p-select>
             <p-select [options]="periodList" optionLabel="name" [(ngModel)]="selectedPeriod" [filter]="true"
-                filterBy="name" placeholder="Dönem" [style]="{ width: '20rem' }" class="mr-1"></p-select>
+                filterBy="name" placeholder="Dönem" class="w-full md:w-15rem mr-1 mb-2 md:mb-0"></p-select>
             <p-select [options]="currencyList" optionLabel="name" [(ngModel)]="selectedCurrency" [filter]="true"
-                filterBy="name" placeholder="Birim" [style]="{ width: '15rem' }" class="mr-1"></p-select>
-            <button pButton pRipple label="Ara" icon="pi pi-search" class="p-button-primary px-5 font-bold"
-                style="width: 12rem;" (click)="searchReports()"></button>
+                filterBy="name" placeholder="Birim" class="w-full md:w-10rem mr-1 mb-2 md:mb-0"></p-select>
+            <button pButton pRipple label="Ara" icon="pi pi-search" class="p-button-primary font-bold w-full md:w-auto px-5"
+                style="min-width: 8rem;" (click)="searchReports()"></button>
         </div>
     </div>
 
-    <div class="flex align-items-center gap-2 flex-wrap">
-        <button pButton pRipple label="Fiş Oluştur" icon="pi pi-folder-plus" class="p-button-success"
+    <div class="flex flex-column md:flex-row align-items-stretch md:align-items-center gap-2 flex-wrap w-full lg:w-auto mt-3 lg:mt-0">
+        <button pButton pRipple label="Fiş Oluştur" icon="pi pi-folder-plus" class="p-button-success w-full md:w-auto"
             (click)="createBill()"></button>
-        <button pButton pRipple label="Güncelle" icon="pi pi-sync" class="p-button-info"
+        <button pButton pRipple label="Güncelle" icon="pi pi-sync" class="p-button-info w-full md:w-auto"
             (click)="updateField()"></button>
-        <button pButton pRipple label="Sil" icon="pi pi-trash" class="p-button-danger" (click)="deleteField()"></button>
-        <div class="border-left-1 surface-border h-2rem mx-1 hidden lg:block"></div>
-        <button pButton pRipple label="Rapor Oluştur" icon="pi pi-file-export" class="p-button-secondary"
+        <button pButton pRipple label="Sil" icon="pi pi-trash" class="p-button-danger w-full md:w-auto" (click)="deleteField()"></button>
+        <div class="border-left-1 surface-border h-2rem mx-1 hidden md:block"></div>
+        <button pButton pRipple label="Rapor Oluştur" icon="pi pi-file-export" class="p-button-secondary w-full md:w-auto"
             (click)="createReport()"></button>
         <button pButton pRipple
             [label]="selectedRows.length > 0 ? 'Seyahat Atama (' + selectedRows.length + ')' : 'Seyahat Atama'"
             icon="pi pi-car"
             style="background-color: #8b5cf6 !important; border-color: #8b5cf6 !important; color: white !important;"
+            class="w-full md:w-auto"
             (click)="travelAssignment()"></button>
     </div>
 </div>
@@ -39,10 +40,17 @@
 <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
     [selectedRows]="selectedRows" [keyExpr]="'id'" (setSelectedData)="setSelectedRow($event)"
     (setSelectedRows)="setSelectedRows($event)" [selectionMode]="'multiple'" #gridRef [columns]="column" [pageSize]="5"
-    [height]="'auto'"></app-datagrid-for-format>
+    [height]="'auto'"
+    [customButton]="true"
+    customButtonName="Bağlantıyı Kaldır"
+    customButtonIcon="close"
+    customButtonClass="text-red-500"
+    (customButtonReturn)="removeConnection($event)"
+    [customButtonVisible]="isRemoveConnectionVisible"
+    ></app-datagrid-for-format>
 
 <div class="grid mt-4" *ngIf="data && data.length > 0">
-    <div class="col-6">
+    <div class="col-12 lg:col-6 mb-3 lg:mb-0">
         <div class="surface-card p-3 shadow-2 border-round h-full" style="height: 550px;">
             <div class="flex justify-content-between align-items-center mb-3">
                 <h3 class="m-0 font-bold text-color">Seyahatlerim</h3>
@@ -66,7 +74,7 @@
         </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-12 lg:col-6">
         <div class="surface-card p-4 shadow-2 border-round flex flex-column h-full" style="height: 550px;">
             <h3 class="m-0 mb-4 font-bold text-color">Seçili Masraflar ({{selectedRows.length}})</h3>
 
@@ -196,5 +204,7 @@
     </div>
 
 </p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 
 <p-toast></p-toast>

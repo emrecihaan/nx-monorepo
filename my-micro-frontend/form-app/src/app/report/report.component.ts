@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormService, GeneralSystemService, GridTranslateService } from '@my-micro-frontend/shared-core';
 import { DatagridForFormatComponent } from '@my-micro-frontend/shared-ui';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
@@ -13,6 +13,7 @@ import { ToastModule } from 'primeng/toast';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { AccordionModule } from 'primeng/accordion';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 @Component({
@@ -30,13 +31,15 @@ import { AccordionModule } from 'primeng/accordion';
     FloatLabelModule,
     InputTextModule,
     DatagridForFormatComponent,
-    AccordionModule
+    AccordionModule,
+    ConfirmDialogModule
   ],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit {
+  @ViewChild('gridRef') gridRef!: DatagridForFormatComponent;
   data: any[] = [];
   column: any[] = [];
   selectedRow: any = null;
@@ -47,7 +50,6 @@ export class ReportComponent implements OnInit {
     label: "1. Dönem"
   }]
   selectedIdsJson: any;
-
   displayTravelDialog: boolean = false;
   displaySelectedExpensesDialog: boolean = false;
   travelList: any[] = [];
@@ -69,16 +71,12 @@ export class ReportComponent implements OnInit {
   }
   amountRule = 0;
   difference = false;
-
   formList: any[] = [];
   selectedForm: any = null;
-
   parameterList: any[] = [];
   selectedParameter: any = null;
-
   periodList: any[] = [];
   selectedPeriod: any = null;
-
   currencyList: any[] = [];
   selectedCurrency: any = null;
   user: any = null;
@@ -124,7 +122,6 @@ export class ReportComponent implements OnInit {
     const statusId = Number(options.value);
     let text = '';
     let badgeClass = '';
-
     switch (statusId) {
       case 1:
         text = 'Düzeltme Bekleyen';
@@ -147,7 +144,6 @@ export class ReportComponent implements OnInit {
         badgeClass = 'status-default';
         break;
     }
-
     const div = document.createElement('div');
     div.className = `status-badge ${badgeClass}`;
     div.innerText = text;
@@ -158,7 +154,6 @@ export class ReportComponent implements OnInit {
     const isActive = options.value;
     const text = isActive ? 'Aktif' : 'Pasif';
     const badgeClass = isActive ? 'status-aktif' : 'status-pasif';
-
     const div = document.createElement('div');
     div.className = `status-badge ${badgeClass}`;
     div.innerText = text;
@@ -173,7 +168,8 @@ export class ReportComponent implements OnInit {
     private translateService: TranslateService,
     public gridTranslate: GridTranslateService,
     private cdr: ChangeDetectorRef,
-    public generalService: GeneralSystemService) {
+    public generalService: GeneralSystemService,
+    private confirmationService: ConfirmationService) {
     this.getUser();
 
     this.customizeGrid = (columns: any[]) => {
@@ -186,7 +182,6 @@ export class ReportComponent implements OnInit {
         'dfFormStatusId',
         'isActive'
       ];
-
       columns.forEach(col => {
         const index = orderedColumns.indexOf(col.dataField);
         if (index > -1) {
@@ -220,7 +215,6 @@ export class ReportComponent implements OnInit {
     };
   }
   ngOnInit(): void {
-
     setTimeout(() => {
       const lang = localStorage.getItem('languageKey');
       if (lang) {
@@ -233,14 +227,11 @@ export class ReportComponent implements OnInit {
       today.getFullYear() + '-' +
       (today.getMonth() + 1).toString().padStart(2, '0') + '-' +
       today.getDate().toString().padStart(2, '0');
-
-
     this.formService.getReportByFormId(1, todayStr).subscribe((res) => {
       if (res.code != "99") {
         const addedColumns = new Set<string>();
         const tempColumns: any[] = [];
         const tempData: any[] = [];
-
         res.response.forEach((field: any, index: number) => {
           const parsed = JSON.parse(field.formValues);
           const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
@@ -248,7 +239,6 @@ export class ReportComponent implements OnInit {
           formValues.dfFormStatusId = field.dfFormStatusId;
           formValues.isActive = field.isActive !== undefined ? field.isActive : (field.dfForm ? field.dfForm.isActive : null);
           formValues.fiyat = formValues.fiyat || field.grossAmount || field.totalAmount;
-
           Object.keys(formValues).forEach(key => {
             if (!addedColumns.has(key)) {
               tempColumns.push({
@@ -266,23 +256,19 @@ export class ReportComponent implements OnInit {
         this.cdr.detectChanges();
       }
     })
-
     this.getFormList();
   }
 
   createReport() {
-    debugger;
     if (this.selectedRows == null || this.selectedRows.length == 0) {
       return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen en az bir kayıt seçiniz!" });
     }
-
     if (this.selectedForm == null) {
       return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen Form seçiniz!" });
     }
     const selectedDataObjects = this.selectedRows.map((key: any) =>
       typeof key === 'object' ? key : this.data.find(d => d.id === key)
     ).filter((d: any) => d !== undefined);
-
     this.selectedAmounts = selectedDataObjects.reduce((total: any, item: any) => total + (item.amount || 0), 0);
     this.getBudgetRules();
   }
@@ -293,7 +279,6 @@ export class ReportComponent implements OnInit {
     }
     const selectedKey = this.selectedRows[0];
     const selected = typeof selectedKey === 'object' ? selectedKey : this.data.find(d => d.id === selectedKey);
-
     if (selected) {
       this.router.navigate(['app/form-app/dynamic-form/0', selected.id]);
     }
@@ -303,15 +288,12 @@ export class ReportComponent implements OnInit {
     if (!this.selectedRows || this.selectedRows.length === 0) {
       return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen silmek için kayıt seçiniz!" });
     }
-
     const selectedKey = this.selectedRows[0];
     const selected = typeof selectedKey === 'object' ? selectedKey : this.data.find(d => d.id === selectedKey);
-
     if (selected) {
       const model = {
         Id: selected.id
       };
-
       this.formService.deleteTrForm(model).subscribe((res: any) => {
         if (res.code != "99") {
           this.messageService.add({
@@ -331,7 +313,6 @@ export class ReportComponent implements OnInit {
     }
   }
 
-
   setSelectedRow(selected: any) {
     this.selectedRow = selected;
   }
@@ -348,7 +329,6 @@ export class ReportComponent implements OnInit {
                 const dateObj = new Date(item.createdDate);
                 formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
               }
-
               return {
                 label: `Talep No: ${item.id} - Tarih: ${formattedDate}`,
                 value: item.id,
@@ -368,12 +348,9 @@ export class ReportComponent implements OnInit {
   getBudgetRules() {
     let difference = false;
     const formDetail = this.formListALL.find(f => f.id === this.selectedForm.id);
-
-    // Seçili anahtarlardan gerçek nesneleri bulalım
     const selectedDataObjects = this.selectedRows.map((key: any) =>
       typeof key === 'object' ? key : this.data.find(d => d.id === key)
     ).filter((d: any) => d !== undefined);
-
     if (formDetail && formDetail.isBudgetControl == true) {
       this.formService.getUserBudgetRule(this.user?.id || 1, this.selectedForm.id).subscribe((res: any) => {
         if (res.code != "99") {
@@ -383,11 +360,9 @@ export class ReportComponent implements OnInit {
             });
             return;
           }
-
           for (const element of res.response) {
             this.amountRule = element.limitAmount;
             this.getConsumptionAmount(this.selectedForm.id, element.startDate, element.endDate);
-
             if (this.selectedAmounts + this.oldAmounts > this.amountRule) {
               this.difference = true;
               difference = true;
@@ -557,7 +532,6 @@ export class ReportComponent implements OnInit {
           const addedColumns = new Set<string>();
           const tempColumns: any[] = [];
           const tempData: any[] = [];
-
           res.response.forEach((field: any) => {
             const parsed = JSON.parse(field.formValues);
             const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
@@ -565,13 +539,19 @@ export class ReportComponent implements OnInit {
             formValues.dfFormStatusId = field.dfFormStatusId;
             formValues.isActive = field.isActive !== undefined ? field.isActive : (field.dfForm ? field.dfForm.isActive : null);
             formValues.fiyat = formValues.fiyat || field.grossAmount || field.totalAmount;
-
+            let jId = field.journeyId !== undefined ? field.journeyId : (formValues.journeyId !== undefined ? formValues.journeyId : null);
+            formValues.journeyId = (jId === null || jId === '') ? 999999999 : jId;
             Object.keys(formValues).forEach(key => {
               if (!addedColumns.has(key)) {
-                tempColumns.push({
+                const columnDef: any = {
                   dataField: key,
-                  caption: key.charAt(0).toUpperCase() + key.slice(1)
-                });
+                  caption: key === 'journeyId' ? 'Seyahat No' : key.charAt(0).toUpperCase() + key.slice(1)
+                };
+                if (key === 'journeyId') {
+                  columnDef.groupIndex = 0;
+                }
+
+                tempColumns.push(columnDef);
                 addedColumns.add(key);
               }
             });
@@ -610,6 +590,56 @@ export class ReportComponent implements OnInit {
     }
   }
 
+  isRemoveConnectionVisible = (e: any) => {
+    return e.row.data.journeyId != null && e.row.data.journeyId != 999999999;
+  };
+
+  removeConnection(rowData: any) {
+    this.confirmationService.confirm({
+      message: 'Bağlantıyı silmek istediğinize emin misiniz?',
+      header: 'Onay',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Evet',
+      rejectLabel: 'Hayır',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        const model = {
+          expenseReceiptId: rowData.id || rowData.expenseReceiptId || rowData.Id || 0,
+          newTrFormId: 0,
+          type: 1
+        };
+        this.formService.updateOrRemoveTrFormLink(model).subscribe({
+          next: (res: any) => {
+            if (res.code === "200") {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Başarılı',
+                detail: 'Bağlantı başarıyla kaldırıldı.'
+              });
+              rowData.journeyId = 999999999;
+              if (this.gridRef && this.gridRef.dataGrid && this.gridRef.dataGrid.instance) {
+                this.gridRef.dataGrid.instance.refresh();
+              }
+            } else {
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Uyarı',
+                detail: res.message || "Bağlantı kaldırılamadı."
+              });
+            }
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Hata',
+              detail: 'İşlem sırasında bir hata oluştu.'
+            });
+          }
+        });
+      }
+    });
+  }
+
   associateTravel() {
     if (!this.selectedTravel) {
       this.messageService.add({
@@ -640,6 +670,7 @@ export class ReportComponent implements OnInit {
           });
           this.displayTravelDialog = false;
           this.selectedRows = [];
+          this.searchReports();
         } else if (res.code === "400") {
           this.messageService.add({
             severity: 'warn',
