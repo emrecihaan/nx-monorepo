@@ -46,6 +46,8 @@ export class DatagridForFormatComponent implements OnInit {
     @Input() customButtonName: any;
     @Input() customButtonFunction!: Function;
     @Input() customButtonIcon: any;
+    @Input() customButtonClass: string = '';
+    @Input() customButtonVisible: any;
     @Input() buttonList: any;
     @Input() customButtonName2: any;
     @Output() customButtonReturn = new EventEmitter<any>();
@@ -783,11 +785,26 @@ export class DatagridForFormatComponent implements OnInit {
         }
 
         if (e.rowType === 'group') {
-            if (e.value != null && typeof e.value === "string") {
-                const translatedValue = this.translateService.instant(e.value.trim());
-                e.cellElement.innerText = `${e.column.caption}: ${translatedValue}`;
-            }
+            if (e.column && e.column.dataField === 'journeyId') {
+                for (let i = 0; i < e.cellElement.childNodes.length; i++) {
+                    const node = e.cellElement.childNodes[i];
+                    if (node.nodeType === 3 && node.nodeValue) {
+                        node.nodeValue = node.nodeValue.replace('999999999', 'Diğer Masraf Fişleri');
+                    }
+                }
 
+                if (e.value === 999999999 || e.value === '999999999') {
+                    e.cellElement.style.color = '#d97706';
+                } else {
+                    e.cellElement.style.color = '#16a34a';
+                }
+                e.cellElement.style.fontWeight = 'bold';
+            } else {
+                if (e.value != null && typeof e.value === "string") {
+                    const translatedValue = this.translateService.instant(e.value.trim());
+                    e.cellElement.innerText = `${e.column.caption}: ${translatedValue}`;
+                }
+            }
         }
     }
 

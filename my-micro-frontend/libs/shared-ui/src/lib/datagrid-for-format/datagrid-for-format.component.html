@@ -54,7 +54,8 @@
 
         <dxi-column *ngIf="customButton == true" type="buttons">
             <dxi-button [icon]="customButtonIcon ? customButtonIcon : searchIcon" [text]="customButtonName"
-                [hint]="customButtonName" [onClick]="onClickCustomButton">
+                [hint]="customButtonName" [onClick]="onClickCustomButton" [visible]="customButtonVisible !== undefined ? customButtonVisible : true"
+                [cssClass]="customButtonClass">
             </dxi-button>
             <dxi-button *ngIf="customButtonName2" [icon]="customButtonIcon2 ? customButtonIcon2 : save"
                 [text]="customButtonName2" [hint]="customButtonName2" [onClick]="onClickCustomButton2">
@@ -72,7 +73,7 @@
         </dxi-column>
 
         <dxi-column [allowEditing]="rowUpdate" *ngFor="let colm of columns; let k = index" [dataField]="colm.dataField"
-            [caption]="colm.caption"
+            [caption]="colm.caption" [groupIndex]="colm.groupIndex"
             [format]="colm.format" [dataType]="dataTypeFunc(colm)" [width]="colm.width"
             [calculateFilterExpression]="calculateFilterExpression">
             <dxo-lookup *ngIf="colm.lookup" [dataSource]="colm.lookup.dataSource"
