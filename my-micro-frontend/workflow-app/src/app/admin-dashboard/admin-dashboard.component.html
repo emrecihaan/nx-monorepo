@@ -1,16 +1,16 @@
-<div class="dashboard-container">
-    <div class="dashboard-grid" style="margin-left: 20px;">
+<div class="dashboard-container px-3">
+    <div class="dashboard-grid">
         <div class="card stat-card" *ngFor="let item of subMenuList; let i = index;" [ngClass]="{
                 'stat-card-warning': i === 0,
                 'stat-card-danger': i === 1,
                 'stat-card-success': i === 2,
                 'selected-card': selectedCardId === item.id
             }" (click)="getFormList(item.id)" style="cursor: pointer;">
-            <div class="stat-content">
-                <div class="stat-icon">
+            <div class="stat-content flex align-items-center">
+                <div class="stat-icon flex-shrink-0">
                     <i [class]="item.icon"></i>
                 </div>
-                <div class="stat-details">
+                <div class="stat-details ml-3">
                     <span class="stat-value">{{ item.number || 0 }}</span>
                     <span class="stat-label">{{ item.name }}</span>
                 </div>
@@ -19,18 +19,18 @@
     </div>
 </div>
 
-<p-toolbar styleClass="mt-5">
-    <div class="my-2">
-        <button pButton pRipple label="{{'button.approve' | translate}}" icon="pi pi-plus" class="p-button-success mr-2"
+<p-toolbar styleClass="mt-5 mx-3">
+    <div class="flex flex-column md:flex-row gap-2 w-full">
+        <button pButton pRipple label="{{'button.approve' | translate}}" icon="pi pi-plus" class="p-button-success w-full md:w-auto"
             (click)="approve()"></button>
         <button *ngIf="selectedStatusId == 2" pButton pRipple label="{{'button.reject' | translate}}" icon="pi pi-trash"
-            class="p-button-danger mr-2" (click)="rejectDialog()"></button>
+            class="p-button-danger w-full md:w-auto" (click)="rejectDialog()"></button>
         <button pButton pRipple label="{{'button.detail' | translate}}" icon="pi pi-save"
-            class="p-button-info p-button mr-2" (click)="detail()"></button>
+            class="p-button-info w-full md:w-auto" (click)="detail()"></button>
     </div>
 </p-toolbar>
 
-<div style="margin-top: 20px;" *ngIf="data">
+<div class="mt-4 mx-3" *ngIf="data">
     <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
         (setSelectedData)="setSelectedRow($event)" (setSelectedRows)="setSelectedRows($event)"
         [selectionMode]="'multipleButOneColumn'" [columns]="column" [detailHeader]="detailHeader"
@@ -40,8 +40,8 @@
 <div class="custom-modal-backdrop" *ngIf="visibleRejectDialog">
     <div class="custom-modal">
         <span class="close-button" (click)="closeDialog()">×</span>
-        <p class="float-input"><b>{{'rejectReason' | translate}}</b></p>
-        <textarea id="float-input" rows="10" cols="30" pInputTextarea [autoResize]="true"
+        <p class="float-input mb-2 text-left"><b>{{'rejectReason' | translate}}</b></p>
+        <textarea id="float-input" rows="5" class="w-full" pInputTextarea [autoResize]="true"
             [(ngModel)]="value"></textarea>
         <div class="grid mt-5">
             <div class="col">

@@ -70,22 +70,27 @@ export class WorkflowFormComponent implements OnInit {
     {
       dataField: "id",
       caption: "id",
+      alignment: "left"
     },
     {
       dataField: "dfForm.description",
       caption: "dfForm.description",
+      alignment: "left"
     },
     {
       dataField: "userName",
       caption: "userName",
+      alignment: "left"
     },
     {
       dataField: "formApplyCycle",
       caption: "formApplyCycle",
+      alignment: "left"
     },
     {
       dataField: "statusName",
       caption: "statusName",
+      alignment: "left"
     }
   ];
   customizeGrid: any;

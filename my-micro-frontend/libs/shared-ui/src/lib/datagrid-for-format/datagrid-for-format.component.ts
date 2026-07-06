@@ -97,6 +97,7 @@ export class DatagridForFormatComponent implements OnInit {
     @Input() customButtonIconIndex: any;
     @Output() customButtonReturnIndex = new EventEmitter<any>();
     groupedCount = 0;
+    @Input() autoExpandAll: boolean = true;
     @Input() subscriber: boolean = false;
     @Input() dashboard: boolean = false;
     @Input() rowUpdate: boolean = false;
@@ -789,7 +790,9 @@ export class DatagridForFormatComponent implements OnInit {
                 for (let i = 0; i < e.cellElement.childNodes.length; i++) {
                     const node = e.cellElement.childNodes[i];
                     if (node.nodeType === 3 && node.nodeValue) {
-                        node.nodeValue = node.nodeValue.replace('999999999', 'Diğer Masraf Fişleri');
+                        if (e.value === 999999999 || e.value === '999999999') {
+                            node.nodeValue = 'Diğer Masraf Fişleri';
+                        }
                     }
                 }
 

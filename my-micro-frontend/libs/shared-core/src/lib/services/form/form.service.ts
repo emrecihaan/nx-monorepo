@@ -419,13 +419,7 @@ export class FormService {
   }
 
   updateOrRemoveTrFormLink(data: any) {
-    let queryParams = new HttpParams()
-      .append("expenseReceiptId", data.expenseReceiptId)
-      .append("type", data.type);
-    if (data.newTrFormId !== null && data.newTrFormId !== undefined) {
-      queryParams = queryParams.append("newTrFormId", data.newTrFormId);
-    }
-    return this.http.post(UPDATE_OR_REMOVE_TR_FORM_LINK, null, { params: queryParams });
+    return this.http.post(UPDATE_OR_REMOVE_TR_FORM_LINK, data);
   }
 
 }

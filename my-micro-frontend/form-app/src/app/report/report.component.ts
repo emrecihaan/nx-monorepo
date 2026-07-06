@@ -288,25 +288,38 @@ export class ReportComponent implements OnInit {
     if (!this.selectedRows || this.selectedRows.length === 0) {
       return this.messageService.add({ severity: 'warn', summary: 'Hata', detail: "Lütfen silmek için kayıt seçiniz!" });
     }
+    if (this.selectedRows.length > 1) {
+      return this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: "Lütfen silmek için sadece tek bir kayıt seçiniz!" });
+    }
     const selectedKey = this.selectedRows[0];
     const selected = typeof selectedKey === 'object' ? selectedKey : this.data.find(d => d.id === selectedKey);
     if (selected) {
-      const model = {
-        Id: selected.id
-      };
-      this.formService.deleteTrForm(model).subscribe((res: any) => {
-        if (res.code != "99") {
-          this.messageService.add({
-            severity: 'success',
-            summary: this.translateService.instant("success"),
-            detail: this.translateService.instant("success")
-          });
-          window.location.reload();
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: this.translateService.instant("error"),
-            detail: this.translateService.instant(res.errorCode?.toString() || "99")
+      this.confirmationService.confirm({
+        message: 'Seçili kaydı silmek istediğinize emin misiniz?',
+        header: 'Silme Onayı',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Evet',
+        rejectLabel: 'Hayır',
+        acceptButtonStyleClass: 'p-button-danger',
+        accept: () => {
+          const model = {
+            Id: selected.id
+          };
+          this.formService.deleteTrForm(model).subscribe((res: any) => {
+            if (res.code != "99") {
+              this.messageService.add({
+                severity: 'success',
+                summary: this.translateService.instant("success"),
+                detail: this.translateService.instant("Kayıt Başarıyla Silindi")
+              });
+              this.searchReports();
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: this.translateService.instant("error"),
+                detail: this.translateService.instant(res.errorCode?.toString() || "99")
+              });
+            }
           });
         }
       });
@@ -319,30 +332,6 @@ export class ReportComponent implements OnInit {
 
   setSelectedRows(selected: any[]) {
     this.selectedRows = selected;
-    if (this.selectedRows && this.selectedRows.length > 0) {
-      if (this.user && this.user.id) {
-        this.formService.getFormListByDfFormIdAndUserId(10004, this.user.id).subscribe((res: any) => {
-          if (res.code != "99") {
-            this.travelList = res.response.map((item: any) => {
-              let formattedDate = "";
-              if (item.createdDate) {
-                const dateObj = new Date(item.createdDate);
-                formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
-              }
-              return {
-                label: `Talep No: ${item.id} - Tarih: ${formattedDate}`,
-                value: item.id,
-                dateRange: formattedDate,
-                reqNo: item.id.toString(),
-                description: item.description || 'Seyahat Formu'
-              };
-            });
-          }
-        });
-      }
-    } else {
-      this.travelList = [];
-    }
   }
 
   getBudgetRules() {
@@ -579,8 +568,31 @@ export class ReportComponent implements OnInit {
 
   travelAssignment() {
     if (this.selectedRows && this.selectedRows.length > 0) {
-      this.selectedTravel = null;
-      this.displayTravelDialog = true;
+      if (this.user && this.user.id) {
+        this.formService.getFormListByDfFormIdAndUserId(10004, this.user.id).subscribe((res: any) => {
+          if (res.code != "99") {
+            this.travelList = res.response.map((item: any) => {
+              let formattedDate = "";
+              if (item.createdDate) {
+                const dateObj = new Date(item.createdDate);
+                formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
+              }
+              return {
+                label: `Talep No: ${item.id} - Tarih: ${formattedDate}`,
+                value: item.id,
+                dateRange: formattedDate,
+                reqNo: item.id.toString(),
+                description: item.description || 'Seyahat Formu'
+              };
+            });
+            this.selectedTravel = null;
+            this.displayTravelDialog = true;
+          }
+        });
+      } else {
+        this.selectedTravel = null;
+        this.displayTravelDialog = true;
+      }
     } else {
       this.messageService.add({
         severity: 'warn',
@@ -604,7 +616,7 @@ export class ReportComponent implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
         const model = {
-          expenseReceiptId: rowData.id || rowData.expenseReceiptId || rowData.Id || 0,
+          expenseReceiptIds: [rowData.id || rowData.expenseReceiptId || rowData.Id || 0],
           newTrFormId: 0,
           type: 1
         };
@@ -650,16 +662,17 @@ export class ReportComponent implements OnInit {
       return;
     }
 
-    const model = this.selectedRows.map(row => {
-      const rowId = typeof row === 'object' ? row.id : row;
-      return {
-        type: 1,
-        expenseReceiptId: rowId,
-        trFormId: this.selectedTravel.value
-      };
+    const expenseReceiptIds = this.selectedRows.map(row => {
+      return typeof row === 'object' ? row.id : row;
     });
 
-    this.formService.createTrFormLink(model).subscribe({
+    const model = {
+      expenseReceiptIds: expenseReceiptIds,
+      newTrFormId: this.selectedTravel.value,
+      type: 1
+    };
+
+    this.formService.updateOrRemoveTrFormLink(model).subscribe({
       next: (res: any) => {
         if (res.code === "200") {
           this.messageService.add({
@@ -671,7 +684,7 @@ export class ReportComponent implements OnInit {
           this.displayTravelDialog = false;
           this.selectedRows = [];
           this.searchReports();
-        } else if (res.code === "400") {
+        } else {
           this.messageService.add({
             severity: 'warn',
             summary: 'Uyarı',
