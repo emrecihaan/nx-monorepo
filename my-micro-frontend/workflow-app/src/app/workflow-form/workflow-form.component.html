@@ -1,42 +1,26 @@
 <div class="workflow-form-container">
-  <p-accordion [value]="0">
-    <p-accordion-panel [value]="0">
-      <p-accordion-header></p-accordion-header>
-      <p-accordion-content>
-        <div class="flex gap-2 py-5 align-items-center">
-          <p-float-label>
-            <p-select [options]="formTypeList" optionLabel="name" [(ngModel)]="selectedFormType"
-              (onChange)="changeSelectedFormType($event)" showClear="true" [style]="{'width': '200px'}"
-              inputId="formTypeList"></p-select>
-            <label for="formTypeList">{{'workFlow.formTypeName' | translate }}</label>
-          </p-float-label>
-          <!-- <span class="p-float-label ml-1 mt-4">
-                  <p-calendar [(ngModel)]="startDate" dateFormat="dd.mm.yy" [showIcon]="true" [showButtonBar]="true"
-                      [showOnFocus]="false">
-                  </p-calendar>
-                  <label>{{'workFlow.startDate' | translate }}</label>
-              </span>
-              <span class="p-float-label ml-1 mt-4">
-                  <p-calendar [(ngModel)]="finishDate" dateFormat="dd.mm.yy" [showIcon]="true" [showButtonBar]="true"
-                      [showOnFocus]="false">
-                  </p-calendar>
-                  <label>{{'workFlow.finishDate' | translate }}</label>
-              </span> -->
-
-          <div>
-            <p-button label="{{'workFlow.search' | translate}}" (onClick)="getUser()"
-              [style]="{'width': '100px'}"></p-button>
-          </div>
+  <div class="surface-card p-3 shadow-1 border-round mb-4 flex flex-column lg:flex-row justify-content-between align-items-center gap-3">
+    <div class="flex flex-column md:flex-row align-items-center gap-2 w-full lg:w-auto">
+      <div class="flex flex-column md:flex-row align-items-center surface-ground border-round p-1 border-1 surface-border w-full">
+        <div class="flex align-items-center text-color-secondary font-medium px-2 py-2 md:py-0 white-space-nowrap">
+          <i class="pi pi-filter mr-2"></i>Filtreler
         </div>
-      </p-accordion-content>
-    </p-accordion-panel>
-  </p-accordion>
-  <p-toolbar class="mt-5">
-    <div class="my-2">
-      <button pButton pRipple label="{{'button.detail' | translate}}" icon="pi pi-save"
-        class="p-button-info p-button mr-2" (click)="detail()"></button>
+        
+        <p-select [options]="formTypeList" optionLabel="name" [(ngModel)]="selectedFormType"
+          (onChange)="changeSelectedFormType($event)" showClear="true" [placeholder]="'workFlow.formTypeName' | translate"
+          class="w-full md:w-20rem mr-1 mb-2 md:mb-0" inputId="formTypeList"
+          [filter]="true" filterBy="name"></p-select>
+
+        <button pButton pRipple label="{{'workFlow.search' | translate}}" icon="pi pi-search" class="p-button-primary font-bold w-full md:w-auto px-5"
+          style="min-width: 8rem;" (click)="getUser()"></button>
+      </div>
     </div>
-  </p-toolbar>
+
+    <div class="flex flex-column md:flex-row align-items-stretch md:align-items-center gap-2 flex-wrap w-full lg:w-auto mt-3 lg:mt-0">
+      <button pButton pRipple label="{{'button.detail' | translate}}" icon="pi pi-save"
+        class="p-button-info w-full md:w-auto" (click)="detail()"></button>
+    </div>
+  </div>
   <div class="mt-4">
     <p-panel>
       <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"

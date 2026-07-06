@@ -160,3 +160,7 @@
 .float-input {
     margin-top: 20px;
 }
+
+::ng-deep .dx-datagrid-headers .dx-header-row .dx-datagrid-text-content {
+    text-align: left !important;
+}

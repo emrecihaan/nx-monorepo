@@ -36,28 +36,34 @@ export class AdminDashboardComponent implements OnInit {
   column = [
     {
       dataField: "formId",
-      caption: "formId",
+      caption: "Form No",
+      alignment: "center"
     },
     {
       dataField: "description",
-      caption: "description",
-    },
-    {
-      dataField: "isProxy",
-      caption: "Is Proxy?",
-      dataType: "boolean"
-    },
-    {
-      dataField: "proxyOwnerName",
-      caption: "Proxy Owner",
+      caption: "Açıklama",
+      alignment: "center"
     },
     {
       dataField: "userName",
-      caption: "userName",
+      caption: "Talep Sahibi",
+      alignment: "center"
     },
     {
       dataField: "formApplyCycle",
-      caption: "formApplyCycle",
+      caption: "Onay Döngüsü",
+      alignment: "center"
+    },
+    {
+      dataField: "proxyOwnerName",
+      caption: "Vekalet Veren",
+      alignment: "center"
+    },
+    {
+      dataField: "isProxy",
+      caption: "Vekalet Mi?",
+      dataType: "boolean",
+      alignment: "center"
     }
   ];
   detailColumn = [
