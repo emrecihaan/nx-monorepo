@@ -113,7 +113,8 @@
                             <div *ngIf="field.type === 'Datagrid'">
                                 <app-datagrid-for-format [Data]="selectedRows" [columns]="field.dynamicColumns"
                                     [selectionMode]="field.selectionMode || 'single'"
-                                    [selectedData]="field.selectedData || null">
+                                    [selectedData]="field.selectedData || null"
+                                    [customizeOptions]="customizeDatagrid">
                                 </app-datagrid-for-format>
                             </div>
 

@@ -83,6 +83,7 @@ export class ReportComponent implements OnInit {
   formListALL: any[] = [];
   overAmount = 0;
   periodListAll: any;
+  isRestoringFilters = false;
 
   expenseTypeCellTemplate(container: any, options: any) {
     const value = options.value ? options.value.trim() : '';
@@ -210,6 +211,34 @@ export class ReportComponent implements OnInit {
           col.format = 'dd.MM.yyyy';
         }
 
+        if (col.dataField === 'title') {
+          col.width = 300;
+        }
+        if (col.dataField === 'expenseDescription') {
+          col.width = 500;
+        }
+        if (col.dataField === 'id') {
+          col.width = 80;
+        }
+        if (col.dataField === 'documentNo') {
+          col.width = 150;
+        }
+        if (col.dataField === 'date') {
+          col.width = 120;
+        }
+        if (col.dataField === 'department') {
+          col.width = 100;
+        }
+        if (col.dataField === 'expenseType') {
+          col.width = 140;
+        }
+        if (col.dataField === 'fiyat' || col.dataField === 'grossAmount' || col.dataField === 'totalAmount') {
+          col.width = 100;
+        }
+        if (col.dataField === 'dfFormStatusId' || col.dataField === 'isActive') {
+          col.width = 130;
+        }
+
         col.alignment = 'left';
       });
     };
@@ -227,35 +256,35 @@ export class ReportComponent implements OnInit {
       today.getFullYear() + '-' +
       (today.getMonth() + 1).toString().padStart(2, '0') + '-' +
       today.getDate().toString().padStart(2, '0');
-    this.formService.getReportByFormId(1, todayStr).subscribe((res) => {
-      if (res.code != "99") {
-        const addedColumns = new Set<string>();
-        const tempColumns: any[] = [];
-        const tempData: any[] = [];
-        res.response.forEach((field: any, index: number) => {
-          const parsed = JSON.parse(field.formValues);
-          const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
-          formValues.id = field.id || index;
-          formValues.dfFormStatusId = field.dfFormStatusId;
-          formValues.isActive = field.isActive !== undefined ? field.isActive : (field.dfForm ? field.dfForm.isActive : null);
-          formValues.fiyat = formValues.fiyat || field.grossAmount || field.totalAmount;
-          Object.keys(formValues).forEach(key => {
-            if (!addedColumns.has(key)) {
-              tempColumns.push({
-                dataField: key,
-                caption: key.charAt(0).toUpperCase() + key.slice(1)
-              });
-              addedColumns.add(key);
-            }
-          });
-          tempData.push(formValues);
-        });
-        this.gridTranslate.traslateColumns("reportColumns", tempColumns);
-        this.column = tempColumns;
-        this.data = tempData;
-        this.cdr.detectChanges();
-      }
-    })
+    // this.formService.getReportByFormId(1, todayStr).subscribe((res) => {
+    //   if (res.code != "99") {
+    //     const addedColumns = new Set<string>();
+    //     const tempColumns: any[] = [];
+    //     const tempData: any[] = [];
+    //     res.response.forEach((field: any, index: number) => {
+    //       const parsed = JSON.parse(field.formValues);
+    //       const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
+    //       formValues.id = field.id || index;
+    //       formValues.dfFormStatusId = field.dfFormStatusId;
+    //       formValues.isActive = field.isActive !== undefined ? field.isActive : (field.dfForm ? field.dfForm.isActive : null);
+    //       formValues.fiyat = formValues.fiyat || field.grossAmount || field.totalAmount;
+    //       Object.keys(formValues).forEach(key => {
+    //         if (!addedColumns.has(key)) {
+    //           tempColumns.push({
+    //             dataField: key,
+    //             caption: key.charAt(0).toUpperCase() + key.slice(1)
+    //           });
+    //           addedColumns.add(key);
+    //         }
+    //       });
+    //       tempData.push(formValues);
+    //     });
+    //     this.gridTranslate.traslateColumns("reportColumns", tempColumns);
+    //     this.column = tempColumns;
+    //     this.data = tempData;
+    //     this.cdr.detectChanges();
+    //   }
+    // })
     this.getFormList();
   }
 
@@ -400,6 +429,17 @@ export class ReportComponent implements OnInit {
             id: form.id
           })
         });
+
+        const savedFormStr = localStorage.getItem('report_selectedForm');
+        if (savedFormStr) {
+          const savedForm = JSON.parse(savedFormStr);
+          if (this.formList.find(f => f.id === savedForm.id)) {
+            this.selectedForm = savedForm;
+            this.isRestoringFilters = true;
+            this.getDFormParameterValueList(this.selectedForm.id, "PERIOD");
+            this.getDFormParameterValueList(this.selectedForm.id, "CURRENCY");
+          }
+        }
       }
     });
   }
@@ -414,7 +454,19 @@ export class ReportComponent implements OnInit {
               name: f.displayName,
               id: f.id
             })
-          })
+          });
+
+          if (this.isRestoringFilters) {
+            const savedPeriodStr = localStorage.getItem('report_selectedPeriod');
+            if (savedPeriodStr) {
+              const savedPeriod = JSON.parse(savedPeriodStr);
+              if (this.periodList.find(p => p.id === savedPeriod.id)) {
+                this.selectedPeriod = savedPeriod;
+              }
+            }
+            this.searchReports();
+            this.isRestoringFilters = false;
+          }
         }
       });
     }
@@ -427,7 +479,15 @@ export class ReportComponent implements OnInit {
               name: f.displayName,
               id: f.id
             })
-          })
+          });
+
+          const savedCurrencyStr = localStorage.getItem('report_selectedCurrency');
+          if (savedCurrencyStr) {
+            const savedCurrency = JSON.parse(savedCurrencyStr);
+            if (this.currencyList.find(c => c.id === savedCurrency.id)) {
+              this.selectedCurrency = savedCurrency;
+            }
+          }
         }
       });
     }
@@ -487,6 +547,12 @@ export class ReportComponent implements OnInit {
 
   searchReports() {
     if (this.selectedForm != null) {
+      localStorage.setItem('report_selectedForm', JSON.stringify(this.selectedForm));
+      if (this.selectedPeriod) localStorage.setItem('report_selectedPeriod', JSON.stringify(this.selectedPeriod));
+      else localStorage.removeItem('report_selectedPeriod');
+      if (this.selectedCurrency) localStorage.setItem('report_selectedCurrency', JSON.stringify(this.selectedCurrency));
+      else localStorage.removeItem('report_selectedCurrency');
+
       const formDetail = this.formListALL.find(f => f.id == this.selectedForm.id);
       this.data = [];
       this.column = [];

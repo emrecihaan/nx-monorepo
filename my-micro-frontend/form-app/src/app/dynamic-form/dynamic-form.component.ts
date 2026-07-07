@@ -88,6 +88,136 @@ export class DynamicFormComponent implements OnInit {
   isDark: boolean = false;
   private themeObserver!: MutationObserver;
 
+  expenseTypeCellTemplate(container: any, options: any) {
+    const value = options.value ? options.value.trim() : '';
+    let svgIcon = '';
+    let badgeClass = '';
+
+    switch (value) {
+      case 'Konaklama':
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg>`;
+        badgeClass = 'badge-konaklama';
+        break;
+      case 'Ulaşım':
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a2 2 0 0 0-1.6-.8H9.3a2 2 0 0 0-1.6.8L5 11l-5.16.86a1 1 0 0 0-.84.99V16h3m10 0a2 2 0 1 1-4 0m4 0a2 2 0 1 0-4 0m-7 0a2 2 0 1 1-4 0m4 0a2 2 0 1 0-4 0"/></svg>`;
+        badgeClass = 'badge-ulasim';
+        break;
+      case 'Yemek':
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`;
+        badgeClass = 'badge-yemek';
+        break;
+      case 'Diğer':
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/></svg>`;
+        badgeClass = 'badge-diger';
+        break;
+      default:
+        svgIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+        badgeClass = 'badge-default';
+        break;
+    }
+
+    const div = document.createElement('div');
+    div.className = `expense-badge ${badgeClass}`;
+    div.innerHTML = `<span class="badge-icon">${svgIcon}</span><span class="badge-text">${value}</span>`;
+    container.appendChild(div);
+  }
+
+  statusCellTemplate(container: any, options: any) {
+    const statusId = Number(options.value);
+    let text = '';
+    let badgeClass = '';
+    switch (statusId) {
+      case 1:
+        text = 'Düzeltme Bekleyen';
+        badgeClass = 'status-duzeltme';
+        break;
+      case 2:
+        text = 'Onay Bekleyen';
+        badgeClass = 'status-onay';
+        break;
+      case 3:
+        text = 'Onaylanan';
+        badgeClass = 'status-onaylanan';
+        break;
+      case 4:
+        text = 'Reddedilen';
+        badgeClass = 'status-reddedilen';
+        break;
+      default:
+        text = options.value || 'Bilinmiyor';
+        badgeClass = 'status-default';
+        break;
+    }
+    const div = document.createElement('div');
+    div.className = `status-badge ${badgeClass}`;
+    div.innerText = text;
+    container.appendChild(div);
+  }
+
+  activeCellTemplate(container: any, options: any) {
+    const isActive = options.value;
+    const text = isActive ? 'Aktif' : 'Pasif';
+    const badgeClass = isActive ? 'status-aktif' : 'status-pasif';
+    const div = document.createElement('div');
+    div.className = `status-badge ${badgeClass}`;
+    div.innerText = text;
+    container.appendChild(div);
+  }
+
+  customizeDatagrid = (columns: any[]) => {
+    columns.forEach(colDef => {
+      if (colDef.dataField === 'expenseType') {
+        colDef.caption = 'Masraf Türü';
+        colDef.width = 140;
+        colDef.cellTemplate = this.expenseTypeCellTemplate.bind(this);
+      } else if (colDef.dataField === 'department') {
+        colDef.caption = 'Bölüm';
+        colDef.width = 120;
+      } else if (colDef.dataField === 'documentNo') {
+        colDef.caption = 'Belge No';
+        colDef.width = 130;
+      } else if (colDef.dataField === 'id') {
+        colDef.caption = 'Id';
+        colDef.width = 90;
+        colDef.visibleIndex = 0;
+      } else if (colDef.dataField === 'dfFormStatusId') {
+        colDef.caption = 'Durum';
+        colDef.width = 140;
+        colDef.visibleIndex = 98;
+        colDef.cellTemplate = this.statusCellTemplate.bind(this);
+      } else if (colDef.dataField === 'fiyat' || colDef.dataField === 'grossAmount' || colDef.dataField === 'totalAmount') {
+        colDef.caption = 'Tutar';
+        colDef.width = 120;
+      } else if (colDef.dataField === 'journeyId') {
+        colDef.caption = 'Seyahat No';
+        colDef.width = 120;
+        colDef.visibleIndex = 1;
+      } else if (colDef.dataField === 'date') {
+        colDef.caption = 'Tarih';
+        colDef.dataType = 'date';
+        colDef.format = 'dd.MM.yyyy';
+        colDef.width = 160;
+      } else if (colDef.dataField === 'title') {
+        colDef.caption = 'Ünvan';
+        colDef.width = 250;
+      } else if (colDef.dataField === 'expenseDescription') {
+        colDef.caption = 'Masraf Açıklama';
+        colDef.width = 500;
+      } else if (colDef.dataField === 'isActive') {
+        colDef.caption = 'Durum';
+        colDef.width = 110;
+        colDef.visibleIndex = 99;
+        colDef.cellTemplate = this.activeCellTemplate.bind(this);
+      }
+
+      if (colDef.dataField === 'fisDetay' || colDef.dataField?.toLowerCase() === 'fisdetay') {
+        colDef.visible = false;
+      }
+      
+      colDef.alignment = 'left';
+    });
+  };
+
   constructor(
     private cdRef: ChangeDetectorRef,
     private formService: FormService,
@@ -352,6 +482,13 @@ export class DynamicFormComponent implements OnInit {
                   column.dataType = 'boolean';
                 }
 
+                if (key === 'kdvOrani' || key === 'kdv') {
+                  column.width = 120;
+                }
+                if (key === 'fiyat' || key === 'tutar' || key === 'amount') {
+                  column.width = 120;
+                }
+
                 this.editableDynamicColumns.push(column);
                 this.editableDynamicColumns.sort((a, b) => a.sortOrder - b.sortOrder);
                 addedColumns.add(key);
@@ -378,7 +515,8 @@ export class DynamicFormComponent implements OnInit {
           if (sampleRow) {
             Object.keys(sampleRow).forEach(key => {
               if (!addedColumns.has(key)) {
-                this.dynamicColumns.push({ dataField: key, caption: key.charAt(0).toUpperCase() + key.slice(1) });
+                let caption = key.charAt(0).toUpperCase() + key.slice(1);
+                this.dynamicColumns.push({ dataField: key, caption: caption });
                 addedColumns.add(key);
               }
             });
@@ -563,20 +701,23 @@ export class DynamicFormComponent implements OnInit {
     return false;
   }
 
-  save(form: NgForm) {
+  async save(form: NgForm) {
     if (!form.valid) return;
     if (this.hasValidationError()) return;
 
     let rows: any[] = [];
     const result: { [key: string]: any } = {};
 
-    this.forms.forEach(form => {
-      form.fields.forEach((field: any) => {
+    for (const formObj of this.forms) {
+      for (const field of formObj.fields) {
         const fieldId = field.id;
         const fieldCode = field.code;
         if (['EditableDatagrid'].includes(field.type)) {
           const grid = this.getEditableGridByCode(field.code);
           if (grid) {
+            if (grid.dataGrid && grid.dataGrid.instance && grid.dataGrid.instance.hasEditData()) {
+              await grid.dataGrid.instance.saveEditData();
+            }
             const data = (grid as any).getGridData();
             if (data !== null && data !== undefined) {
               result[fieldCode] = JSON.stringify(data);
@@ -592,7 +733,7 @@ export class DynamicFormComponent implements OnInit {
           result[fieldCode] = this.uploadedFileGuid;
         }
 
-        if (this.fieldValues.hasOwnProperty(fieldId.toString()) && field.type != "Date") {
+        if (this.fieldValues.hasOwnProperty(fieldId.toString()) && field.type != "Date" && !['EditableDatagrid', 'Datagrid', 'FileUpload'].includes(field.type)) {
           result[fieldCode] = this.fieldValues[fieldId];
         }
         if (field.type == "Date" && this.fieldValues[fieldId]) {
@@ -600,8 +741,8 @@ export class DynamicFormComponent implements OnInit {
           const fixedDate = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
           result[fieldCode] = fixedDate.toISOString();
         }
-      });
-    })
+      }
+    }
 
     var model: any = {
       formValues: JSON.stringify([result]),
@@ -627,11 +768,21 @@ export class DynamicFormComponent implements OnInit {
     }
 
     this.formService.saveTrForm(model).subscribe((res: any) => {
-      if (res.code != "99") {
-        this.messageService.add({ severity: 'success', summary: this.translateService.instant("success"), detail: this.translateService.instant("success") });
-        window.location.reload();
+      if (res.code !== "99") {
+        this.messageService.add({
+          severity: 'success',
+          summary: this.translateService.instant("success"),
+          detail: this.translateService.instant("Masraf Raporu Başarıyla Eklendi")
+        });
+        setTimeout(() => {
+          this.router.navigate(['app/form-app/report']);
+        }, 1000);
       } else {
-        return this.messageService.add({ severity: 'error', summary: this.translateService.instant("error"), detail: this.translateService.instant(res.errorCode.toString()) })
+        return this.messageService.add({
+          severity: 'error',
+          summary: this.translateService.instant("error"),
+          detail: this.translateService.instant(res.errorCode.toString())
+        })
       }
     })
   }
