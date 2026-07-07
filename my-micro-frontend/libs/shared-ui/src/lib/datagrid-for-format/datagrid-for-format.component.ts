@@ -500,10 +500,8 @@ export class DatagridForFormatComponent implements OnInit {
         // 1. Commit edilmemiş verileri commit ettir
         this.dataGrid.instance.closeEditCell();
 
-        // 2. Commit’ten sonra alınan veriler kesin güncel olur
-        const rows = this.dataGrid.instance.getVisibleRows();
-        const data = rows.map((row: any) => row.data);
-        return data;
+        // 2. Data'yı döndür ki paging yapılmışsa da tüm veri gelsin
+        return this.Data;
     }
     onRowValidating(e: any) {
 

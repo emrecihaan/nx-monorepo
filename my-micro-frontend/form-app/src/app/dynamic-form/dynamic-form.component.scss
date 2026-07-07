@@ -37,6 +37,45 @@
             width: 100% !important;
         }
     }
+
+    .expense-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+
+        .badge-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .badge-konaklama { background-color: #eaf1fb; color: #4079ed; }
+    .badge-ulasim { background-color: #eaf6ec; color: #34a853; }
+    .badge-yemek { background-color: #f7eef9; color: #9f36b3; }
+    .badge-diger { background-color: #f1f3f4; color: #5f6368; }
+    .badge-default { background-color: #e0f7fa; color: #00acc1; }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-align: center;
+    }
+
+    .status-duzeltme { background-color: #fff3e0; color: #e65100; }
+    .status-onay { background-color: #e3f2fd; color: #1565c0; }
+    .status-onaylanan { background-color: #e8f5e9; color: #2e7d32; }
+    .status-reddedilen { background-color: #ffebee; color: #c62828; }
+    .status-default { background-color: #fff3e0; color: #e65100; }
+    .status-aktif { background-color: #e8f5e9; color: #2e7d32; }
+    .status-pasif { background-color: #ffebee; color: #c62828; }
 }
 
 .loading-container {
