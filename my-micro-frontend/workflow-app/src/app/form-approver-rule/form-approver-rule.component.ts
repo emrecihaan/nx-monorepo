@@ -44,7 +44,8 @@ export class FormApproverRuleComponent implements OnInit {
     {
       dataField: "id",
       caption: "id",
-      alignment: "left"
+      alignment: "left",
+      width: 100
     },
     {
       dataField: "description",
