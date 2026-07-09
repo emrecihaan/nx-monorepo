@@ -10,9 +10,11 @@ import { ExpenseTypeComponent } from '../expense-type/expense-type.component';
 import { UserProxyComponent } from '../user-proxy/user-proxy.component';
 import { ExpenseGroupComponent } from '../expense-group/expense-group.component';
 import { ExpenseCenterComponent } from '../expense-center/expense-center.component';
+import { ReportDetailComponent } from '../report-detail/report-detail.component';
 
 export const remoteRoutes: Route[] = [
   { path: '', component: RemoteEntry },
+  { path: 'report-detail', component: ReportDetailComponent },
   { path: 'dynamic-form/:dfformid', component: DynamicFormComponent },
   { path: 'dynamic-form/:dfformid/:trformid', component: DynamicFormComponent },
   { path: 'report', component: ReportComponent },

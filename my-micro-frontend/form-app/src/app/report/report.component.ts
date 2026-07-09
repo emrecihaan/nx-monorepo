@@ -576,6 +576,12 @@ export class ReportComponent implements OnInit {
     }
   }
 
+  goToReportDetail(travel: any) {
+    this.router.navigate(['app/form-app/report-detail'], {
+      state: { travel }
+    });
+  }
+
   travelAssignment() {
     if (this.selectedRows && this.selectedRows.length > 0) {
       this.formService.getFormListByDfFormIdAndUserId(10004, this.user.id).subscribe((res: any) => {

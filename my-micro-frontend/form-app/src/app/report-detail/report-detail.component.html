@@ -1,0 +1,12 @@
+<div class="surface-card p-3 shadow-1 border-round mb-4">
+  <div class="flex align-items-center mb-3">
+    <i class="pi pi-arrow-left mr-2 cursor-pointer text-primary" style="font-size: 1.2rem;" title="Geri Dön"
+      onclick="history.back()"></i>
+    <h3 class="m-0 font-bold text-color">Rapor Detayı</h3>
+  </div>
+
+  <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" [selectedData]="selectedRow"
+    [selectedRows]="selectedRows" [keyExpr]="'id'" (setSelectedData)="setSelectedRow($event)"
+    (setSelectedRows)="setSelectedRows($event)" [selectionMode]="'multiple'" #gridRef [columns]="column" [pageSize]="5"
+    [height]="'auto'"></app-datagrid-for-format>
+</div>
