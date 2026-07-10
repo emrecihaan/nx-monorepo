@@ -92,7 +92,9 @@
         "search": "Ara",
         "cancel": "İptal",
         "export": "Dışa Aktar",
-        "create": "Kaydet"
+        "create": "Kaydet",
+        "yes": "Evet",
+        "no": "Hayır"
     },
     "reportColumns": {
         "date": "Tarih",
@@ -157,7 +159,9 @@
         "isActive": "Durum",
         "statusReq": "Durum seçimi zorunlu",
         "objType": "Nesne Tipi",
-        "objID": "Nesne ID"
+        "objID": "Nesne ID",
+        "objeId": "Obje Id",
+        "objectIdReq": "Obje Id Zorunlu"
     },
     "dfFormColumns": {
         "id": "Id",

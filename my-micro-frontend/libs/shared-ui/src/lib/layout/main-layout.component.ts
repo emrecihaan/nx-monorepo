@@ -115,15 +115,15 @@ export class MainLayoutComponent implements OnInit, AfterViewInit {
 
   onLanguageChange(event: any) {
     const langCode = event.value ? event.value.code : event;
-    
+
     // Google Translate için cookie ayarlıyoruz
     // Format: googtrans=/orijinal_dil/hedef_dil
     const cookieString = `/tr/${langCode === 'tr' ? 'tr' : langCode}`;
-    
+
     // Hem kök domain hem de path için çerezleri ayarlıyoruz
     document.cookie = `googtrans=${cookieString}; path=/`;
     document.cookie = `googtrans=${cookieString}; path=/; domain=${location.hostname}`;
-    
+
     // Sayfayı yenileyerek çevirinin kusursuz uygulanmasını sağlıyoruz
     window.location.reload();
   }

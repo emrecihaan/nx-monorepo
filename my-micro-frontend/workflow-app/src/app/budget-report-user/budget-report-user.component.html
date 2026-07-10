@@ -1,68 +1,48 @@
 <div class="budget-report-container">
-    <h1 class="header1">{{'budgetReport.title' | translate}}</h1>
-    <p-accordion [value]="0">
-        <p-accordion-panel [value]="0">
-            <p-accordion-header>{{'budgetReport.formTitle' | translate}}</p-accordion-header>
-            <p-accordion-content>
-                <div class="p-fluid">
-                    <div class="grid align-items-start">
-                        <div class="col-2 mt-4">
-                            <p-floatlabel *ngIf="formList">
-                                <p-select inputId="formSelect" [options]="formList" optionLabel="name"
-                                    [(ngModel)]="selectedForm" (onChange)="changeSelectedForm($event)" showClear="true"
-                                    filter="true" styleClass="w-full"></p-select>
-                                <label for="formSelect">{{'budgetReport.form' | translate }}</label>
-                            </p-floatlabel>
-                        </div>
-
-                        <div class="col-3 mt-4">
-                            <p-floatlabel *ngIf="userList">
-                                <p-select inputId="userSelect" [options]="userList" optionLabel="name"
-                                    [(ngModel)]="selectedUser" (onChange)="changeSelectedUser($event)" showClear="true"
-                                    filter="true" styleClass="w-full"></p-select>
-                                <label for="userSelect">{{'budgetReport.user' | translate }}</label>
-                            </p-floatlabel>
-                        </div>
-
-                        <div class="col-2 mt-4">
-                            <p-floatlabel *ngIf="statusList">
-                                <p-select inputId="statusSelect" [options]="statusList" optionLabel="name"
-                                    [(ngModel)]="selectedStatus" (onChange)="changeSelectedStatus($event)"
-                                    showClear="true" filter="true" styleClass="w-full"></p-select>
-                                <label for="statusSelect">{{'budgetReport.status' | translate }}</label>
-                            </p-floatlabel>
-                        </div>
-
-                        <div class="col-2 mt-4">
-                            <p-floatlabel>
-                                <p-datepicker inputId="startDate" [(ngModel)]="startDate" dateFormat="dd.mm.yy"
-                                    styleClass="w-full"></p-datepicker>
-                                <label for="startDate">{{'budgetReport.startDate' | translate }}</label>
-                            </p-floatlabel>
-                        </div>
-
-                        <div class="col-2 mt-4">
-                            <p-floatlabel>
-                                <p-datepicker inputId="endDate" [(ngModel)]="endDate" dateFormat="dd.mm.yy"
-                                    styleClass="w-full"></p-datepicker>
-                                <label for="endDate">{{'budgetReport.endDate' | translate }}</label>
-                            </p-floatlabel>
-                        </div>
-
-                        <div class="col-1 mt-4 flex align-items-start">
-                            <button pButton label="{{'budgetReport.search' | translate}}"
-                                class="p-button-success w-full" (click)="getBudgetReportForUser()"></button>
-                        </div>
-                    </div>
+    <div
+        class="surface-card p-3 shadow-1 border-round mb-4 flex flex-column xl:flex-row justify-content-between align-items-center">
+        <div class="flex flex-column md:flex-row align-items-center w-full xl:w-auto">
+            <div
+                class="flex flex-column md:flex-row align-items-center surface-ground border-round p-1 border-1 surface-border w-full">
+                <div
+                    class="flex align-items-center text-color-secondary font-medium px-3 py-2 md:py-0 white-space-nowrap">
+                    <i class="pi pi-filter mr-2"></i>Filtreler
                 </div>
-            </p-accordion-content>
-        </p-accordion-panel>
-    </p-accordion>
 
-    <h2 class="text-2xl font-bold text-gray-900 mb-6 mt-6">{{'budgetReport.statistics' | translate}}</h2>
+                <p-select inputId="formSelect" [options]="formList" optionLabel="name" [(ngModel)]="selectedForm"
+                    (onChange)="changeSelectedForm($event)" showClear="true" filter="true"
+                    [placeholder]="'budgetReport.form' | translate"
+                    styleClass="w-full md:w-20rem mr-1 mb-2 md:mb-0"></p-select>
+
+                <p-select inputId="userSelect" [options]="userList" optionLabel="name" [(ngModel)]="selectedUser"
+                    (onChange)="changeSelectedUser($event)" showClear="true" filter="true"
+                    [placeholder]="'budgetReport.user' | translate"
+                    styleClass="w-full md:w-20rem mr-1 mb-2 md:mb-0"></p-select>
+
+                <p-select inputId="statusSelect" [options]="statusList" optionLabel="name" [(ngModel)]="selectedStatus"
+                    (onChange)="changeSelectedStatus($event)" showClear="true" filter="true"
+                    [placeholder]="'budgetReport.status' | translate"
+                    styleClass="w-full md:w-14rem mr-1 mb-2 md:mb-0"></p-select>
+
+                <p-datepicker inputId="startDate" [(ngModel)]="startDate" dateFormat="dd.mm.yy"
+                    [placeholder]="'budgetReport.startDate' | translate"
+                    styleClass="w-full md:w-14rem mr-1 mb-2 md:mb-0"></p-datepicker>
+
+                <p-datepicker inputId="endDate" [(ngModel)]="endDate" dateFormat="dd.mm.yy"
+                    [placeholder]="'budgetReport.endDate' | translate"
+                    styleClass="w-full md:w-14rem mr-1 mb-2 md:mb-0"></p-datepicker>
+
+                <button pButton pRipple label="{{'budgetReport.search' | translate}}" icon="pi pi-search"
+                    class="p-button-primary font-bold w-full md:w-auto px-4" style="min-width: 6rem;"
+                    (click)="getBudgetReportForUser()"></button>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-2xl font-bold text-gray-900">{{'budgetReport.statistics' | translate}}</h2>
 </div>
 
-<div class="px-6 py-8">
+<div>
     <dx-chart #chart [dataSource]="chartData" [commonSeriesSettings]="{ type: 'bar', argumentField: 'user' }">
         <dxi-series valueField="amount" name="Harcama Tutarı"></dxi-series>
     </dx-chart>

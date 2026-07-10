@@ -10,6 +10,8 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { DatagridForFormatComponent } from '@my-micro-frontend/shared-ui';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-erp-expense-request',
@@ -24,8 +26,10 @@ import { DatagridForFormatComponent } from '@my-micro-frontend/shared-ui';
     ButtonModule,
     InputTextModule,
     RippleModule,
-    DatagridForFormatComponent
+    DatagridForFormatComponent,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './erp-expense-request.component.html',
   styleUrls: ['./erp-expense-request.component.scss']
 })
@@ -37,106 +41,156 @@ export class ErpExpenseRequestComponent implements OnInit {
     {
       dataField: "id",
       caption: "ID",
+      alignment: "left"
     },
     {
       dataField: "status",
       caption: "Durum",
+      alignment: "left"
     },
     {
       dataField: "activity",
       caption: "Aktivite",
+      alignment: "left"
     },
     {
       dataField: "year",
       caption: "Yıl",
+      alignment: "left"
     },
     {
       dataField: "month",
       caption: "Ay",
+      alignment: "left"
     },
     {
       dataField: "amount",
       caption: "Tutar",
+      alignment: "left"
     },
     {
       dataField: "amountExcludingVat",
       caption: "KdvHariç",
+      alignment: "left"
     },
     {
       dataField: "budgetOverrun",
       caption: "Bütçe Aşım",
+      alignment: "left"
     },
     {
       dataField: "requestOwner",
       caption: "Talep Sahibi",
+      alignment: "left"
     },
     {
       dataField: "personnelCode",
       caption: "Personel Kodu",
+      alignment: "left"
     },
     {
       dataField: "paymentType",
       caption: "Ödeme Türü",
+      alignment: "left"
     },
     {
       dataField: "odk",
       caption: "Ödk",
+      alignment: "left"
     },
     {
       dataField: "ledger",
       caption: "Kebir",
+      alignment: "left"
     },
     {
       dataField: "requestHandler",
       caption: "Talep Kimde",
+      alignment: "left"
     },
     {
       dataField: "evaluation",
       caption: "Değerlendirme",
+      alignment: "left"
     },
     {
       dataField: "transferInfo",
       caption: "Aktarım Bilgisi",
+      alignment: "left"
     }
   ];
   detailColumn = [
     {
       dataField: "id",
-      caption: "ID"
+      caption: "ID",
+      alignment: "left"
     },
     {
       dataField: "expenseType",
-      caption: "Harcama Türü"
+      caption: "Harcama Türü",
+      alignment: "left"
     },
     {
       dataField: "date",
       caption: "Tarih",
-      dataType: "date"
+      dataType: "date",
+      alignment: "left"
     },
     {
       dataField: "amount",
-      caption: "Tutar"
+      caption: "Tutar",
+      alignment: "left"
     },
     {
       dataField: "expenseDescription",
-      caption: "Açıklama"
+      caption: "Açıklama",
+      alignment: "left"
     },
     {
       dataField: "department",
-      caption: "Departman"
+      caption: "Departman",
+      alignment: "left"
     },
     {
       dataField: "project",
-      caption: "Proje"
+      caption: "Proje",
+      alignment: "left"
     },
     {
       dataField: "file",
-      caption: "Dosya"
+      caption: "Dosya",
+      alignment: "left"
     }
   ];
   selectedRows: any[] = [];
-  detailHeader: string = "expenseRequestDetailColums";
-  options = [];
+  detailHeader: string = "Masraf Talebi Detayları";
+  yearOptions = [
+    { label: '2020', value: 2020 },
+    { label: '2021', value: 2021 },
+    { label: '2022', value: 2022 },
+    { label: '2023', value: 2023 },
+    { label: '2024', value: 2024 },
+    { label: '2025', value: 2025 },
+    { label: '2026', value: 2026 },
+    { label: '2027', value: 2027 },
+    { label: '2028', value: 2028 },
+    { label: '2029', value: 2029 },
+    { label: '2030', value: 2030 }
+  ];
+  monthOptions = [
+    { label: 'Ocak', value: 1 },
+    { label: 'Şubat', value: 2 },
+    { label: 'Mart', value: 3 },
+    { label: 'Nisan', value: 4 },
+    { label: 'Mayıs', value: 5 },
+    { label: 'Haziran', value: 6 },
+    { label: 'Temmuz', value: 7 },
+    { label: 'Ağustos', value: 8 },
+    { label: 'Eylül', value: 9 },
+    { label: 'Ekim', value: 10 },
+    { label: 'Kasım', value: 11 },
+    { label: 'Aralık', value: 12 }
+  ];
   filterForm: any;
   statusOptions = [
     { label: 'Yeni', value: 1 },
@@ -148,7 +202,8 @@ export class ErpExpenseRequestComponent implements OnInit {
     public formService: FormService,
     public gridTranslate: GridTranslateService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -168,7 +223,15 @@ export class ErpExpenseRequestComponent implements OnInit {
   }
 
   getData() {
-    var model = this.filterForm.value;
+    const formValues = this.filterForm.value;
+    const model = {
+      FormOwner: formValues.formOwner,
+      FormStatus: formValues.formStatus != null ? formValues.formStatus.toString() : null,
+      PeriodYear: formValues.periodYear,
+      PeriodMonth: formValues.periodMonth,
+      SapDocumentDate: formValues.sapDate ? new Date(formValues.sapDate).toISOString() : null
+    };
+
     this.formService.getExpenseRequestForms(model).subscribe((res: any) => {
       if (res.code != "99") {
         this.data = res.response;
@@ -177,7 +240,14 @@ export class ErpExpenseRequestComponent implements OnInit {
   }
 
   callShow(event: any) {
-    this.router.navigate(['/dynamic-form', 0, event.id]);
+    this.router.navigate(['/dynamic-form', 0, event.id]).then(success => {
+      if (!success) {
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'İlgili form detay sayfasına ulaşılamıyor.' });
+      }
+    }).catch(err => {
+      this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'İlgili form detay sayfasına ulaşılamıyor.' });
+      console.error('Navigation error:', err);
+    });
   }
 
   setSelectedRows(value: any) {
@@ -185,11 +255,22 @@ export class ErpExpenseRequestComponent implements OnInit {
   }
 
   sendSAP() {
+    if (!this.selectedRows || this.selectedRows.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Lütfen en az bir kayıt seçiniz.' });
+      return;
+    }
+
     this.formService.createExpenseRequestSAP(this.selectedRows).subscribe((res: any) => {
       if (res.code != "99") {
-        console.log("Hata!");
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Talepler SAP\'a başarıyla aktarıldı.' });
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'İşlem sırasında bir hata oluştu.' });
       }
-    })
+    });
+  }
+
+  underConstruction() {
+    this.messageService.add({ severity: 'info', summary: 'Bilgi', detail: 'Bu özellik henüz yapım aşamasındadır.' });
   }
 
   onClear() {
@@ -202,3 +283,4 @@ export class ErpExpenseRequestComponent implements OnInit {
   }
 
 }
+// trigger rebuild

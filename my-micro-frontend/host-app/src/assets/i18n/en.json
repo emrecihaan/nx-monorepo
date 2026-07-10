@@ -93,7 +93,9 @@
         "search": "Search",
         "cancel": "Cancel",
         "export": "Export",
-        "create": "Create"
+        "create": "Create",
+        "yes": "Yes",
+        "no": "No"
     },
     "reportColumns": {
         "date": "Tarih",
@@ -188,5 +190,37 @@
         "id": "Id",
         "objId": "Obje Id",
         "objType": "Obje Type"
+    },
+    "budgetRule": {
+        "title": "Budget Rules",
+        "createBudgetRule": "Create Rule",
+        "editBudgetRule": "Edit Rule",
+        "deleteBudgetRule": "Delete Rule",
+        "detailBudgetRule": "Rule Detail",
+        "creationBudgetRule": "Create Budget Rule",
+        "updateBudgetRule": "Update Budget Rule",
+        "deleteBudgetRuleConfirm": "Are you sure you want to delete the budget rule?",
+        "createBudgetRuleObject": "Create Rule Object",
+        "updateBudgetRuleObject": "Update Rule Object",
+        "deleteBudgetRuleObject": "Delete Rule Object",
+        "deleteBudgetRuleObjectConfirm": "Are you sure you want to delete the rule object?",
+        "budgetRule": "Budget Rule",
+        "ruleName": "Rule Name",
+        "ruleNameReq": "Rule Name is required",
+        "limitAmount": "Limit Amount",
+        "limitAmountReq": "Limit Amount is required",
+        "currency": "Currency",
+        "currencyReq": "Currency is required",
+        "startDate": "Start Date",
+        "startDateReq": "Start Date is required",
+        "endDate": "Bitiş Tarihi",
+        "endDateReq": "End Date is required",
+        "startDateValidation": "Start Date must be before End Date",
+        "isActive": "Status",
+        "statusReq": "Status is required",
+        "objType": "Object Type",
+        "objID": "Object ID",
+        "objeId": "Obje Id",
+        "objectIdReq": "Object Id Required"
     }
 }

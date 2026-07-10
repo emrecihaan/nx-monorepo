@@ -1,63 +1,60 @@
-<p-accordion value="0">
-  <p-accordion-panel value="0">
-    <p-accordion-header>Filtre</p-accordion-header>
-    <p-accordion-content>
-      <div class="grid" [formGroup]="filterForm">
-        <div class="col">
-          <input pInputText type="text" formControlName="formOwner" placeholder="Form Sahibi" style="width: 100%;" />
+<div class="surface-card p-3 shadow-1 border-round mb-4 flex flex-column xl:flex-row justify-content-between align-items-center gap-3">
+    <!-- Filtreler Bölümü -->
+    <div class="flex flex-column md:flex-row align-items-center gap-2 w-full xl:w-auto" [formGroup]="filterForm">
+        <div class="flex flex-column md:flex-row align-items-center surface-ground border-round p-1 border-1 surface-border w-full">
+            <div class="flex align-items-center text-color-secondary font-medium px-3 py-2 md:py-0 white-space-nowrap">
+                <i class="pi pi-filter mr-2"></i>Filtreler
+            </div>
+            
+            <input pInputText type="text" formControlName="formOwner" placeholder="Form Sahibi" class="w-full md:w-10rem mr-1 mb-2 md:mb-0" />
+            
+            <p-select id="formStatus" formControlName="formStatus" [options]="statusOptions" optionLabel="label"
+                optionValue="value" placeholder="Durum" styleClass="w-full md:w-12rem mr-1 mb-2 md:mb-0"></p-select>
+                
+            <p-select id="periodYear" formControlName="periodYear" [options]="yearOptions" optionLabel="label"
+                optionValue="value" placeholder="Yıl" styleClass="w-full md:w-7rem mr-1 mb-2 md:mb-0"></p-select>
+                
+            <p-select id="periodMonth" formControlName="periodMonth" [options]="monthOptions" optionLabel="label"
+                optionValue="value" placeholder="Ay" styleClass="w-full md:w-7rem mr-1 mb-2 md:mb-0"></p-select>
+                
+            <p-datepicker id="sapDate" formControlName="sapDate" dateFormat="dd.mm.yy" [showClear]="true"
+                placeholder="Sap Tarihi" styleClass="w-full md:w-10rem mr-1 mb-2 md:mb-0"></p-datepicker>
+                
+            <button pButton pRipple label="Ara" icon="pi pi-search" class="p-button-primary font-bold w-full md:w-auto px-4"
+                style="min-width: 6rem;" type="button" (click)="onSearch()"></button>
         </div>
-        <div class="col">
-          <p-select id="formStatus" formControlName="formStatus" [options]="statusOptions" optionLabel="label"
-            optionValue="value" placeholder="Form Durumu" style="width: 100%;"></p-select>
-        </div>
-        <div class="col">
-          <p-select id="periodYear" formControlName="periodYear" [options]="options" optionLabel="label"
-            optionValue="value" placeholder="Dönem (Yıl)" style="width: 100%;"></p-select>
-        </div>
-        <div class="col">
-          <p-select id="periodMonth" formControlName="periodMonth" [options]="options" optionLabel="label"
-            optionValue="value" placeholder="Dönem (Ay)" style="width: 100%;"></p-select>
-        </div>
-        <div class="col-3">
-          <p-datepicker id="sapDate" formControlName="sapDate" dateFormat="dd.mm.yy" [showClear]="true"
-            placeholder="Sap Fiş Tarihi" styleClass="w-full"></p-datepicker>
-        </div>
-        <div class="col-auto flex align-items-center">
-          <button pButton pRipple label="Ara" class="p-button-primary" type="button" (click)="onSearch()"></button>
-        </div>
-      </div>
-    </p-accordion-content>
-  </p-accordion-panel>
-</p-accordion>
+    </div>
 
-<div class="mt-3"></div>
+    <!-- İşlemler Bölümü -->
+    <div class="flex flex-column lg:flex-row align-items-stretch lg:align-items-center gap-2 flex-wrap w-full xl:w-auto mt-3 xl:mt-0 justify-content-end">
+        <button pButton pRipple label="SAP'a Aktar" icon="pi pi-angle-double-right" (click)="sendSAP()"
+          class="p-button-success w-full lg:w-auto"></button>
 
-<p-accordion value="0">
-  <p-accordion-panel value="0">
-    <p-accordion-header>İşlemler</p-accordion-header>
-    <p-accordion-content>
-      <div class="flex flex-wrap gap-2">
-        <button pButton pRipple label=" Seçilen Talepleri SAP Aktar" (click)="sendSAP()" class="p-button-info"><i
-            class="pi pi-angle-double-right mr-2"></i></button>
-        <button pButton pRipple label=" Seçilen Talepleri Sil" class="p-button-info"><i
-            class="pi pi-times-circle mr-2"></i></button>
-        <button pButton pRipple label=" Seçilen Taleplerin Ters Kaydını Al" class="p-button-info"><i
-            class="pi pi-arrows-h mr-2"></i></button>
-        <button pButton pRipple label=" Seçilen Talepleri Geri Gönder" class="p-button-info"><i
-            class="pi pi-arrow-circle-left mr-2"></i></button>
-        <button pButton pRipple label=" Kredi Kartı Harcamaları İndir" class="p-button-info"><i
-            class="pi pi-file-pdf mr-2"></i></button>
-        <button pButton pRipple label=" Seçilen Masraf Formunu İndir" class="p-button-info"><i
-            class="pi pi-file-pdf mr-2"></i></button>
-      </div>
-    </p-accordion-content>
-  </p-accordion-panel>
-</p-accordion>
+        <button pButton pRipple label="Sil" icon="pi pi-times-circle" (click)="underConstruction()"
+          class="p-button-danger w-full lg:w-auto"></button>
 
-<div style="margin-top: 20px;">
+        <button pButton pRipple label="Ters Kayıt" icon="pi pi-arrows-h" (click)="underConstruction()"
+          class="p-button-warning w-full lg:w-auto"></button>
+          
+        <div class="border-left-1 surface-border h-2rem mx-1 hidden lg:block"></div>
+
+        <button pButton pRipple label="Geri Gönder" icon="pi pi-arrow-circle-left" (click)="underConstruction()"
+          class="p-button-secondary w-full lg:w-auto"></button>
+
+        <button pButton pRipple label="Kart Harcamaları" icon="pi pi-credit-card" (click)="underConstruction()"
+          class="p-button-help w-full lg:w-auto"></button>
+
+        <button pButton pRipple label="Masraf Formu" icon="pi pi-file-pdf" (click)="underConstruction()"
+          class="p-button-info w-full lg:w-auto"></button>
+    </div>
+</div>
+
+<div>
   <app-datagrid-for-format [Data]="data" [customizeOptions]="customizeGrid" (setSelectedRows)="setSelectedRows($event)"
-    [selectionMode]="'multipleButOneColumn'" [columns]="column" [customButton]="true" [customButtonName2]="'Görüntüle'"
-    [customButtonIcon2]="'edit'" (customButtonReturn2)="callShow($event)" [detailHeader]="detailHeader"
+    [selectionMode]="'multipleButOneColumn'" [columns]="column" [customButton]="true" customButtonName="Görüntüle"
+    customButtonIcon="edit" (customButtonReturn)="callShow($event)" [detailHeader]="detailHeader"
     [detailColumns]="detailColumn" [detailDataField]="'items'">
   </app-datagrid-for-format>
 </div>
+
+<p-toast></p-toast>
