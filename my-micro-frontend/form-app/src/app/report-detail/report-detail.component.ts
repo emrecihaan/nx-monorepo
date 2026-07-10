@@ -1,20 +1,65 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { DatagridForFormatComponent } from '@my-micro-frontend/shared-ui';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { PaginatorModule } from 'primeng/paginator';
+import { SelectModule } from 'primeng/select';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { FormService, GridTranslateService, GeneralSystemService } from '@my-micro-frontend/shared-core';
 
 @Component({
   selector: 'app-report-detail',
   standalone: true,
-  imports: [CommonModule, DatagridForFormatComponent],
+  imports: [CommonModule, DatagridForFormatComponent, ButtonModule, DialogModule, PaginatorModule, FormsModule, SelectModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './report-detail.component.html',
   styleUrls: ['./report-detail.component.scss']
 })
 export class ReportDetailComponent implements OnInit {
+  @ViewChild('gridRef') gridRef!: DatagridForFormatComponent;
   data: any[] = [];
   column: any[] = [];
   selectedRow: any = null;
   customizeGrid: any;
   selectedRows: any[] = [];
+
+  travelList: any[] = [];
+  displaySelectedExpensesDialog: boolean = false;
+  travel: any;
+
+  user: any = null;
+  displayTravelDialog: boolean = false;
+  selectedTravel: any = null;
+  travelsForDialog: any[] = [];
+
+  first: number = 0;
+  rows: number = 4;
+
+  get paginatedTravelList(): any[] {
+    return this.travelList.slice(this.first, this.first + this.rows);
+  }
+
+  onPageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+  }
+
+  selectedExpenses: any[] = [];
+  selectedTotalAmount: number = 0;
+
+  updateSelectedExpenses() {
+    if (!this.selectedRows) {
+      this.selectedExpenses = [];
+    } else {
+      this.selectedExpenses = this.selectedRows.map((key: any) =>
+        typeof key === 'object' ? key : this.data.find(d => d.id === key)
+      ).filter((d: any) => d !== undefined);
+    }
+    this.selectedTotalAmount = this.selectedExpenses.reduce((sum, row) => sum + (Number(row.fiyat) || 0), 0);
+  }
 
   expenseTypeCellTemplate(container: any, options: any) {
     const value = options.value ? options.value.trim() : '';
@@ -95,7 +140,13 @@ export class ReportDetailComponent implements OnInit {
     container.appendChild(div);
   }
 
-  constructor() {
+  constructor(
+    private formService: FormService,
+    private gridTranslate: GridTranslateService,
+    private cdr: ChangeDetectorRef,
+    private messageService: MessageService,
+    private generalService: GeneralSystemService
+  ) {
     this.customizeGrid = (columns: any[]) => {
       const orderedColumns = [
         'id',
@@ -141,22 +192,114 @@ export class ReportDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.column = [
-      { dataField: 'id', caption: 'Id' },
-      { dataField: 'date', caption: 'Tarih' },
-      { dataField: 'expenseDescription', caption: 'Açıklama' },
-      { dataField: 'expenseType', caption: 'Masraf Tipi' },
-      { dataField: 'fiyat', caption: 'Tutar' },
-      { dataField: 'dfFormStatusId', caption: 'Durum' },
-      { dataField: 'isActive', caption: 'Aktif' }
-    ];
+    this.getUser();
+    if (history.state && history.state.travel) {
+      this.travel = history.state.travel;
+      const trFormId = this.travel.id !== undefined ? this.travel.id : this.travel.value;
+      this.loadReportData(trFormId);
+    }
 
-    this.data = [
-      { id: 1, date: '2026-05-10', expenseDescription: 'Ankara Ziyareti Otel', expenseType: 'Konaklama', fiyat: 2500.0, dfFormStatusId: 3, isActive: true },
-      { id: 2, date: '2026-05-11', expenseDescription: 'Ankara Ziyareti Uçak', expenseType: 'Ulaşım', fiyat: 1500.5, dfFormStatusId: 2, isActive: true },
-      { id: 3, date: '2026-05-12', expenseDescription: 'Ankara Ziyareti Yemek', expenseType: 'Yemek', fiyat: 450.75, dfFormStatusId: 1, isActive: true },
-      { id: 4, date: '2026-05-13', expenseDescription: 'Kırtasiye', expenseType: 'Diğer', fiyat: 120.0, dfFormStatusId: 4, isActive: false }
-    ];
+    this.loadUnlinkedForms();
+  }
+
+  getUser() {
+    this.generalService.getUserRedis().subscribe((res: any) => {
+      if (res.code !== "99") {
+        this.user = res.response;
+      }
+    });
+  }
+
+  loadUnlinkedForms() {
+    this.formService.getUnlinkedFormsByFormId().subscribe((res: any) => {
+      if (res.code != "99" && res.response) {
+        this.travelList = res.response.map((item: any) => {
+          let parsed;
+          try {
+            parsed = JSON.parse(item.formValues);
+          } catch(e) {
+            parsed = {};
+          }
+          const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
+          
+          let formattedDate = "";
+          if (item.createdDate) {
+            const dateObj = new Date(item.createdDate);
+            formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
+          } else if (formValues && formValues.date) {
+            formattedDate = formValues.date;
+          }
+          
+          const labelText = formValues?.expenseDescription || item.description || 'Masraf Formu';
+
+          return {
+            label: `Masraf No: ${item.id} - ${labelText}`,
+            value: item.id,
+            id: item.id,
+            dateRange: formattedDate,
+            reqNo: item.id?.toString(),
+            description: labelText
+          };
+        });
+        
+        setTimeout(() => this.cdr.detectChanges(), 0);
+      }
+    });
+  }
+
+  loadReportData(trFormId: number) {
+    this.formService.getReportByFormLinkTrFormId(trFormId).subscribe((res: any) => {
+      if (res.code != "99") {
+        if (res.response.length == 0) {
+          // No records found, set empty data
+          setTimeout(() => {
+            this.data = [];
+            this.column = [];
+            this.cdr.detectChanges();
+          }, 0);
+          return;
+        }
+
+        const addedColumns = new Set<string>();
+        const tempColumns: any[] = [];
+        const tempData: any[] = [];
+
+        res.response.forEach((field: any) => {
+          const parsed = JSON.parse(field.formValues);
+          const formValues = Array.isArray(parsed) ? parsed[0] : parsed;
+          formValues.id = field.id;
+          formValues.dfFormStatusId = field.dfFormStatusId;
+          formValues.isActive = field.isActive !== undefined ? field.isActive : (field.dfForm ? field.dfForm.isActive : null);
+          formValues.fiyat = formValues.fiyat || field.grossAmount || field.totalAmount;
+
+          let jId = field.journeyId !== undefined ? field.journeyId : (formValues.journeyId !== undefined ? formValues.journeyId : null);
+          formValues.journeyId = (jId === null || jId === '') ? 999999999 : jId;
+
+          Object.keys(formValues).forEach(key => {
+            if (!addedColumns.has(key)) {
+              const columnDef: any = {
+                dataField: key,
+                caption: key === 'journeyId' ? 'Seyahat No' : key.charAt(0).toUpperCase() + key.slice(1)
+              };
+              if (key === 'journeyId') {
+                columnDef.groupIndex = 0;
+              }
+
+              tempColumns.push(columnDef);
+              addedColumns.add(key);
+            }
+          });
+          tempData.push(formValues);
+        });
+
+        setTimeout(() => {
+          this.gridTranslate.traslateColumns("reportColumns", tempColumns);
+          this.column = tempColumns;
+          this.data = tempData;
+          this.cdr.detectChanges();
+        }, 0);
+      }
+    });
   }
 
   setSelectedRow(selected: any) {
@@ -165,5 +308,100 @@ export class ReportDetailComponent implements OnInit {
 
   setSelectedRows(selected: any[]) {
     this.selectedRows = selected;
+    setTimeout(() => {
+      this.updateSelectedExpenses();
+      this.cdr.detectChanges();
+    }, 0);
+  }
+
+  travelAssignment() {
+    if (this.selectedRows && this.selectedRows.length > 0) {
+      if (this.user && this.user.id) {
+        this.formService.getFormListByDfFormIdAndUserId(10004, this.user.id).subscribe((res: any) => {
+          if (res.code != "99") {
+            this.travelsForDialog = res.response.map((item: any) => {
+              let formattedDate = "";
+              if (item.createdDate) {
+                const dateObj = new Date(item.createdDate);
+                formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth() + 1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
+              }
+              return {
+                label: `Talep No: ${item.id} - Tarih: ${formattedDate}`,
+                value: item.id,
+                id: item.id,
+                dateRange: formattedDate,
+                reqNo: item.id.toString(),
+                description: item.description || 'Seyahat Formu'
+              };
+            });
+            this.selectedTravel = null;
+            this.displayTravelDialog = true;
+            this.cdr.detectChanges();
+          }
+        });
+      } else {
+        this.selectedTravel = null;
+        this.displayTravelDialog = true;
+      }
+    } else {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Uyarı',
+        detail: 'Lütfen en az bir masraf fişi seçiniz.'
+      });
+    }
+  }
+
+  associateTravel() {
+    if (!this.selectedTravel) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Hata',
+        detail: 'Lütfen ilişkilendirmek için bir seyahat seçin.'
+      });
+      return;
+    }
+
+    const expenseReceiptIds = this.selectedRows.map(row => {
+      return typeof row === 'object' ? row.id : row;
+    });
+
+    const model = {
+      expenseReceiptIds: expenseReceiptIds,
+      newTrFormId: this.selectedTravel.value,
+      type: 1
+    };
+
+    this.formService.updateOrRemoveTrFormLink(model).subscribe({
+      next: (res: any) => {
+        if (res.code === "200") {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Başarılı',
+            detail: `${this.selectedRows.length} adet masraf, ${this.selectedTravel.label} ile ilişkilendirildi.`
+          });
+          this.displayTravelDialog = false;
+          this.selectedRows = [];
+          this.updateSelectedExpenses();
+          if (this.travel) {
+            const trFormId = this.travel.id !== undefined ? this.travel.id : this.travel.value;
+            this.loadReportData(trFormId);
+          }
+        } else {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Uyarı',
+            detail: res.message || "İlişkilendirme işlemi sırasında bir uyarı oluştu."
+          });
+        }
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Hata',
+          detail: 'İşlem sırasında bir hata oluştu.'
+        });
+      }
+    });
   }
 }
