@@ -652,6 +652,7 @@ export class ReportComponent implements OnInit {
               return {
                 label: `Talep No: ${item.id} - Tarih: ${formattedDate}`,
                 value: item.id,
+                id: item.id,
                 dateRange: formattedDate,
                 reqNo: item.id.toString(),
                 description: item.description || 'Seyahat Formu'

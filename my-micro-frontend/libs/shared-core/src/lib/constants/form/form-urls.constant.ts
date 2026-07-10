@@ -145,3 +145,6 @@ export const GET_PEOPLE_LIST_BY_ORGANIZATION_ID = `${BASE_URL}/TrForm/getPeopleL
 export const CREATE_TR_FORM_LINK = `${BASE_URL}/TrForm/CreateTrFormLink`;
 
 export const UPDATE_OR_REMOVE_TR_FORM_LINK = `${BASE_URL}/TrForm/UpdateOrRemoveTrFormLink`;
+
+export const GET_REPORT_BY_FORM_LINK_TR_FORM_ID = `${BASE_URL}/TrForm/getReportByFormLinkTrFormId`;
+export const GET_UNLINKED_FORMS_BY_FORM_ID = `${BASE_URL}/TrForm/getUnlinkedFormsByFormId`;
