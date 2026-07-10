@@ -43,8 +43,8 @@ export class BudgetReportUserComponent implements OnInit, AfterViewInit {
 
   formList: any[] = [];
   selectedForm: any = null;
-  startDate = new Date();
-  endDate = new Date();
+  startDate: Date | null = null;
+  endDate: Date | null = null;
   userList: any[] = [];
   selectedUser: any = null;
   data: any[] = [];
@@ -54,7 +54,7 @@ export class BudgetReportUserComponent implements OnInit, AfterViewInit {
       { id: 2, name: "Onaylandı" },
       { id: 4, name: "Reddedildi" },
     ];
-  selectedStatus = null;
+  selectedStatus: any = null;
   pivotGridDataSource: any;
   list: any[] = [];
   chartData: {
@@ -66,8 +66,6 @@ export class BudgetReportUserComponent implements OnInit, AfterViewInit {
     public systemService: SystemService,
     public messageService: MessageService
   ) {
-    this.startDate.setDate(this.startDate.getDate() - 365);
-    this.endDate.setDate(this.endDate.getDate() + 30);
   }
 
   ngOnInit(): void {
@@ -182,21 +180,39 @@ export class BudgetReportUserComponent implements OnInit, AfterViewInit {
   //   "startDate": "2025-02-04T10:26:18.188Z",
   //   "endDate": "2026-12-04T10:26:18.188Z",
   //   "statusId": 1
-  // }
+  formatLocalISODate(date: Date): string {
+    if (!date) return '';
+    const tzOffset = date.getTimezoneOffset() * 60000; // offset in milliseconds
+    return new Date(date.getTime() - tzOffset).toISOString().split('T')[0] + 'T00:00:00';
+  }
+
   getBudgetReportForUser() {
-    if (this.startDate > this.endDate) {
+    if (!this.selectedForm || !this.selectedUser || !this.selectedStatus || !this.startDate || !this.endDate) {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Uyarı",
+        detail: "Lütfen arama yapmadan önce tüm filtre alanlarını doldurunuz.",
+      });
+      return;
+    }
+    const start = new Date(this.startDate);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(this.endDate);
+    end.setHours(0, 0, 0, 0);
+    
+    if (start > end) {
       return this.messageService.add({
         severity: "error",
         summary: "Hata",
-        detail: "Başlanguç tarihi, bitiş tarihinden büyük olamaz.",
+        detail: "Başlangıç tarihi, bitiş tarihinden büyük olamaz.",
       });
     }
     this.formService.getUserTrFormReport({
       DfFormId: this.selectedForm.id,
       UserId: this.selectedUser.id != null ? this.selectedUser.id : "",
-      startDate: this.startDate.toISOString(),
-      endDate: this.endDate.toISOString(),
-      StatusId: 1
+      startDate: this.formatLocalISODate(this.startDate),
+      endDate: this.formatLocalISODate(this.endDate),
+      StatusId: this.selectedStatus.id
     }).subscribe((res: any) => {
       if (res.code == "200") {
         this.data = res.response;

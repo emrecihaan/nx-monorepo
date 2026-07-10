@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormService, GridTranslateService } from '@my-micro-frontend/shared-core';
@@ -58,35 +58,48 @@ export class BudgetRuleComponent implements OnInit {
   column = [
     {
       dataField: "id",
-      caption: "id",
+      caption: "ID",
+      width: 80,
+      alignment: "left"
     },
     {
       dataField: "ruleName",
-      caption: "ruleName",
+      caption: "Kural Adı",
+      alignment: "left",
+      minWidth: 200
     },
     {
       dataField: "limitAmount",
-      caption: "limitAmount",
+      caption: "Limit Tutarı",
+      width: 120,
+      alignment: "left"
     },
     {
       dataField: "currency",
-      caption: "currency",
+      caption: "Para Birimi",
+      width: 130,
+      alignment: "left"
     },
     {
       dataField: "startDate",
-      caption: "startDate",
+      caption: "Başlangıç Tarihi",
       format: "dd/MM/yyyy",
-      dataType: "date"
+      dataType: "date",
+      width: 130,
+      alignment: "left"
     },
     {
       dataField: "endDate",
-      caption: "endDate",
+      caption: "Bitiş Tarihi",
       format: "dd/MM/yyyy",
-      dataType: "date"
+      dataType: "date",
+      width: 130,
+      alignment: "left"
     },
     {
       dataField: "isActive",
-      caption: "isActive",
+      caption: "Durum",
+      width: 100
     }
   ];
   currencyList = [
@@ -100,19 +113,23 @@ export class BudgetRuleComponent implements OnInit {
   detailColumn = [
     {
       dataField: "id",
-      caption: "id",
+      caption: "ID",
+      alignment: "left"
     },
     {
       dataField: "objID",
-      caption: "objID",
+      caption: "Nesne ID",
+      alignment: "left"
     },
     {
       dataField: "objType",
-      caption: "objType",
+      caption: "Nesne Tipi",
+      alignment: "left"
     },
     {
       dataField: "dfBudgetRuleId.id",
-      caption: "dfBudgetRuleId.id",
+      caption: "Bütçe Kuralı ID",
+      alignment: "left"
     }
   ];
   budgetRuleList: any[] = [];
@@ -150,6 +167,7 @@ export class BudgetRuleComponent implements OnInit {
     public formService: FormService,
     public messageService: MessageService,
     private translateService: TranslateService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -182,6 +200,7 @@ export class BudgetRuleComponent implements OnInit {
             return { name: item.ruleName || item.RuleName, id: item.id || item.Id };
           });
         }
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("API Hatası (getAllDfBudgetRule):", err);
@@ -209,54 +228,23 @@ export class BudgetRuleComponent implements OnInit {
   };
 
   createBudgetRule() {
-    var rule = {
-      RuleName: this.newBudgetRule.RuleName,
-      LimitAmount: this.newBudgetRule.LimitAmount,
-      Currency: this.selectedCurrency.id,
-      StartDate: new Date(this.startDate as string).toISOString(),
-      EndDate: new Date(this.endDate as string).toISOString(),
-      IsActive: this.newBudgetRule.IsActive.id === true,
-    };
-    if (this.newBudgetRule.RuleName == '') {
+    if (!this.newBudgetRule.RuleName || this.newBudgetRule.RuleName.trim() === '' ||
+        this.newBudgetRule.LimitAmount === null || this.newBudgetRule.LimitAmount === undefined || this.newBudgetRule.LimitAmount === 0 ||
+        !this.selectedCurrency || !this.selectedCurrency.id || this.selectedCurrency.id === '' ||
+        !this.startDate || !this.endDate ||
+        !this.newBudgetRule.IsActive || this.newBudgetRule.IsActive.id === null || this.newBudgetRule.IsActive.id === undefined) {
       return this.messageService.add({
         severity: "warn",
         summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.ruleNameReq')
+        detail: "Lütfen tüm zorunlu alanları doldurunuz."
       });
     }
-    if (this.newBudgetRule.LimitAmount == 0 || this.newBudgetRule.LimitAmount == null) {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.limitAmountReq')
-      });
-    }
-    if (this.newBudgetRule.LimitAmount <= 0) {
+
+    if (this.newBudgetRule.LimitAmount < 0) {
       return this.messageService.add({
         severity: "warn",
         summary: this.translateService.instant("error"),
         detail: this.translateService.instant('budgetRule.limitAmountValidation')
-      });
-    }
-    if (this.selectedCurrency.id == '') {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.currencyReq')
-      });
-    }
-    if (this.startDate == null || this.startDate == '') {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.startDateReq')
-      });
-    }
-    if (this.endDate == null || this.endDate == '') {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.endDateReq')
       });
     }
     if (this.startDate && this.endDate) {
@@ -275,6 +263,16 @@ export class BudgetRuleComponent implements OnInit {
         detail: this.translateService.instant('budgetRule.statusReq')
       });
     }
+
+    var rule = {
+      RuleName: this.newBudgetRule.RuleName,
+      LimitAmount: this.newBudgetRule.LimitAmount,
+      Currency: this.selectedCurrency.id,
+      StartDate: new Date(this.startDate as string).toISOString(),
+      EndDate: new Date(this.endDate as string).toISOString(),
+      IsActive: this.newBudgetRule.IsActive.id === true,
+    };
+
     this.isDisableButton = true;
     return this.formService.createDfBudgetRule(rule).pipe(finalize(() => this.isDisableButton = false)).subscribe((res: any) => {
       if (res.code == "200") {
@@ -331,46 +329,23 @@ export class BudgetRuleComponent implements OnInit {
 
 
   updateBudgetRule() {
-    if (this.editBudgetRule.RuleName == '') {
+    if (!this.editBudgetRule.RuleName || this.editBudgetRule.RuleName.trim() === '' ||
+        this.editBudgetRule.LimitAmount === null || this.editBudgetRule.LimitAmount === undefined || this.editBudgetRule.LimitAmount === 0 ||
+        !this.selectedCurrency || !this.selectedCurrency.id || this.selectedCurrency.id === '' ||
+        !this.startDate || !this.endDate ||
+        !this.editBudgetRule.IsActive || this.editBudgetRule.IsActive.id === null || this.editBudgetRule.IsActive.id === undefined) {
       return this.messageService.add({
         severity: "warn",
         summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.ruleNameReq'),
+        detail: "Lütfen tüm zorunlu alanları doldurunuz."
       });
     }
-    if (this.selectedCurrency.id == '') {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.currencyReq'),
-      });
-    }
-    if (this.editBudgetRule.LimitAmount == 0 || this.editBudgetRule.LimitAmount == null) {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.limitAmountReq'),
-      });
-    }
-    if (this.editBudgetRule.LimitAmount <= 0) {
+
+    if (this.editBudgetRule.LimitAmount < 0) {
       return this.messageService.add({
         severity: "warn",
         summary: this.translateService.instant("error"),
         detail: this.translateService.instant('budgetRule.limitAmountValidation')
-      });
-    }
-    if (this.startDate == null || this.startDate == '') {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.startDateReq'),
-      });
-    }
-    if (this.endDate == null || this.endDate == '') {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.endDateReq'),
       });
     }
     if (this.startDate && this.endDate) {
@@ -382,7 +357,7 @@ export class BudgetRuleComponent implements OnInit {
         });
       }
     }
-    if (this.editBudgetRule.IsActive.id === null || this.editBudgetRule.IsActive.id === undefined) {
+    if (!this.editBudgetRule.IsActive || this.editBudgetRule.IsActive.id === null || this.editBudgetRule.IsActive.id === undefined) {
       return this.messageService.add({
         severity: "warn",
         summary: this.translateService.instant("error"),
@@ -502,18 +477,12 @@ export class BudgetRuleComponent implements OnInit {
   }
 
   createBudgetRuleObject() {
-    if (this.newBudgetRuleObject.ObjID == '' || this.newBudgetRuleObject.ObjID == null) {
+    if (!this.newBudgetRuleObject.ObjID || this.newBudgetRuleObject.ObjID.trim() === '' || 
+        !this.newBudgetRuleObject.ObjType || this.newBudgetRuleObject.ObjType.trim() === '') {
       return this.messageService.add({
         severity: "warn",
         summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.objectIdReq'),
-      });
-    }
-    if (this.newBudgetRuleObject.ObjType == '' || this.newBudgetRuleObject.ObjType == null) {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.objectTypeReq'),
+        detail: "Lütfen tüm zorunlu alanları doldurunuz."
       });
     }
     var obj = {
@@ -557,18 +526,12 @@ export class BudgetRuleComponent implements OnInit {
   }
 
   updateBudgetRuleObject() {
-    if (this.editBudgetRuleObject.ObjID == '' || this.editBudgetRuleObject.ObjID == null) {
+    if (!this.editBudgetRuleObject.ObjID || this.editBudgetRuleObject.ObjID.trim() === '' || 
+        !this.editBudgetRuleObject.ObjType || this.editBudgetRuleObject.ObjType.trim() === '') {
       return this.messageService.add({
         severity: "warn",
         summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.objectIdReq'),
-      });
-    }
-    if (this.editBudgetRuleObject.ObjType == '' || this.editBudgetRuleObject.ObjType == null) {
-      return this.messageService.add({
-        severity: "warn",
-        summary: this.translateService.instant("error"),
-        detail: this.translateService.instant('budgetRule.objectTypeReq'),
+        detail: "Lütfen tüm zorunlu alanları doldurunuz."
       });
     }
     var obj = {

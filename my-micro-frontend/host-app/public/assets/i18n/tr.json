@@ -148,7 +148,9 @@
         "rejectRequest": "Reddet",
         "cancel": "İptal",
         "create": "Kaydet",
-        "delete": "Sil"
+        "delete": "Sil",
+        "yes": "Evet",
+        "no": "Hayır"
     },
     "messageServiceMessages": {
         "recordAddedSuccessfully": "Kayıt başarıyla eklendi",
@@ -326,7 +328,9 @@
         "isActive": "Durum",
         "statusReq": "Durum seçimi zorunlu",
         "objType": "Nesne Tipi",
-        "objID": "Nesne ID"
+        "objID": "Nesne ID",
+        "objeId": "Obje Id",
+        "objectIdReq": "Obje Id Zorunlu"
     },
     "budgetReportOrganization": {
         "title": "Bütçe Organizasyon Raporu",
