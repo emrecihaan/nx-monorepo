@@ -4,7 +4,7 @@ const config: ModuleFederationConfig = {
   name: 'host-app',
   // Localde çalışırken Nx'in projeleri otomatik keşfetmesi için sadece isimlerini veriyoruz.
   // IP tanımları webpack.prod.config.ts içerisinde production build için geçerlidir.
-  remotes: ['user-app', 'auth-app', 'workflowApp', 'formApp'],
+  remotes: ['user-app', 'auth-app', 'workflowApp', 'formApp', 'shiftApp'],
   shared: (libraryName, sharedConfig) => {
     const isCore = libraryName.startsWith('@angular/') ||
       libraryName.startsWith('rxjs') ||
