@@ -178,7 +178,8 @@ export class WorkflowFormComponent implements OnInit {
           this.formService.getFormListByDfFormId(formId).subscribe((res) => {
             if (res.code != "99") {
               this.data = res.response.map((r: any) => {
-                return { ...r, statusName: this.translateService.instant(TrFormStatusId[r.dfFormStatusId]) }
+                const statusKey = TrFormStatusId[r.dfFormStatusId];
+                return { ...r, statusName: statusKey ? this.translateService.instant(statusKey) : '' }
               })
             }
           })
@@ -187,7 +188,8 @@ export class WorkflowFormComponent implements OnInit {
           this.formService.getFormListByDfFormIdAndUserId(formId, userId).subscribe((res: any) => {
             if (res.code != "99") {
               this.data = res.response.map((r: any) => {
-                return { ...r, statusName: this.translateService.instant(TrFormStatusId[r.dfFormStatusId]) }
+                const statusKey = TrFormStatusId[r.dfFormStatusId];
+                return { ...r, statusName: statusKey ? this.translateService.instant(statusKey) : '' }
               })
             }
           })

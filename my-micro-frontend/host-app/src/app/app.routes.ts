@@ -5,6 +5,7 @@ import { SelectProjectComponent } from './select-project/select-project.componen
 import { authGuard } from '@my-micro-frontend/shared-core';
 
 export const appRoutes: Route[] = [
+
   {
     path: 'login',
     loadChildren: () => import('auth-app/Routes').then((m) => m!.remoteRoutes),
@@ -40,6 +41,19 @@ export const appRoutes: Route[] = [
         path: 'form-app',
         loadChildren: () => import('formApp/Routes').then((m) => m!.remoteRoutes),
       },
+      {
+        path: 'shift-app',
+        loadComponent: () => import('./react-wrapper/react-wrapper.component').then(m => m.ReactWrapperComponent)
+      },
+      {
+        path: 'shift-app',
+        children: [
+          {
+            path: '**',
+            loadComponent: () => import('./react-wrapper/react-wrapper.component').then(m => m.ReactWrapperComponent)
+          }
+        ]
+      }
     ]
   }
 ];

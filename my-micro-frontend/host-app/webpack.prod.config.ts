@@ -19,6 +19,7 @@ export default withModuleFederation(
       ['auth-app', 'http://172.28.161.186:4214/remoteEntry.mjs'],
       ['formApp', 'http://172.28.161.186:4215/remoteEntry.mjs'],
       ['workflowApp', 'http://172.28.161.186:4216/remoteEntry.mjs'],
+      ['shiftApp', 'http://172.28.161.186:4217/remoteEntry.mjs'],
     ],
   },
   { dts: false },
